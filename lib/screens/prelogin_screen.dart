@@ -29,64 +29,94 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFE0E0E0),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Lottie.asset('assets/animations/animation.json', height: 200),
-          Container(
-            height: 300,
-            margin: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.grey[200],
-            ),
-            child: _videoController.value.isInitialized
-                ? AspectRatio(
-                    aspectRatio: _videoController.value.aspectRatio,
-                    child: VideoPlayer(_videoController),
-                  )
-                : Center(child: CircularProgressIndicator()),
+          SizedBox(
+            height: 400,
+            width: 500,
+            child: Lottie.asset('assets/animations/intro.json'),
           ),
           Container(
-            margin: EdgeInsets.only(top: 20),
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all(
-                    EdgeInsets.symmetric(horizontal: 30, vertical: 10)),
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                )),
-                backgroundColor: MaterialStateProperty.all(Colors.transparent),
-                elevation: MaterialStateProperty.all(0),
-              ),
-              child: ShaderMask(
-                shaderCallback: (bounds) => LinearGradient(
-                  colors: [Colors.green.shade700, Colors.green.shade300],
-                ).createShader(bounds),
-                child: Text(
-                  'Pulsante',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
+              height: 380,
+              margin: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16), color: Colors.white),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Stack(
+                    children: [
+                      _videoController.value.isInitialized
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(10, 10, 10, 20),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: AspectRatio(
+                                  aspectRatio:
+                                      _videoController.value.aspectRatio,
+                                  child: VideoPlayer(_videoController),
+                                ),
+                              ),
+                            )
+                          : const Center(child: CircularProgressIndicator()),
+                      Positioned(
+                        bottom: 40,
+                        right: 20,
+                        child: FloatingActionButton(
+                          onPressed: () {
+                            setState(() {
+                              _videoController.value.isPlaying
+                                  ? _videoController.pause()
+                                  : _videoController.play();
+                            });
+                          },
+                          child: Icon(
+                            _videoController.value.isPlaying
+                                ? Icons.pause
+                                : Icons.play_arrow,
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                ),
-              ),
-            ),
-          ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      gradient: LinearGradient(
+                        colors: [Colors.green.shade300, Colors.green.shade700],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Aggiungi qui la tua logica
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 100, vertical: 15),
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      child: const Text(
+                        'Sei già iscritto',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white, // Colore del testo bianco
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              )),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _videoController.value.isPlaying
-                ? _videoController.pause()
-                : _videoController.play();
-          });
-        },
-        child: Icon(
-          _videoController.value.isPlaying ? Icons.pause : Icons.play_arrow,
-        ),
       ),
     );
   }
