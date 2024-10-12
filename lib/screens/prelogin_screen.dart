@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:peekforme/screens/home_screen.dart';
+import 'package:peekforme/screens/login_screen.dart';
 import 'package:peekforme/widgets/mobile/prelogin/gradient_button.dart';
 import 'package:peekforme/widgets/mobile/prelogin/intro_widget.dart';
 import 'package:video_player/video_player.dart';
@@ -84,36 +85,47 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                   ),
                   GradientButton(
                     buttonText: 'Sei già iscritto?',
-                    onPress: () {
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return SizedBox.expand(
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text("Peekforme"),
-                                    GradientButton(
-                                        buttonText: 'Accedi',
-                                        onPress: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const HomeScreen()));
-                                        })
-                                  ],
-                                ),
-                              ),
-                            );
-                          });
-                    },
+                    onPress: _showBottomSheet,
                   ),
                 ],
               )),
         ],
       ),
     );
+  }
+
+  void _showBottomSheet() {
+    () {
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return SizedBox.expand(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Peekforme"),
+                    GradientButton(
+                        buttonText: 'Accedi',
+                        onPress: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginScreen()));
+                        }),
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomeScreen()));
+                        },
+                        child: const Text("Registrati"))
+                  ],
+                ),
+              ),
+            );
+          });
+    };
   }
 }
