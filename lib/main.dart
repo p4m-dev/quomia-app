@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:peekforme/screens/home_screen.dart';
+import 'package:peekforme/screens/prelogin_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -10,8 +10,8 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomeScreen(),
+    return MaterialApp(
+      home: PreLoginScreen(),
     );
   }
 }
