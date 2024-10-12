@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:peekforme/screens/home_screen.dart';
+import 'package:peekforme/widgets/mobile/prelogin/gradient_button.dart';
+import 'package:peekforme/widgets/mobile/prelogin/intro_widget.dart';
 import 'package:video_player/video_player.dart';
 
 class PreLoginScreen extends StatefulWidget {
+  const PreLoginScreen({super.key});
+
   @override
   _PreLoginScreenState createState() => _PreLoginScreenState();
 }
@@ -33,11 +37,7 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            height: 400,
-            width: 500,
-            child: Lottie.asset('assets/animations/intro.json'),
-          ),
+          const IntroWidget(),
           Container(
               height: 380,
               margin: const EdgeInsets.all(10),
@@ -82,38 +82,34 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                       )
                     ],
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      gradient: LinearGradient(
-                        colors: [Colors.green.shade300, Colors.green.shade700],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Aggiungi qui la tua logica
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 100, vertical: 15),
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: const Text(
-                        'Sei già iscritto',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white, // Colore del testo bianco
-                        ),
-                      ),
-                    ),
-                  )
+                  GradientButton(
+                    buttonText: 'Sei già iscritto?',
+                    onPress: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return SizedBox.expand(
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text("Peekforme"),
+                                    GradientButton(
+                                        buttonText: 'Accedi',
+                                        onPress: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const HomeScreen()));
+                                        })
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
+                    },
+                  ),
                 ],
               )),
         ],
