@@ -81,6 +81,7 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                             _videoController.value.isPlaying
                                 ? Icons.pause
                                 : Icons.play_arrow,
+                            color: Colors.black,
                           ),
                         ),
                       )
@@ -90,25 +91,46 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                     buttonText: 'Sei già iscritto?',
                     onPress: () {
                       showModalBottomSheet(
+                          backgroundColor: Colors.white,
                           context: context,
                           builder: (BuildContext context) {
                             return SizedBox.expand(
                               child: Center(
                                 child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    const Text("Peekforme"),
-                                    GradientButton(
-                                        buttonText: 'Accedi',
-                                        onPress: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const LoginScreen()));
-                                        }),
+                                    const Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 20, 0, 50),
+                                      child: Text("Peekforme",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.normal)),
+                                    ),
+                                    Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 0, 0, 30),
+                                        child: GradientButton(
+                                            buttonText: 'Accedi',
+                                            onPress: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const LoginScreen()));
+                                            })),
                                     ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 100, vertical: 15),
+                                            backgroundColor:
+                                                Colors.grey.shade300,
+                                            shadowColor: Colors.transparent,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(26))),
                                         onPressed: () {
                                           Navigator.push(
                                               context,
@@ -116,7 +138,12 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                                                   builder: (context) =>
                                                       const HomeScreen()));
                                         },
-                                        child: const Text("Registrati"))
+                                        child: const Text(
+                                          "Registrati",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18),
+                                        ))
                                   ],
                                 ),
                               ),
