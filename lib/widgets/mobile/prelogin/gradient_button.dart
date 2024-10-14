@@ -22,7 +22,7 @@ class GradientButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPress,
         style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 110, vertical: 15),
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(

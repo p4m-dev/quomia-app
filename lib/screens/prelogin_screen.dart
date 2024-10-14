@@ -45,14 +45,14 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16), color: Colors.white),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Stack(
                     children: [
                       _videoController.value.isInitialized
                           ? Padding(
                               padding:
-                                  const EdgeInsets.fromLTRB(10, 10, 10, 20),
+                                  const EdgeInsets.fromLTRB(15, 15, 15, 20),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(16),
                                 child: AspectRatio(
@@ -64,9 +64,12 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                             )
                           : const Center(child: CircularProgressIndicator()),
                       Positioned(
-                        bottom: 40,
-                        right: 20,
+                        bottom: 100,
+                        right: 160,
                         child: FloatingActionButton(
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                          shape: const CircleBorder(),
                           onPressed: () {
                             setState(() {
                               _videoController.value.isPlaying
@@ -85,47 +88,46 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                   ),
                   GradientButton(
                     buttonText: 'Sei già iscritto?',
-                    onPress: _showBottomSheet,
+                    onPress: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return SizedBox.expand(
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    const Text("Peekforme"),
+                                    GradientButton(
+                                        buttonText: 'Accedi',
+                                        onPress: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const LoginScreen()));
+                                        }),
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const HomeScreen()));
+                                        },
+                                        child: const Text("Registrati"))
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
+                    },
                   ),
                 ],
               )),
         ],
       ),
     );
-  }
-
-  void _showBottomSheet() {
-    () {
-      showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return SizedBox.expand(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Peekforme"),
-                    GradientButton(
-                        buttonText: 'Accedi',
-                        onPress: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginScreen()));
-                        }),
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomeScreen()));
-                        },
-                        child: const Text("Registrati"))
-                  ],
-                ),
-              ),
-            );
-          });
-    };
   }
 }
