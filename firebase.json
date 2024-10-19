@@ -1,0 +1,23 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "quomia",
+                    "appId": "1:342382484845:android:f64b4bc25e69d483568e64",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "quomia",
+                    "configurations": {
+                        "android": "1:342382484845:android:f64b4bc25e69d483568e64",
+                        "ios": "1:342382484845:ios:63bfbdb777d726fc568e64",
+                        "web": "1:342382484845:web:fe6734cbfe197630568e64"
+                    }
+                }
+            }
+        }
+    }
+}

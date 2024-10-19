@@ -1,4 +1,4 @@
-package com.example.peekforme
+package com.quomia.app
 
 import io.flutter.embedding.android.FlutterActivity
 

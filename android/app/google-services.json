@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "342382484845",
+    "project_id": "quomia",
+    "storage_bucket": "quomia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:342382484845:android:f64b4bc25e69d483568e64",
+        "android_client_info": {
+          "package_name": "com.quomia.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGm9gfPXgT_qzk_BbMpl9HUIut3HgEN3s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

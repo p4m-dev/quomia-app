@@ -1,12 +1,14 @@
 name: peekforme
 description: "A new Flutter project."
 publish_to: 'none'
-version: 0.1.0
+version: 0.0.1
 
 environment:
   sdk: ^3.5.2
 
 dependencies:
+  firebase_auth: ^5.3.1
+  firebase_core: ^3.6.0
   flutter:
     sdk: flutter
   lottie: ^3.1.2
@@ -23,3 +25,4 @@ flutter:
   assets:
     - assets/videos/sample_video.mp4
     - assets/animations/intro.json
+    - assets/images/quomia_logo.png
