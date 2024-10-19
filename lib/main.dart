@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:peekforme/firebase_options.dart';
-import 'package:peekforme/screens/splash_screen.dart';
+import 'package:quomia/firebase_options.dart';
+import 'package:quomia/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {

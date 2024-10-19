@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:peekforme/screens/home_screen.dart';
-import 'package:peekforme/screens/login_screen.dart';
-import 'package:peekforme/utils/app_colors.dart';
-import 'package:peekforme/widgets/mobile/prelogin/gradient_button.dart';
-import 'package:peekforme/widgets/mobile/prelogin/intro_widget.dart';
+import 'package:quomia/screens/home_screen.dart';
+import 'package:quomia/screens/login_screen.dart';
+import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/widgets/mobile/prelogin/gradient_button.dart';
+import 'package:quomia/widgets/mobile/prelogin/intro_widget.dart';
 import 'package:video_player/video_player.dart';
 
 class PreLoginScreen extends StatefulWidget {
@@ -104,7 +104,7 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                                     const Padding(
                                       padding:
                                           EdgeInsets.fromLTRB(0, 20, 0, 50),
-                                      child: Text("Peekforme",
+                                      child: Text("quomia",
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 24,

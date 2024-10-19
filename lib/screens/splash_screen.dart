@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:peekforme/screens/home_screen.dart';
-import 'package:peekforme/screens/prelogin_screen.dart';
-import 'package:peekforme/utils/app_colors.dart';
+import 'package:quomia/screens/home_screen.dart';
+import 'package:quomia/screens/prelogin_screen.dart';
+import 'package:quomia/utils/app_colors.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
