@@ -1,0 +1,49 @@
+name: Build Android and Increment Version
+
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.10.0'
+
+    - name: Set up Java JDK
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: '11'
+
+    - name: Increment version
+      env:
+        PR_TITLE: ${{ github.event.pull_request.title }}
+      run: |
+        chmod +x increment_version.sh
+        ./increment_version.sh
+        
+    - name: Build APK
+      run: flutter build apk --release
+
+    - name: Upload APK to Firebase App Distribution
+      uses: wzieba/Firebase-Distribution-Github-Action@v1
+      with:
+        appId: ${{ secrets.FIREBASE_APP_ID }}
+        token: ${{ secrets.FIREBASE_TOKEN }}
+        groups: testers
+        file: build/app/outputs/flutter-apk/app-release.apk
+
+    - name: Commit updated version
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add pubspec.yaml
+        git commit -m "Incremented version to $new_version"
+        git push
