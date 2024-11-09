@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/screens/prelogin_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
@@ -36,13 +37,27 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.light.background,
-      body: Center(
-          child: Image.asset(
-        'assets/images/quomia_logo.png',
-        width: 150,
-        height: 150,
-      )),
-    );
+        backgroundColor: AppColors.dark.background,
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Lottie.asset('',
+                width: 393, height: 200, fit: BoxFit.contain, animate: true),
+            Spacer(),
+            Text('Quomia',
+                style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    color: AppColors.light.text,
+                    fontSize: 40,
+                    letterSpacing: 0.0,
+                    fontWeight: FontWeight.normal)),
+            Text('WHERE TIME MATTERS',
+                style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    color: AppColors.light.text,
+                    letterSpacing: 0.0)),
+          ],
+        ));
   }
 }
