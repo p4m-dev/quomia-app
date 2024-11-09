@@ -37,27 +37,31 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.dark.background,
-        body: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Lottie.asset('',
-                width: 393, height: 200, fit: BoxFit.contain, animate: true),
-            Spacer(),
-            Text('Quomia',
-                style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    color: AppColors.light.text,
-                    fontSize: 40,
-                    letterSpacing: 0.0,
-                    fontWeight: FontWeight.normal)),
-            Text('WHERE TIME MATTERS',
-                style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    color: AppColors.light.text,
-                    letterSpacing: 0.0)),
-          ],
+        backgroundColor: AppColors.light.background,
+        body: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Lottie.asset('assets/animations/hourglass.json',
+                  width: 393, height: 200, fit: BoxFit.none, animate: true),
+              const Spacer(),
+              Text('Quomia',
+                  style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      color: AppColors.light.info,
+                      fontSize: 40,
+                      letterSpacing: 0.0,
+                      fontWeight: FontWeight.normal)),
+              Text('WHERE TIME MATTERS',
+                  style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      color: AppColors.light.text,
+                      letterSpacing: 0.0)),
+            ],
+          ),
         ));
   }
 }

@@ -7,7 +7,10 @@ class AppColors {
 
 class _LightModeColors {
   final Color background = const Color(0xFFF0F0F0);
-  final Color primary = const Color(0xFFF5F5F5);
+  final Color primary = const Color(0xFF36B37E);
+  final Color secondary = const Color(0xFFC7EEDD);
+  final Color accent = const Color(0xFF5AE2A0);
+  final Color info = const Color(0xFF36B37E);
   final Color text = const Color(0xFF141414);
 }
 

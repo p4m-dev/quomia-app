@@ -104,7 +104,7 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                                     const Padding(
                                       padding:
                                           EdgeInsets.fromLTRB(0, 20, 0, 50),
-                                      child: Text("quomia",
+                                      child: Text("Quomia",
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 24,
