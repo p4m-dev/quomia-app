@@ -1,5 +1,5 @@
-import 'package:peekforme/models/box_type.dart';
-import 'package:peekforme/models/user.dart';
+import 'package:quomia/models/box_type.dart';
+import 'package:quomia/models/user.dart';
 
 class Box {
   User user;

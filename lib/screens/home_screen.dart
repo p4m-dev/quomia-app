@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:peekforme/widgets/home/box.dart';
+import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/widgets/home/box.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -8,11 +9,11 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      backgroundColor: const Color(0xFFE0E0E0),
+      backgroundColor: AppColors.light.background,
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
-        title: const Text('Peekforme'),
+        title: const Text('quomia'),
         actions: [],
         centerTitle: false,
         elevation: 2,

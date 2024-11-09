@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:peekforme/screens/prelogin_screen.dart';
+import 'package:quomia/firebase_options.dart';
+import 'package:quomia/screens/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MainApp());
 }
 
@@ -11,7 +17,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: PreLoginScreen(),
+      home: SplashScreen(),
     );
   }
 }
