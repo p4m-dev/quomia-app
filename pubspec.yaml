@@ -12,6 +12,7 @@ dependencies:
   firebase_core: ^3.6.0
   flutter:
     sdk: flutter
+  font_awesome_flutter: ^10.8.0
   lottie: ^3.1.2
   video_player: ^2.9.2
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quomia/utils/app_colors.dart';
 
 class GradientButton extends StatelessWidget {
   final String buttonText;
@@ -14,7 +15,7 @@ class GradientButton extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
         gradient: LinearGradient(
-          colors: [Colors.green.shade300, Colors.green.shade700],
+          colors: [AppColors.light.secondary, AppColors.light.primary],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),

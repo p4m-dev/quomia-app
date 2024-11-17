@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/screens/prelogin_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
@@ -38,16 +37,10 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColors.light.background,
-        body: Padding(
-          padding: const EdgeInsets.all(15),
+        body: Center(
           child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Lottie.asset('assets/animations/hourglass.json',
-                  width: 393, height: 200, fit: BoxFit.none, animate: true),
-              const Spacer(),
               Text('Quomia',
                   style: TextStyle(
                       fontFamily: 'Montserrat',
