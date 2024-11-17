@@ -12,6 +12,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool? rememberMe = false;
 
   @override
   void dispose() {
@@ -246,37 +247,24 @@ class _LoginScreenState extends State<LoginScreen> {
                               )),
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Theme(
-                                  data: ThemeData(
-                                      checkboxTheme: CheckboxThemeData(
-                                    visualDensity: VisualDensity.compact,
-                                    materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                  )),
-                                  child: Checkbox(
-                                    value: true,
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        print(newValue);
-                                      });
-                                    },
-                                    side: BorderSide(
-                                        width: 2,
-                                        color: AppColors.light.primary),
-                                    activeColor: AppColors.light.secondary,
-                                    checkColor: AppColors.light.accent,
-                                  )),
-                              const Text('Ricordami',
-                                  style: TextStyle(
-                                      fontFamily: 'DM Sans', fontSize: 14.0)),
-                            ],
+                          padding: const EdgeInsets.fromLTRB(15.0, 0, 0, 0),
+                          child: ListTileTheme(
+                            horizontalTitleGap: 0.0,
+                            child: CheckboxListTile(
+                                value: rememberMe,
+                                title: const Text("Ricordami"),
+                                contentPadding: EdgeInsets.zero,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                activeColor: AppColors.light.secondary,
+                                checkColor: AppColors.light.accent,
+                                side: BorderSide(
+                                    width: 2, color: AppColors.light.primary),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    rememberMe = newValue;
+                                  });
+                                }),
                           ),
                         ),
                         const Divider(
