@@ -29,3 +29,6 @@ flutter:
     - assets/animations/intro.json
     - assets/animations/hourglass.json
     - assets/images/quomia_logo.png
+    - assets/images/img_1.jpeg
+    - assets/images/img_2.jpeg
+    - assets/images/img_3.jpeg

@@ -70,27 +70,27 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: CarouselSlider(
                           items: [
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                'https://picsum.photos/seed/383/600',
+                              borderRadius: BorderRadius.circular(16),
+                              child: const Image(
+                                image: AssetImage('assets/images/img_1.jpeg'),
                                 width: 200,
                                 height: 200,
                                 fit: BoxFit.cover,
                               ),
                             ),
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                'https://picsum.photos/seed/86/600',
+                              borderRadius: BorderRadius.circular(16),
+                              child: const Image(
+                                image: AssetImage('assets/images/img_2.jpeg'),
                                 width: 200,
                                 height: 200,
                                 fit: BoxFit.cover,
                               ),
                             ),
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                'https://picsum.photos/seed/615/600',
+                              borderRadius: BorderRadius.circular(16),
+                              child: const Image(
+                                image: AssetImage('assets/images/img_3.jpeg'),
                                 width: 200,
                                 height: 200,
                                 fit: BoxFit.cover,
