@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/screens/login_screen.dart';
+import 'package:quomia/screens/signup_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/mobile/prelogin/gradient_button.dart';
 import 'package:quomia/widgets/mobile/prelogin/intro_widget.dart';
@@ -124,7 +125,7 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                                             })),
                                     ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                            padding: EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 100, vertical: 15),
                                             backgroundColor:
                                                 Colors.grey.shade300,
@@ -137,7 +138,7 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const HomeScreen()));
+                                                      const SignupScreen()));
                                         },
                                         child: const Text(
                                           "Registrati",

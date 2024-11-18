@@ -2,17 +2,18 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quomia/screens/home_screen.dart';
+import 'package:quomia/screens/login_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/common/custom_loader.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class OtpScreen extends StatefulWidget {
+  const OtpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<OtpScreen> createState() => _OtpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _OtpScreenState extends State<OtpScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool? rememberMe = false;
@@ -20,8 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
 
-// Funzione per gestire il click su "Accedi"
-  Future<void> _handleLogin() async {
+  Future<void> handleRegistration() async {
     if (_formKey.currentState?.validate() ?? false) {
       setState(() {
         isLoading = true;
@@ -131,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   const Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0, 20, 0, 0),
-                                    child: Text('Accedi',
+                                    child: Text('Registrati',
                                         style: TextStyle(
                                           fontFamily: 'DM Sans',
                                           fontSize: 24,
@@ -142,12 +142,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   const Padding(
                                       padding:
                                           EdgeInsets.fromLTRB(0, 0, 0, 10.0),
-                                      child: Text('Bentornato',
-                                          style: TextStyle(
-                                            fontFamily: 'DM Sans',
-                                            letterSpacing: 0.0,
-                                            fontWeight: FontWeight.w300,
-                                          ))),
+                                      child:
+                                          Text('Crea un account per cominciare',
+                                              style: TextStyle(
+                                                fontFamily: 'DM Sans',
+                                                letterSpacing: 0.0,
+                                                fontWeight: FontWeight.w300,
+                                              ))),
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -230,114 +231,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                           }),
                                     ),
                                   ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                    child: SizedBox(
-                                      width: double.infinity,
-                                      child: TextFormField(
-                                        controller: passwordController,
-                                        autofocus: false,
-                                        obscureText: obscureText,
-                                        decoration: InputDecoration(
-                                            isDense: false,
-                                            labelStyle: const TextStyle(
-                                              fontFamily: 'DM Sans',
-                                            ),
-                                            hintText: 'Password',
-                                            hintStyle: const TextStyle(
-                                              fontFamily: 'DM Sans',
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                color: Color(0x00000000),
-                                                width: 1,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(24),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                color: Color(0x00000000),
-                                                width: 1,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(24),
-                                            ),
-                                            errorBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: AppColors.light.error,
-                                                width: 1,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(24),
-                                            ),
-                                            focusedErrorBorder:
-                                                OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color:
-                                                    AppColors.light.background,
-                                                width: 1,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(24),
-                                            ),
-                                            filled: true,
-                                            fillColor:
-                                                AppColors.light.background,
-                                            errorStyle: TextStyle(
-                                                color: AppColors.light.error),
-                                            prefixIcon: const Icon(
-                                              Icons.key,
-                                            ),
-                                            suffixIcon: IconButton(
-                                                icon: Icon(
-                                                  obscureText
-                                                      ? Icons.visibility
-                                                      : Icons.visibility_off,
-                                                ),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    obscureText = !obscureText;
-                                                  });
-                                                })),
-                                        style: const TextStyle(
-                                          fontFamily: 'DM Sans',
-                                        ),
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'La password non può essere vuota';
-                                          }
-
-                                          if (value.length < 8) {
-                                            return 'La password deve contenere almeno 8 caratteri';
-                                          }
-
-                                          final RegExp hasUppercase =
-                                              RegExp(r'[A-Z]');
-                                          final RegExp hasDigits =
-                                              RegExp(r'[0-9]');
-                                          final RegExp hasSpecialCharacters =
-                                              RegExp(r'[!@#$%^&*(),.?":{}|<>]');
-
-                                          if (!hasUppercase.hasMatch(value)) {
-                                            return 'La password deve contenere almeno una lettera maiuscola';
-                                          }
-
-                                          if (!hasDigits.hasMatch(value)) {
-                                            return 'La password deve contenere almeno un numero';
-                                          }
-
-                                          if (!hasSpecialCharacters
-                                              .hasMatch(value)) {
-                                            return 'La password deve contenere almeno un carattere speciale';
-                                          }
-
-                                          return null;
-                                        },
-                                      ),
-                                    ),
-                                  ),
                                   const SizedBox(height: 10.0),
                                   ElevatedButton(
                                       style: ElevatedButton.styleFrom(
@@ -349,17 +242,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(26))),
-                                      onPressed: _handleLogin,
+                                      onPressed: handleRegistration,
                                       child: const Text(
-                                        "Accedi",
+                                        "Registrati",
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 18),
                                       )),
+                                  const SizedBox(height: 10.0),
                                   ListTileTheme(
                                     horizontalTitleGap: 0.0,
                                     child: CheckboxListTile(
                                         value: rememberMe,
-                                        title: const Text("Ricordami"),
+                                        title: const Text(
+                                            "Ho letto i FAQ e aderisco ai termini e condizioni di Quomia"),
                                         contentPadding: EdgeInsets.zero,
                                         controlAffinity:
                                             ListTileControlAffinity.leading,
@@ -374,6 +269,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           });
                                         }),
                                   ),
+                                  const SizedBox(height: 10.0),
                                   Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -392,8 +288,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                       const Expanded(child: Divider()),
                                     ],
                                   ),
-                                  const Text('Accedi con',
-                                      style: TextStyle(fontFamily: 'DM Sans')),
+                                  const SizedBox(height: 10.0),
+                                  const Text('Registrati con',
+                                      style: TextStyle(
+                                          fontFamily: 'DM Sans', fontSize: 16)),
+                                  const SizedBox(height: 10.0),
                                   Row(
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment:
@@ -446,14 +345,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                           MainAxisAlignment.center,
                                       children: [
                                         const Text(
-                                          'Non possiedi un account?',
-                                          style: TextStyle(
-                                              fontFamily: 'DM Sans',
-                                              letterSpacing: 0.0),
+                                          'Possiedi un account?',
+                                          style:
+                                              TextStyle(fontFamily: 'DM Sans'),
                                         ),
                                         TextButton(
                                           onPressed: () {
-                                            // Your action here
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const LoginScreen()));
                                           },
                                           child: Text(
                                             'Clicca qui',
