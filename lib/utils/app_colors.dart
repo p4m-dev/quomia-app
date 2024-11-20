@@ -10,9 +10,10 @@ class _LightModeColors {
   final Color primaryBackground = const Color(0xFFFFFFFF);
   final Color primary = const Color(0xFF36B37E);
   final Color secondary = const Color(0xFFC7EEDD);
-  final Color accent = const Color(0xFF5AE2A0);
+  final Color tertiary = const Color(0xFF5AE2A0);
   final Color info = const Color(0xFF36B37E);
-  final Color text = const Color(0xFF141414);
+  final Color primaryText = const Color(0xFF141414);
+  final Color secondaryText = const Color(0xFF141414);
   final Color error = const Color(0xFF683BBF);
 }
 

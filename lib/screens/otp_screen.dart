@@ -1,10 +1,8 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:quomia/screens/home_screen.dart';
-import 'package:quomia/screens/login_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
-import 'package:quomia/widgets/common/custom_loader.dart';
+import 'package:quomia/widgets/auth/carousel.dart';
 
 class OtpScreen extends StatefulWidget {
   const OtpScreen({super.key});
@@ -14,14 +12,11 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  bool? rememberMe = false;
-  bool obscureText = true;
+  TextEditingController pinCodeController = TextEditingController();
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
 
-  Future<void> handleRegistration() async {
+  Future<void> _handleOtpValidation() async {
     if (_formKey.currentState?.validate() ?? false) {
       setState(() {
         isLoading = true;
@@ -46,193 +41,143 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   void dispose() {
     super.dispose();
-    emailController.dispose();
-    passwordController.dispose();
+    pinCodeController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColors.light.background,
-        body: Stack(
-          children: [
-            SafeArea(
-              top: true,
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      SizedBox(
+        body: Stack(children: [
+          SafeArea(
+            top: true,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    const Carousel(),
+                    const SizedBox(height: 20),
+                    Form(
+                      key: _formKey,
+                      child: Container(
                         width: double.infinity,
-                        height: 200,
-                        child: CarouselSlider(
-                          items: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: const Image(
-                                image: AssetImage('assets/images/img_1.jpeg'),
-                                width: 200,
-                                height: 200,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: const Image(
-                                image: AssetImage('assets/images/img_2.jpeg'),
-                                width: 200,
-                                height: 200,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: const Image(
-                                image: AssetImage('assets/images/img_3.jpeg'),
-                                width: 200,
-                                height: 200,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ],
-                          carouselController: CarouselSliderController(),
-                          options: CarouselOptions(
-                            initialPage: 1,
-                            viewportFraction: 0.5,
-                            disableCenter: true,
-                            enlargeCenterPage: true,
-                            enlargeFactor: 0.25,
-                            enableInfiniteScroll: true,
-                            scrollDirection: Axis.horizontal,
-                            autoPlay: true,
-                          ),
+                        decoration: BoxDecoration(
+                          color: AppColors.light.primaryBackground,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8)),
                         ),
-                      ),
-                      // Spacing
-                      const SizedBox(height: 20),
-                      Form(
-                          key: _formKey,
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: AppColors.light.primaryBackground,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(16)),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 20, 0, 0),
-                                    child: Text('Registrati',
-                                        style: TextStyle(
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              15, 0, 15, 0),
+                          child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 20, 0, 0),
+                                  child: Text('Controlla la tua mail',
+                                      style: TextStyle(
                                           fontFamily: 'DM Sans',
                                           fontSize: 24,
-                                          letterSpacing: 0.0,
-                                          fontWeight: FontWeight.w600,
-                                        )),
-                                  ),
-                                  const Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(0, 0, 0, 10.0),
-                                      child:
-                                          Text('Crea un account per cominciare',
-                                              style: TextStyle(
-                                                fontFamily: 'DM Sans',
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w300,
-                                              ))),
-                                  Padding(
+                                          fontWeight: FontWeight.w600)),
+                                ),
+                                const SizedBox(
+                                  height: 10.0,
+                                ),
+                                Text('simonezanetti7@gmail.com',
+                                    style: TextStyle(
+                                        fontFamily: 'DM Sans',
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.light.tertiary)),
+                                const SizedBox(
+                                  height: 10.0,
+                                ),
+                                const Text(
+                                  'Se questo account esiste riceverai una mail con un codice di verifica utilizzabile solo una volta (OTP). ',
+                                  style: TextStyle(
+                                      fontFamily: 'DM Sans',
+                                      fontWeight: FontWeight.w300),
+                                ),
+                                const SizedBox(
+                                  height: 10.0,
+                                ),
+                                Align(
+                                  alignment: const AlignmentDirectional(0, 0),
+                                  child: Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                    child: SizedBox(
-                                      width: double.infinity,
-                                      child: TextFormField(
-                                          controller: emailController,
-                                          autofocus: false,
-                                          obscureText: false,
-                                          decoration: InputDecoration(
-                                            isDense: false,
-                                            labelStyle: const TextStyle(
-                                              fontFamily: 'DM Sans',
-                                              letterSpacing: 0.0,
-                                            ),
-                                            hintText: 'Email',
-                                            hintStyle: const TextStyle(
-                                              fontFamily: 'DM Sans',
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                color: Color(0x00000000),
-                                                width: 1,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(24),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                color: Color(0x00000000),
-                                                width: 1,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(24),
-                                            ),
-                                            errorBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: AppColors.light.error,
-                                                width: 1,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(24),
-                                            ),
-                                            focusedErrorBorder:
-                                                OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: AppColors.light.error,
-                                                width: 1,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(24),
-                                            ),
-                                            filled: true,
-                                            fillColor:
-                                                AppColors.light.background,
-                                            prefixIcon: const Icon(
-                                              Icons.email_outlined,
-                                            ),
-                                            errorStyle: TextStyle(
-                                                color: AppColors.light.error),
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0, 0, 0, 15),
+                                    child: RichText(
+                                      textScaler:
+                                          MediaQuery.of(context).textScaler,
+                                      text: TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: 'Copia e incolla il codice',
+                                            style: TextStyle(
+                                                fontFamily: 'DM Sans',
+                                                fontWeight: FontWeight.w500,
+                                                color:
+                                                    AppColors.light.tertiary),
                                           ),
-                                          style: const TextStyle(
-                                            fontFamily: 'DM Sans',
-                                          ),
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty) {
-                                              return 'L\'email non può essere vuota';
-                                            }
-
-                                            final RegExp emailRegex = RegExp(
-                                              r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                                            );
-
-                                            if (!emailRegex.hasMatch(value)) {
-                                              return 'Inserisci un\'email valida';
-                                            }
-
-                                            return null; // Email valida
-                                          }),
+                                          TextSpan(
+                                              text: ' ricevuto via mail.',
+                                              style: TextStyle(
+                                                  fontFamily: 'DM Sans',
+                                                  fontWeight: FontWeight.normal,
+                                                  color:
+                                                      AppColors.light.tertiary))
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  const SizedBox(height: 10.0),
-                                  ElevatedButton(
+                                ),
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      15, 0, 15, 15),
+                                  child: PinCodeTextField(
+                                    autoDisposeControllers: false,
+                                    appContext: context,
+                                    length: 6,
+                                    textStyle:
+                                        const TextStyle(fontFamily: 'DM Sans'),
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    enableActiveFill: false,
+                                    autoFocus: true,
+                                    enablePinAutofill: false,
+                                    errorTextSpace: 16,
+                                    showCursor: true,
+                                    cursorColor: AppColors.light.primary,
+                                    obscureText: false,
+                                    keyboardType: TextInputType.number,
+                                    pinTheme: PinTheme(
+                                      fieldHeight: 44,
+                                      fieldWidth: 44,
+                                      borderWidth: 2,
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(12)),
+                                      shape: PinCodeFieldShape.circle,
+                                      activeColor: AppColors.light.primaryText,
+                                      // Switch to alternate
+                                      inactiveColor:
+                                          AppColors.light.primaryText,
+                                      selectedColor: AppColors.light.primary,
+                                    ),
+                                    controller: pinCodeController,
+                                    onChanged: (_) {},
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    //validator: ,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      15, 0, 15, 15),
+                                  child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                           minimumSize:
                                               const Size(double.infinity, 50),
@@ -242,141 +187,72 @@ class _OtpScreenState extends State<OtpScreen> {
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(26))),
-                                      onPressed: handleRegistration,
+                                      onPressed: _handleOtpValidation,
                                       child: const Text(
-                                        "Registrati",
+                                        "Accedi",
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 18),
                                       )),
-                                  const SizedBox(height: 10.0),
-                                  ListTileTheme(
-                                    horizontalTitleGap: 0.0,
-                                    child: CheckboxListTile(
-                                        value: rememberMe,
-                                        title: const Text(
-                                            "Ho letto i FAQ e aderisco ai termini e condizioni di Quomia"),
-                                        contentPadding: EdgeInsets.zero,
-                                        controlAffinity:
-                                            ListTileControlAffinity.leading,
-                                        activeColor: AppColors.light.secondary,
-                                        checkColor: AppColors.light.accent,
-                                        side: BorderSide(
-                                            width: 2,
-                                            color: AppColors.light.primary),
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            rememberMe = newValue;
-                                          });
-                                        }),
-                                  ),
-                                  const SizedBox(height: 10.0),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                ),
+                                RichText(
+                                  textScaler: MediaQuery.of(context).textScaler,
+                                  text: TextSpan(
                                     children: [
-                                      const Expanded(child: Divider()),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 15),
-                                        child: Text(
-                                          "O",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelMedium,
-                                        ),
+                                      TextSpan(
+                                          text:
+                                              'Le email potrebbero impiegare un pò di minuti prima che arrivino. \nSe non hai ricevuto nessun ',
+                                          style: TextStyle(
+                                              fontFamily: 'DM Sans',
+                                              color:
+                                                  AppColors.light.primaryText)),
+                                      TextSpan(
+                                        text: 'codice',
+                                        style: TextStyle(
+                                            fontFamily: 'DM Sans',
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors.light.tertiary),
                                       ),
-                                      const Expanded(child: Divider()),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10.0),
-                                  const Text('Registrati con',
-                                      style: TextStyle(
-                                          fontFamily: 'DM Sans', fontSize: 16)),
-                                  const SizedBox(height: 10.0),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      IconButton(
-                                        color: Colors.red,
-                                        iconSize: 32,
-                                        icon: const FaIcon(
-                                            FontAwesomeIcons.google),
-                                        onPressed: () {
-                                          setState(
-                                            () {
-                                              print("facebook login");
-                                            },
-                                          );
-                                        },
+                                      TextSpan(
+                                        text: ', ti chiediamo di riprovare. \n',
+                                        style: TextStyle(
+                                            fontFamily: 'DM Sans',
+                                            color: AppColors.light.primaryText),
                                       ),
-                                      IconButton(
-                                        color: Colors.blue,
-                                        iconSize: 32,
-                                        icon: const FaIcon(
-                                            FontAwesomeIcons.facebook),
-                                        onPressed: () {
-                                          setState(
-                                            () {
-                                              print("facebook login");
-                                            },
-                                          );
-                                        },
+                                      TextSpan(
+                                        text:
+                                            'Se stai riscontrando altri problemi, ti chediamo di visitare la nostra pagina di ',
+                                        style: TextStyle(
+                                            fontFamily: 'DM Sans',
+                                            color: AppColors.light.primaryText),
                                       ),
-                                      IconButton(
-                                        color: Colors.black,
-                                        iconSize: 32,
-                                        icon: const FaIcon(
-                                            FontAwesomeIcons.xTwitter),
-                                        onPressed: () {
-                                          setState(
-                                            () {
-                                              print("facebook login");
-                                            },
-                                          );
-                                        },
+                                      TextSpan(
+                                        text: 'supporto',
+                                        style: TextStyle(
+                                            fontFamily: 'DM Sans',
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors.light.tertiary),
+                                      ),
+                                      TextSpan(
+                                        text: '.',
+                                        style: TextStyle(
+                                            fontFamily: 'DM Sans',
+                                            color: AppColors.light.primaryText),
                                       )
                                     ],
+                                    style: TextStyle(
+                                        fontFamily: 'DM Sans',
+                                        color: AppColors.light.primaryText),
                                   ),
-                                  Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Text(
-                                          'Possiedi un account?',
-                                          style:
-                                              TextStyle(fontFamily: 'DM Sans'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const LoginScreen()));
-                                          },
-                                          child: Text(
-                                            'Clicca qui',
-                                            style: TextStyle(
-                                              color: AppColors.light.accent,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        )
-                                      ])
-                                ],
-                              ),
-                            ),
-                          ))
-                    ],
-                  ),
+                                )
+                              ]),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),
-            if (isLoading) const CustomLoader()
-          ],
-        ));
+          ),
+        ]));
   }
 }

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/screens/login_screen.dart';
+import 'package:quomia/screens/otp_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/widgets/auth/carousel.dart';
 import 'package:quomia/widgets/common/custom_loader.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -34,11 +36,8 @@ class _SignupScreenState extends State<SignupScreen> {
       });
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Login avvenuto con successo!')),
-        );
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()));
+            MaterialPageRoute(builder: (context) => const OtpScreen()));
       }
     }
   }
@@ -64,53 +63,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      SizedBox(
-                        width: double.infinity,
-                        height: 200,
-                        child: CarouselSlider(
-                          items: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: const Image(
-                                image: AssetImage('assets/images/img_1.jpeg'),
-                                width: 200,
-                                height: 200,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: const Image(
-                                image: AssetImage('assets/images/img_2.jpeg'),
-                                width: 200,
-                                height: 200,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: const Image(
-                                image: AssetImage('assets/images/img_3.jpeg'),
-                                width: 200,
-                                height: 200,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ],
-                          carouselController: CarouselSliderController(),
-                          options: CarouselOptions(
-                            initialPage: 1,
-                            viewportFraction: 0.5,
-                            disableCenter: true,
-                            enlargeCenterPage: true,
-                            enlargeFactor: 0.25,
-                            enableInfiniteScroll: true,
-                            scrollDirection: Axis.horizontal,
-                            autoPlay: true,
-                          ),
-                        ),
-                      ),
-                      // Spacing
+                      const Carousel(),
                       const SizedBox(height: 20),
                       Form(
                           key: _formKey,
@@ -259,7 +212,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                         controlAffinity:
                                             ListTileControlAffinity.leading,
                                         activeColor: AppColors.light.secondary,
-                                        checkColor: AppColors.light.accent,
+                                        checkColor: AppColors.light.tertiary,
                                         side: BorderSide(
                                             width: 2,
                                             color: AppColors.light.primary),
@@ -360,7 +313,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                           child: Text(
                                             'Clicca qui',
                                             style: TextStyle(
-                                              color: AppColors.light.accent,
+                                              color: AppColors.light.tertiary,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),

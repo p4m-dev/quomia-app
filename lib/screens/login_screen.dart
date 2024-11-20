@@ -364,7 +364,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         controlAffinity:
                                             ListTileControlAffinity.leading,
                                         activeColor: AppColors.light.secondary,
-                                        checkColor: AppColors.light.accent,
+                                        checkColor: AppColors.light.tertiary,
                                         side: BorderSide(
                                             width: 2,
                                             color: AppColors.light.primary),
@@ -458,7 +458,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           child: Text(
                                             'Clicca qui',
                                             style: TextStyle(
-                                              color: AppColors.light.accent,
+                                              color: AppColors.light.tertiary,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),

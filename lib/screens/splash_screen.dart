@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Text('WHERE TIME MATTERS',
                   style: TextStyle(
                       fontFamily: 'Montserrat',
-                      color: AppColors.light.text,
+                      color: AppColors.light.primaryText,
                       letterSpacing: 0.0)),
             ],
           ),
