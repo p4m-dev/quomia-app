@@ -1,7 +1,7 @@
 name: quomia
 description: "A new Flutter project."
 publish_to: 'none'
-version: 0.0.2
+version: 0.0.5
 
 environment:
   sdk: ^3.5.2
