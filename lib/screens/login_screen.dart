@@ -110,7 +110,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      // Spacing
                       const SizedBox(height: 20),
                       Form(
                           key: _formKey,

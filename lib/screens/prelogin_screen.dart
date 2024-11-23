@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/screens/login_screen.dart';
 import 'package:quomia/screens/signup_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
@@ -90,7 +89,7 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                     ],
                   ),
                   GradientButton(
-                    buttonText: 'Sono già iscritto',
+                    buttonText: 'Sei già iscritto?',
                     onPress: () {
                       showModalBottomSheet(
                           backgroundColor: Colors.white,

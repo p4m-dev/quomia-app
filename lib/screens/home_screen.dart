@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quomia/screens/user_profile_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/home/box.dart';
 
@@ -11,12 +13,25 @@ class HomeScreen extends StatelessWidget {
       extendBody: true,
       backgroundColor: AppColors.light.background,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.light.primaryBackground,
         automaticallyImplyLeading: false,
-        title: const Text('quomia'),
+        leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_rounded,
+              color: AppColors.light.primaryText,
+              size: 30,
+            ),
+            onPressed: () async {
+              //context.();
+            }),
+        title: Text('Quomia',
+            style: TextStyle(
+              fontFamily: 'DM Sans',
+              color: AppColors.light.info,
+              fontSize: 28,
+            )),
         actions: [],
         centerTitle: false,
-        elevation: 2,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
@@ -29,10 +44,10 @@ class HomeScreen extends StatelessWidget {
             Icons.add,
             color: Colors.white,
           ),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             shape: BoxShape.circle,
             gradient: RadialGradient(
-              center: const Alignment(0.0, 0.0),
+              center: Alignment(0.0, 0.0),
               radius: 0.5,
               colors: [
                 Color(0xFF00BF63),
@@ -74,18 +89,23 @@ class HomeScreen extends StatelessWidget {
                 ),
                 IconButton(
                   tooltip: 'Open navigation menu',
-                  icon: const Icon(
-                    Icons.chat,
-                    color: Colors.black,
-                    size: 32,
-                  ),
+                  icon: const Icon(Icons.menu),
                   onPressed: () {},
                 ),
                 IconButton(
                   tooltip: 'Open navigation menu',
-                  icon: const Icon(Icons.menu),
-                  onPressed: () {},
-                )
+                  icon: const FaIcon(
+                    FontAwesomeIcons.user,
+                    color: Colors.black,
+                    size: 24,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const UserProfileScreen()));
+                  },
+                ),
               ])),
       body: SafeArea(
         top: true,

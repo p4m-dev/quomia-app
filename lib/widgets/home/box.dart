@@ -52,7 +52,7 @@ class _BoxState extends State<Box> {
                       ),
                     ],
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Column(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
