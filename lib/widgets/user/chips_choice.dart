@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quomia/utils/app_colors.dart';
 
 class ChoiceChips extends StatefulWidget {
   const ChoiceChips({super.key});
@@ -12,28 +13,23 @@ class _ChoiceChipsState extends State<ChoiceChips> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Flexible(
-              child: Wrap(
-                spacing: 10,
-                runSpacing: 8,
-                alignment: WrapAlignment.start,
-                children: [
-                  _buildChoiceChip('immagini'),
-                  _buildChoiceChip('Video'),
-                  _buildChoiceChip('Audio'),
-                  _buildChoiceChip('Testo'),
-                ],
-              ),
-            ),
-          ],
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Flexible(
+          child: Wrap(
+            spacing: 10,
+            runSpacing: 8,
+            alignment: WrapAlignment.start,
+            children: [
+              _buildChoiceChip('immagini'),
+              _buildChoiceChip('Video'),
+              _buildChoiceChip('Audio'),
+              _buildChoiceChip('Testo'),
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -43,20 +39,21 @@ class _ChoiceChipsState extends State<ChoiceChips> {
         label,
         style: TextStyle(
           fontFamily: 'DM Sans',
-          color: _selectedChip == label ? Colors.white : Colors.grey,
-          letterSpacing: 0.0,
+          color: _selectedChip == label
+              ? AppColors.light.primaryText
+              : AppColors.light.secondaryText,
         ),
       ),
       selected: _selectedChip == label,
-      selectedColor: Theme.of(context).colorScheme.secondary,
+      selectedColor: AppColors.light.secondary,
       onSelected: (isSelected) {
         setState(() {
           _selectedChip = isSelected ? label : null;
         });
       },
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: AppColors.light.primaryBackground,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(24),
       ),
     );
   }

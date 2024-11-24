@@ -36,145 +36,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(mainAxisSize: MainAxisSize.max, children: [
-                        Material(
-                          color: Colors.transparent,
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Container(
-                              width: double.infinity,
-                              height: 320,
-                              decoration: BoxDecoration(
-                                color: AppColors.light.primaryBackground,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const CircleAvatar(
-                                              //backgroundColor: Colors.greenAccent[400],
-                                              radius: 30,
-                                              child: Text(
-                                                'SM',
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.black),
-                                              ), //Text
-                                            ),
-                                            buildItems('Box', '78', () {
-                                              print('res');
-                                            }),
-                                            buildItems('Timers', '100', () {}),
-                                            buildItems(
-                                                'Chi segui', '20', () {}),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 10.0),
-                                        const Text(
-                                          'Samuel Maggio',
-                                          style: TextStyle(
-                                            fontFamily: 'DM Sans',
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        const Text('Piano Gratuito',
-                                            style: TextStyle(
-                                              fontFamily: 'DM Sans',
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                            )),
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        const Text(
-                                          'Sciacca, Italia',
-                                          style: TextStyle(
-                                            fontFamily: 'DM Sans',
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        const Text(
-                                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae lacus scelerisque, pharetra risus vel, aliquam lacus. ...\n',
-                                          style: TextStyle(
-                                            fontFamily: 'DM Sans',
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                    minimumSize: const Size(
-                                                        40, 40),
-                                                    backgroundColor: AppColors
-                                                        .light.tertiary,
-                                                    shadowColor:
-                                                        Colors.transparent,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        26))),
-                                                onPressed: () {
-                                                  print('Button pressed ...');
-                                                },
-                                                child: const Text(
-                                                  "Modifica profilo",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 14),
-                                                )),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                    minimumSize: const Size(
-                                                        40, 40),
-                                                    backgroundColor: AppColors
-                                                        .light.primary,
-                                                    shadowColor:
-                                                        Colors.transparent,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        26))),
-                                                onPressed: () {
-                                                  print('Button pressed ...');
-                                                },
-                                                child: const Text(
-                                                  "Passa a premium",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 14),
-                                                ))
-                                          ],
-                                        ),
-                                      ]))),
-                        ),
+                        buildTopProfile(),
                         const SizedBox(height: 10.0),
                         buildStatsRow(),
                         const SizedBox(height: 10.0),
@@ -187,6 +49,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               )),
                         ),
                         const ChoiceChips(),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
                         SizedBox(
                           height: 300,
                           child: GridView(
@@ -247,6 +112,126 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         ));
   }
 
+  Material buildTopProfile() {
+    return Material(
+      color: Colors.transparent,
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Container(
+          width: double.infinity,
+          height: 320,
+          decoration: BoxDecoration(
+            color: AppColors.light.primaryBackground,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const CircleAvatar(
+                          //backgroundColor: Colors.greenAccent[400],
+                          radius: 30,
+                          child: Text(
+                            'SM',
+                            style: TextStyle(fontSize: 20, color: Colors.black),
+                          ), //Text
+                        ),
+                        buildItems('Box', '78', () {
+                          print('res');
+                        }),
+                        buildItems('Timers', '100', () {}),
+                        buildItems('Chi segui', '20', () {}),
+                      ],
+                    ),
+                    const SizedBox(height: 10.0),
+                    const Text(
+                      'Samuel Maggio',
+                      style: TextStyle(
+                        fontFamily: 'DM Sans',
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    const Text('Piano Gratuito',
+                        style: TextStyle(
+                          fontFamily: 'DM Sans',
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    const Text(
+                      'Sciacca, Italia',
+                      style: TextStyle(
+                        fontFamily: 'DM Sans',
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    const Text(
+                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae lacus scelerisque, pharetra risus vel, aliquam lacus. ...\n',
+                      style: TextStyle(
+                        fontFamily: 'DM Sans',
+                        fontSize: 12,
+                      ),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(40, 40),
+                                backgroundColor: AppColors.light.tertiary,
+                                shadowColor: Colors.transparent,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(26))),
+                            onPressed: () {
+                              print('Button pressed ...');
+                            },
+                            child: const Text(
+                              "Modifica profilo",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
+                            )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(40, 40),
+                                backgroundColor: AppColors.light.primary,
+                                shadowColor: Colors.transparent,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(26))),
+                            onPressed: () {
+                              print('Button pressed ...');
+                            },
+                            child: const Text(
+                              "Passa a premium",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
+                            ))
+                      ],
+                    ),
+                  ]))),
+    );
+  }
+
   Widget buildItems(String title, String value, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
@@ -296,184 +281,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           )),
       actions: [],
       centerTitle: false,
-    );
-  }
-
-  Widget buildTopProfile() {
-    return Material(
-      color: Colors.transparent,
-      elevation: 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Container(
-          width: double.infinity,
-          height: 315,
-          decoration: BoxDecoration(
-            color: AppColors.light.primaryBackground,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CircleAvatar(
-                          //backgroundColor: Colors.greenAccent[400],
-                          radius: 100,
-                          child: Text(
-                            'GeeksForGeeks',
-                            style: TextStyle(fontSize: 25, color: Colors.white),
-                          ), //Text
-                        ),
-                        Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(
-                              'Box',
-                              style: TextStyle(
-                                fontFamily: 'DM Sans',
-                                fontSize: 16,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text('20',
-                                style: TextStyle(
-                                  fontFamily: 'DM Sans',
-                                  fontSize: 14,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.w300,
-                                )),
-                          ],
-                        ),
-                        const Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text('Timers',
-                                style: TextStyle(
-                                  fontFamily: 'DM Sans',
-                                  fontSize: 16,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.w600,
-                                )),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              '20',
-                              style: TextStyle(
-                                fontFamily: 'DM Sans',
-                                fontSize: 14,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text('Chi segui',
-                                style: TextStyle(
-                                  fontFamily: 'DM Sans',
-                                  fontSize: 16,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.w600,
-                                )),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              '20',
-                              style: TextStyle(
-                                fontFamily: 'DM Sans',
-                                fontSize: 14,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const Text(
-                      'Samuel Maggio',
-                      style: TextStyle(
-                        fontFamily: 'DM Sans',
-                        fontSize: 18,
-                        letterSpacing: 0.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Text('Piano Gratuito',
-                        style: TextStyle(
-                          fontFamily: 'DM Sans',
-                          fontSize: 18,
-                          letterSpacing: 0.0,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    const Text(
-                      'Sciacca, Italia',
-                      style: TextStyle(
-                        fontFamily: 'DM Sans',
-                        fontSize: 14,
-                        letterSpacing: 0.0,
-                      ),
-                    ),
-                    const Text(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae lacus scelerisque, pharetra risus vel, aliquam lacus. ...\n',
-                      style: TextStyle(
-                        fontFamily: 'DM Sans',
-                        fontSize: 12,
-                        letterSpacing: 0.0,
-                      ),
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(double.infinity, 50),
-                                backgroundColor: AppColors.light.primary,
-                                shadowColor: Colors.transparent,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(26))),
-                            onPressed: () {
-                              print('Button pressed ...');
-                            },
-                            child: const Text(
-                              "Modifica profilo",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
-                            )),
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(double.infinity, 50),
-                                backgroundColor: AppColors.light.primary,
-                                shadowColor: Colors.transparent,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(26))),
-                            onPressed: () {
-                              print('Button pressed ...');
-                            },
-                            child: const Text(
-                              "Passa a premium",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
-                            ))
-                      ],
-                    ),
-                  ]))),
     );
   }
 
