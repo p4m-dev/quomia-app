@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quomia/firebase_options.dart';
+import 'package:quomia/screens/buy_box_screen.dart';
 import 'package:quomia/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:quomia/screens/user_profile_screen.dart';
@@ -18,7 +19,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: UserProfileScreen(),
+      home: BuyBoxScreen(),
     );
   }
 }
