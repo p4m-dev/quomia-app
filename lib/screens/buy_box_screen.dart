@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/widgets/buy/creation_step.dart';
 
 class BuyBoxScreen extends StatefulWidget {
   const BuyBoxScreen({super.key});
@@ -40,7 +41,7 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
           centerTitle: false,
         ),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(0.0),
           child: Stepper(
             type: StepperType.horizontal,
             currentStep: _currentStep,
@@ -48,7 +49,7 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
               _buildCustomStep(0, 'Introduzione', _buildIntroStep()),
               _buildCustomStep(1, 'Tipologia', _buildBoxTypeStep()),
               _buildCustomStep(2, 'Categoria', _categoryStep()),
-              _buildCustomStep(3, 'Creazione', _categoryStep()),
+              _buildCustomStep(3, 'Creazione', const CreationStep()),
             ],
             onStepTapped: (int step) {
               setState(() {
