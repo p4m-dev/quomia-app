@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:quomia/designSystem/separator.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/buy/user_bottomsheet.dart';
 
@@ -25,9 +27,9 @@ class _CreationStepState extends State<CreationStep> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _title('Creazione Box'),
-          _divider(10.0, 0.0),
+          const Separator(height: 10.0),
           _subtitle('Inserisci i dati necessari'),
-          _divider(10.0, 0.0),
+          const Separator(height: 10.0),
           Container(
             width: double.infinity,
             height: 474,
@@ -46,20 +48,50 @@ class _CreationStepState extends State<CreationStep> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _label('A chi desideri inviarlo?'),
-                          _divider(10.0, 0.0),
-                          _textFormField(double.infinity, _userController,
-                              'Nome utente', true, null, null, true, true),
-                          _divider(10.0, 0.0),
+                          const Separator(height: 10.0),
+                          _textFormField(
+                              double.infinity,
+                              _userController,
+                              'Nome utente',
+                              true,
+                              null,
+                              null,
+                              true,
+                              true,
+                              TextInputType.text, () {
+                            print('test');
+                            print(_userBottomSheetKey.currentState);
+                            _userBottomSheetKey.currentState?.openBottomSheet();
+                          }),
+                          const Separator(height: 10.0),
                           _label('Inserisci un titolo'),
-                          _divider(10.0, 0.0),
-                          _textFormField(double.infinity, _titleController,
-                              'Titolo', null, null, null, null, false),
-                          _divider(10.0, 0.0),
+                          const Separator(height: 10.0),
+                          _textFormField(
+                              double.infinity,
+                              _titleController,
+                              'Titolo',
+                              null,
+                              null,
+                              null,
+                              null,
+                              false,
+                              TextInputType.text,
+                              null),
+                          const Separator(height: 10.0),
                           _label('Contenuto del messaggio'),
-                          _divider(10.0, 0.0),
-                          _textFormField(double.infinity, _contentController,
-                              'Messaggio', null, null, null, null, false),
-                          _divider(10.0, 0.0),
+                          const Separator(height: 10.0),
+                          _textFormField(
+                              double.infinity,
+                              _contentController,
+                              'Messaggio',
+                              null,
+                              null,
+                              null,
+                              null,
+                              false,
+                              TextInputType.multiline,
+                              null),
+                          const Separator(height: 10.0),
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -69,35 +101,48 @@ class _CreationStepState extends State<CreationStep> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   _label('Data'),
-                                  _divider(10.0, 0.0),
-                                  _textFormField(155, _dateController, 'Data',
-                                      null, true, Icons.date_range, null, false)
+                                  const Separator(height: 10.0),
+                                  _textFormField(
+                                      155,
+                                      _dateController,
+                                      'Data',
+                                      null,
+                                      true,
+                                      Icons.date_range,
+                                      null,
+                                      true,
+                                      TextInputType.datetime, () {
+                                    _selectDate(context);
+                                  })
                                 ],
                               ),
-                              _divider(0.0, 10.0),
+                              const Separator(width: 10.0),
                               Column(
                                 mainAxisSize: MainAxisSize.max,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   _label('Tempo'),
-                                  _divider(10.0, 0.0),
+                                  const Separator(height: 10.0),
                                   _textFormField(
                                       155,
                                       _timeController,
                                       'Tempo',
                                       null,
                                       true,
-                                      Icons.time_to_leave,
+                                      Icons.timelapse,
                                       null,
-                                      false)
+                                      true,
+                                      TextInputType.datetime, () {
+                                    _selectTime(context);
+                                  })
                                 ],
                               ),
                             ],
                           ),
-                          _divider(10.0, 0.0),
+                          const Separator(height: 10.0),
                           _label(
                               'Vuoi rivelare la tua identità alla persona cara?'),
-                          _divider(10.0, 0.0),
+                          const Separator(height: 10.0),
                           ListTileTheme(
                             horizontalTitleGap: 0.0,
                             child: CheckboxListTile(
@@ -116,15 +161,16 @@ class _CreationStepState extends State<CreationStep> {
                                   });
                                 }),
                           ),
-                          _divider(10.0, 0.0),
+                          const Separator(height: 10.0),
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               _button(
                                   AppColors.light.tertiary, 'Annulla', () {}),
-                              _divider(0.0, 10.0),
-                              _button(
-                                  AppColors.light.primary, 'Sigilla', () {}),
+                              const Separator(height: 10.0),
+                              _button(AppColors.light.primary, 'Sigilla', () {
+                                print('test');
+                              }),
                             ],
                           ),
                         ]),
@@ -134,6 +180,16 @@ class _CreationStepState extends State<CreationStep> {
             ),
           ),
         ]);
+  }
+
+  @override
+  void dispose() {
+    _userController.dispose();
+    _titleController.dispose();
+    _contentController.dispose();
+    _dateController.dispose();
+    _timeController.dispose();
+    super.dispose();
   }
 
   Text _title(String data) {
@@ -156,10 +212,6 @@ class _CreationStepState extends State<CreationStep> {
             color: AppColors.light.secondaryText));
   }
 
-  SizedBox _divider(double? height, double? width) {
-    return SizedBox(height: height, width: width);
-  }
-
   Widget _textFormField(
       double width,
       TextEditingController controller,
@@ -168,7 +220,9 @@ class _CreationStepState extends State<CreationStep> {
       bool? hasPrefixIcon,
       IconData? prefixIcon,
       bool? readOnly,
-      bool hasOnTap) {
+      bool? hasOnTap,
+      TextInputType textInput,
+      VoidCallback? callback) {
     var outlineBorder = OutlineInputBorder(
       borderSide: const BorderSide(
         color: Color(0x00000000),
@@ -180,53 +234,49 @@ class _CreationStepState extends State<CreationStep> {
     return SizedBox(
       width: width,
       child: TextFormField(
-        controller: controller,
-        autofocus: false,
-        obscureText: false,
-        decoration: InputDecoration(
-          isDense: true,
-          hintText: hintText,
-          hintStyle: const TextStyle(fontFamily: 'DM Sans'),
-          enabledBorder: outlineBorder,
-          focusedBorder: outlineBorder,
-          errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: AppColors.light.error,
-              width: 1,
+          controller: controller,
+          autofocus: false,
+          obscureText: false,
+          decoration: InputDecoration(
+            isDense: true,
+            hintText: hintText,
+            hintStyle: const TextStyle(fontFamily: 'DM Sans'),
+            enabledBorder: outlineBorder,
+            focusedBorder: outlineBorder,
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: AppColors.light.error,
+                width: 1,
+              ),
+              borderRadius: BorderRadius.circular(24),
             ),
-            borderRadius: BorderRadius.circular(24),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: AppColors.light.error,
-              width: 1,
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: AppColors.light.error,
+                width: 1,
+              ),
+              borderRadius: BorderRadius.circular(24),
             ),
-            borderRadius: BorderRadius.circular(24),
+            filled: true,
+            fillColor: AppColors.light.background,
+            prefixIcon: hasPrefixIcon != null
+                ? Icon(
+                    prefixIcon,
+                  )
+                : null,
+            suffixIcon: suffixIcon != null && suffixIcon
+                ? const Icon(
+                    Icons.search_sharp,
+                  )
+                : null,
           ),
-          filled: true,
-          fillColor: AppColors.light.background,
-          prefixIcon: hasPrefixIcon != null
-              ? Icon(
-                  prefixIcon,
-                )
-              : null,
-          suffixIcon: suffixIcon != null
-              ? const Icon(
-                  Icons.search_sharp,
-                )
-              : null,
-        ),
-        readOnly: readOnly != null ? true : false,
-        style: const TextStyle(fontFamily: 'DM Sans', fontSize: 14),
-        cursorColor: AppColors.light.primaryText,
-        onTap: hasOnTap
-            ? () {
-                print('test');
-                print(_userBottomSheetKey.currentState);
-                _userBottomSheetKey.currentState?.openBottomSheet();
-              }
-            : null,
-      ),
+          readOnly: readOnly != null ? true : false,
+          style: const TextStyle(fontFamily: 'DM Sans', fontSize: 14),
+          cursorColor: AppColors.light.primaryText,
+          onTap: hasOnTap != null && hasOnTap ? callback : null,
+          keyboardType: textInput,
+          maxLines: textInput == TextInputType.multiline ? 8 : null,
+          maxLength: textInput == TextInputType.multiline ? 1000 : null),
     );
   }
 
@@ -246,5 +296,56 @@ class _CreationStepState extends State<CreationStep> {
           label,
           style: const TextStyle(color: Colors.white, fontSize: 18),
         ));
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? selectedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1970, 1, 1),
+        lastDate: DateTime(2150, 1, 1),
+        confirmText: 'Conferma',
+        cancelText: 'Annulla',
+        builder: (context, child) {
+          return Theme(
+              data: ThemeData(
+                  colorScheme: ColorScheme.light(
+                      primary: AppColors.light.primary,
+                      onPrimary: AppColors.light.primaryBackground,
+                      onSurface: AppColors.light.primaryText),
+                  dialogBackgroundColor: AppColors.light.background),
+              child: child!);
+        });
+
+    if (selectedDate != null) {
+      setState(() {
+        _dateController.text = DateFormat('dd/MM/yyyy').format(selectedDate);
+      });
+    }
+  }
+
+  Future<void> _selectTime(BuildContext context) async {
+    TimeOfDay? selectedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      confirmText: 'Conferma',
+      cancelText: 'Annulla',
+      builder: (context, child) {
+        return Theme(
+            data: ThemeData(
+                colorScheme: ColorScheme.light(
+                    primary: AppColors.light.primary,
+                    onPrimary: AppColors.light.primaryBackground,
+                    onSurface: AppColors.light.primaryText),
+                dialogBackgroundColor: AppColors.light.background),
+            child: child!);
+      },
+    );
+
+    if (selectedTime != null) {
+      setState(() {
+        _timeController.text = selectedTime.format(context);
+      });
+    }
   }
 }

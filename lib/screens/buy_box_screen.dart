@@ -1,7 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quomia/designSystem/step_progress_view.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/buy/creation_step.dart';
 
@@ -13,9 +12,16 @@ class BuyBoxScreen extends StatefulWidget {
 }
 
 class _BuyBoxScreenState extends State<BuyBoxScreen> {
-  int _currentStep = 0;
+  int _currentStep = 1;
   String _boxType = '';
   String _boxCategory = '';
+  final List<String> titles = [
+    'Intro',
+    'Tipo',
+    'Categoria',
+    'Creazione',
+    'Tempo'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -42,44 +48,91 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(0.0),
-          child: Stepper(
-            type: StepperType.horizontal,
-            currentStep: _currentStep,
-            steps: [
-              _buildCustomStep(0, 'Introduzione', _buildIntroStep()),
-              _buildCustomStep(1, 'Tipologia', _buildBoxTypeStep()),
-              _buildCustomStep(2, 'Categoria', _categoryStep()),
-              _buildCustomStep(3, 'Creazione', const CreationStep()),
-            ],
-            onStepTapped: (int step) {
-              setState(() {
-                _currentStep = step;
-              });
-            },
-            onStepContinue: () {
-              setState(() {
-                _currentStep += 1;
-              });
-            },
-            onStepCancel: () {
-              setState(() {
-                _currentStep -= 1;
-              });
-            },
-            controlsBuilder: (BuildContext context, ControlsDetails details) {
-              return Row(
+          child: Column(
+            children: [
+              StepProgressView(
+                  titles: titles,
+                  width: MediaQuery.of(context).size.width,
+                  currentStep: _currentStep),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   TextButton(
-                    onPressed: details.onStepContinue,
-                    child: const Text('Avanti'),
-                  ),
-                  TextButton(
-                    onPressed: details.onStepCancel,
+                    onPressed: _currentStep > 1
+                        ? () {
+                            setState(() {
+                              _currentStep--;
+                            });
+                          }
+                        : null,
+                    style: TextButton.styleFrom(
+                        foregroundColor: AppColors.light.primary),
                     child: const Text('Indietro'),
                   ),
+                  TextButton(
+                      onPressed: _currentStep < titles.length
+                          ? () {
+                              setState(() {
+                                _currentStep++;
+                              });
+                            }
+                          : null,
+                      style: TextButton.styleFrom(
+                          foregroundColor: AppColors.light.primary),
+                      child: const Text('Avanti')),
                 ],
-              );
-            },
+              ),
+              // Stepper(
+              //   type: StepperType.horizontal,
+              //   currentStep: _currentStep,
+              //   physics: const ClampingScrollPhysics(),
+              //   steps: [
+              //     _buildCustomStep(0, 'Introduzione', _buildIntroStep()),
+              //     _buildCustomStep(1, 'Tipologia', _buildBoxTypeStep()),
+              //     _buildCustomStep(2, 'Categoria', _categoryStep()),
+              //     _buildCustomStep(3, 'Creazione', const CreationStep()),
+              //   ],
+              //   onStepTapped: (int step) {
+              //     setState(() {
+              //       _currentStep = step;
+              //     });
+              //   },
+              //   onStepContinue: () {
+              //     setState(() {
+              //       _currentStep += 1;
+              //     });
+              //   },
+              //   onStepCancel: () {
+              //     setState(() {
+              //       _currentStep -= 1;
+              //     });
+              //   },
+              //   controlsBuilder:
+              //       (BuildContext context, ControlsDetails details) {
+              //     return Row(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         TextButton(
+              //           onPressed: details.onStepContinue,
+              //           child: Text(
+              //             'Avanti',
+              //             style: TextStyle(
+              //                 fontFamily: 'DM Sans',
+              //                 color: AppColors.light.primary),
+              //           ),
+              //         ),
+              //         TextButton(
+              //           onPressed: details.onStepCancel,
+              //           child: Text('Indietro',
+              //               style: TextStyle(
+              //                   fontFamily: 'DM Sans',
+              //                   color: AppColors.light.primary)),
+              //         ),
+              //       ],
+              //     );
+              //   },
+              // ),
+            ],
           ),
         ));
   }
