@@ -54,6 +54,10 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
                   titles: titles,
                   width: MediaQuery.of(context).size.width,
                   currentStep: _currentStep),
+              _currentStep == 1 ? _buildIntroStep() : const SizedBox(),
+              _currentStep == 2 ? _buildBoxTypeStep() : const SizedBox(),
+              _currentStep == 3 ? _categoryStep() : const SizedBox(),
+              _currentStep == 4 ? const CreationStep() : const SizedBox(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -166,47 +170,53 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
   }
 
   Widget _buildIntroStep() {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _title('Introduzione'),
-        _subtitle(
-            'Scopri le potenzialità di Quomia attraverso questo video introduttivo.'),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _title('Introduzione'),
+          _subtitle(
+              'Scopri le potenzialità di Quomia attraverso questo video introduttivo.'),
+        ],
+      ),
     );
   }
 
   Widget _buildBoxTypeStep() {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _title('Tipologia Box'),
-        const SizedBox(
-          height: 5.0,
-        ),
-        _subtitle('Scegli il box che più ti si addice'),
-        const SizedBox(
-          height: 10.0,
-        ),
-        _boxTypeCard(
-            'Future',
-            'Condividi un momento nel futuro con la persona cara.',
-            'https://picsum.photos/seed/37/600'),
-        const SizedBox(
-          height: 10.0,
-        ),
-        _boxTypeCard(
-            'Rewind',
-            'Condividi un momento del passato con la persona cara.',
-            'https://picsum.photos/seed/37/600'),
-        const SizedBox(
-          height: 10.0,
-        ),
-        _boxTypeCard('Message in a bottle', 'Rendi virale il tuo box.',
-            'https://picsum.photos/seed/37/600')
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _title('Tipologia Box'),
+          const SizedBox(
+            height: 5.0,
+          ),
+          _subtitle('Scegli il box che più ti si addice'),
+          const SizedBox(
+            height: 10.0,
+          ),
+          _boxTypeCard(
+              'Future',
+              'Condividi un momento nel futuro con la persona cara.',
+              'https://picsum.photos/seed/37/600'),
+          const SizedBox(
+            height: 10.0,
+          ),
+          _boxTypeCard(
+              'Rewind',
+              'Condividi un momento del passato con la persona cara.',
+              'https://picsum.photos/seed/37/600'),
+          const SizedBox(
+            height: 10.0,
+          ),
+          _boxTypeCard('Message in a bottle', 'Rendi virale il tuo box.',
+              'https://picsum.photos/seed/37/600')
+        ],
+      ),
     );
   }
 
@@ -274,7 +284,6 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
         onTap: () {
           setState(() {
             _boxType = title.toLowerCase();
-            _currentStep += 1;
           });
         },
       ),

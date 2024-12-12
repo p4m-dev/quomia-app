@@ -22,164 +22,168 @@ class _CreationStepState extends State<CreationStep> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _title('Creazione Box'),
-          const Separator(height: 10.0),
-          _subtitle('Inserisci i dati necessari'),
-          const Separator(height: 10.0),
-          Container(
-            width: double.infinity,
-            height: 474,
-            decoration: BoxDecoration(
-              color: AppColors.light.primaryBackground,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(15, 20, 15, 20),
-              child: Stack(children: [
-                SafeArea(
-                  top: true,
-                  child: SingleChildScrollView(
-                    child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _label('A chi desideri inviarlo?'),
-                          const Separator(height: 10.0),
-                          _textFormField(
-                              double.infinity,
-                              _userController,
-                              'Nome utente',
-                              true,
-                              null,
-                              null,
-                              true,
-                              true,
-                              TextInputType.text, () {
-                            print('test');
-                            print(_userBottomSheetKey.currentState);
-                            _userBottomSheetKey.currentState?.openBottomSheet();
-                          }),
-                          const Separator(height: 10.0),
-                          _label('Inserisci un titolo'),
-                          const Separator(height: 10.0),
-                          _textFormField(
-                              double.infinity,
-                              _titleController,
-                              'Titolo',
-                              null,
-                              null,
-                              null,
-                              null,
-                              false,
-                              TextInputType.text,
-                              null),
-                          const Separator(height: 10.0),
-                          _label('Contenuto del messaggio'),
-                          const Separator(height: 10.0),
-                          _textFormField(
-                              double.infinity,
-                              _contentController,
-                              'Messaggio',
-                              null,
-                              null,
-                              null,
-                              null,
-                              false,
-                              TextInputType.multiline,
-                              null),
-                          const Separator(height: 10.0),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Column(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _label('Data'),
-                                  const Separator(height: 10.0),
-                                  _textFormField(
-                                      155,
-                                      _dateController,
-                                      'Data',
-                                      null,
-                                      true,
-                                      Icons.date_range,
-                                      null,
-                                      true,
-                                      TextInputType.datetime, () {
-                                    _selectDate(context);
-                                  })
-                                ],
-                              ),
-                              const Separator(width: 10.0),
-                              Column(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _label('Tempo'),
-                                  const Separator(height: 10.0),
-                                  _textFormField(
-                                      155,
-                                      _timeController,
-                                      'Tempo',
-                                      null,
-                                      true,
-                                      Icons.timelapse,
-                                      null,
-                                      true,
-                                      TextInputType.datetime, () {
-                                    _selectTime(context);
-                                  })
-                                ],
-                              ),
-                            ],
-                          ),
-                          const Separator(height: 10.0),
-                          _label(
-                              'Vuoi rivelare la tua identità alla persona cara?'),
-                          const Separator(height: 10.0),
-                          ListTileTheme(
-                            horizontalTitleGap: 0.0,
-                            child: CheckboxListTile(
-                                value: _isAnonymousEnabled,
-                                title: const Text("Anonimo"),
-                                contentPadding: EdgeInsets.zero,
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                                activeColor: AppColors.light.secondary,
-                                checkColor: AppColors.light.tertiary,
-                                side: BorderSide(
-                                    width: 2, color: AppColors.light.primary),
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    _isAnonymousEnabled = newValue;
-                                  });
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _title('Creazione Box'),
+            const Separator(height: 10.0),
+            _subtitle('Inserisci i dati necessari'),
+            const Separator(height: 10.0),
+            Container(
+              width: double.infinity,
+              height: 474,
+              decoration: BoxDecoration(
+                color: AppColors.light.primaryBackground,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(15, 20, 15, 20),
+                child: Stack(children: [
+                  SafeArea(
+                    top: true,
+                    child: SingleChildScrollView(
+                      child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _label('A chi desideri inviarlo?'),
+                            const Separator(height: 10.0),
+                            _textFormField(
+                                double.infinity,
+                                _userController,
+                                'Nome utente',
+                                true,
+                                null,
+                                null,
+                                true,
+                                true,
+                                TextInputType.text, () {
+                              print('test');
+                              print(_userBottomSheetKey.currentState);
+                              _userBottomSheetKey.currentState
+                                  ?.openBottomSheet();
+                            }),
+                            const Separator(height: 10.0),
+                            _label('Inserisci un titolo'),
+                            const Separator(height: 10.0),
+                            _textFormField(
+                                double.infinity,
+                                _titleController,
+                                'Titolo',
+                                null,
+                                null,
+                                null,
+                                null,
+                                false,
+                                TextInputType.text,
+                                null),
+                            const Separator(height: 10.0),
+                            _label('Contenuto del messaggio'),
+                            const Separator(height: 10.0),
+                            _textFormField(
+                                double.infinity,
+                                _contentController,
+                                'Messaggio',
+                                null,
+                                null,
+                                null,
+                                null,
+                                false,
+                                TextInputType.multiline,
+                                null),
+                            const Separator(height: 10.0),
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _label('Data'),
+                                    const Separator(height: 10.0),
+                                    _textFormField(
+                                        155,
+                                        _dateController,
+                                        'Data',
+                                        null,
+                                        true,
+                                        Icons.date_range,
+                                        null,
+                                        true,
+                                        TextInputType.datetime, () {
+                                      _selectDate(context);
+                                    })
+                                  ],
+                                ),
+                                const Separator(width: 10.0),
+                                Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _label('Tempo'),
+                                    const Separator(height: 10.0),
+                                    _textFormField(
+                                        155,
+                                        _timeController,
+                                        'Tempo',
+                                        null,
+                                        true,
+                                        Icons.timelapse,
+                                        null,
+                                        true,
+                                        TextInputType.datetime, () {
+                                      _selectTime(context);
+                                    })
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const Separator(height: 10.0),
+                            _label(
+                                'Vuoi rivelare la tua identità alla persona cara?'),
+                            const Separator(height: 10.0),
+                            ListTileTheme(
+                              horizontalTitleGap: 0.0,
+                              child: CheckboxListTile(
+                                  value: _isAnonymousEnabled,
+                                  title: const Text("Anonimo"),
+                                  contentPadding: EdgeInsets.zero,
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  activeColor: AppColors.light.secondary,
+                                  checkColor: AppColors.light.tertiary,
+                                  side: BorderSide(
+                                      width: 2, color: AppColors.light.primary),
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      _isAnonymousEnabled = newValue;
+                                    });
+                                  }),
+                            ),
+                            const Separator(height: 10.0),
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                _button(
+                                    AppColors.light.tertiary, 'Annulla', () {}),
+                                const Separator(height: 10.0),
+                                _button(AppColors.light.primary, 'Sigilla', () {
+                                  print('test');
                                 }),
-                          ),
-                          const Separator(height: 10.0),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              _button(
-                                  AppColors.light.tertiary, 'Annulla', () {}),
-                              const Separator(height: 10.0),
-                              _button(AppColors.light.primary, 'Sigilla', () {
-                                print('test');
-                              }),
-                            ],
-                          ),
-                        ]),
+                              ],
+                            ),
+                          ]),
+                    ),
                   ),
-                ),
-              ]),
+                ]),
+              ),
             ),
-          ),
-        ]);
+          ]),
+    );
   }
 
   @override

@@ -24,7 +24,7 @@ class StepProgressView extends StatelessWidget {
           child: Container(
             width: width,
             decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                borderRadius: const BorderRadius.all(Radius.circular(32.0)),
                 color: AppColors.light.primaryBackground),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
