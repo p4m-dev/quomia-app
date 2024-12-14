@@ -5,7 +5,7 @@ class StepProgressView extends StatelessWidget {
   final double width;
   final List<String> titles;
   final int currentStep;
-  final Color _activeColor = AppColors.light.secondary;
+  final Color _activeColor = AppColors.light.tertiary;
   final Color _inactiveColor = AppColors.light.background;
   final double lineWidth = 3.0;
 

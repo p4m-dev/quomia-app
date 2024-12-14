@@ -4,6 +4,7 @@ import 'package:quomia/screens/buy_box_screen.dart';
 import 'package:quomia/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:quomia/screens/user_profile_screen.dart';
+import 'package:quomia/utils/app_colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,8 +19,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: BuyBoxScreen(),
+    return MaterialApp(
+      theme: ThemeData(
+          fontFamily: 'DM Sans', primaryColor: AppColors.light.primary),
+      home: const BuyBoxScreen(),
     );
   }
 }

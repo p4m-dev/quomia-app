@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:quomia/designSystem/separator.dart';
+import 'package:quomia/models/box_helper.dart';
+import 'package:quomia/models/box_type.dart';
 import 'package:quomia/utils/app_colors.dart';
-import 'package:quomia/widgets/buy/user_bottomsheet.dart';
+import 'package:quomia/widgets/box/user_bottomsheet.dart';
 
-class CreationStep extends StatefulWidget {
-  const CreationStep({super.key});
+class FormStep extends StatefulWidget {
+  final BoxHelper boxHelper;
+
+  const FormStep({super.key, required this.boxHelper});
 
   @override
-  State<CreationStep> createState() => _CreationStepState();
+  State<FormStep> createState() => _FormStepState();
 }
 
-class _CreationStepState extends State<CreationStep> {
+class _FormStepState extends State<FormStep> {
   final TextEditingController _userController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
@@ -49,23 +53,8 @@ class _CreationStepState extends State<CreationStep> {
                           mainAxisSize: MainAxisSize.max,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _label('A chi desideri inviarlo?'),
-                            const Separator(height: 10.0),
-                            _textFormField(
-                                double.infinity,
-                                _userController,
-                                'Nome utente',
-                                true,
-                                null,
-                                null,
-                                true,
-                                true,
-                                TextInputType.text, () {
-                              print('test');
-                              print(_userBottomSheetKey.currentState);
-                              _userBottomSheetKey.currentState
-                                  ?.openBottomSheet();
-                            }),
+                            // make it conditional based on what user has chosen in step 1.
+                            _renderUserTextField(),
                             const Separator(height: 10.0),
                             _label('Inserisci un titolo'),
                             const Separator(height: 10.0),
@@ -214,6 +203,25 @@ class _CreationStepState extends State<CreationStep> {
             fontFamily: 'DM Sans',
             fontSize: 16,
             color: AppColors.light.secondaryText));
+  }
+
+  Column _renderUserTextField() {
+    return widget.boxHelper.boxType != BoxType.messageInABottle
+        ? Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _label('A chi desideri inviarlo?'),
+              const Separator(height: 10.0),
+              _textFormField(double.infinity, _userController, 'Nome utente',
+                  true, null, null, true, true, TextInputType.text, () {
+                print('test');
+                print(_userBottomSheetKey.currentState);
+                _userBottomSheetKey.currentState?.openBottomSheet();
+              })
+            ],
+          )
+        : const Column();
   }
 
   Widget _textFormField(

@@ -1,1 +1,1 @@
-enum BoxType { image, video, audio }
+enum BoxType { messageInABottle, future, rewind }
