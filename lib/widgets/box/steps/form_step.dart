@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:quomia/designSystem/file_input_field.dart';
 import 'package:quomia/designSystem/separator.dart';
 import 'package:quomia/models/box_helper.dart';
 import 'package:quomia/models/box_type.dart';
@@ -83,6 +84,7 @@ class _FormStepState extends State<FormStep> {
                                 false,
                                 TextInputType.multiline,
                                 null),
+                            FileInputField(),
                             const Separator(height: 10.0),
                             Row(
                               mainAxisSize: MainAxisSize.max,

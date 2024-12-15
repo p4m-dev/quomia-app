@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quomia/designSystem/separator.dart';
 import 'package:quomia/designSystem/subtitle.dart';
 import 'package:quomia/designSystem/title.dart';
 import 'package:quomia/models/box_helper.dart';
@@ -101,7 +102,7 @@ class _BoxTypeStepState extends State<BoxTypeStep> {
             gradient: LinearGradient(
               colors: [
                 AppColors.light.primaryBackground,
-                AppColors.light.secondary
+                AppColors.light.secondary,
               ],
               stops: const [0, 1],
               begin: const AlignmentDirectional(-1, 0),
@@ -115,33 +116,47 @@ class _BoxTypeStepState extends State<BoxTypeStep> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title,
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
                         style: const TextStyle(
-                            fontFamily: 'DM Sans',
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600)),
-                    Text(caption,
-                        style: const TextStyle(
-                            fontFamily: 'DM Sans', fontSize: 12)),
-                  ],
-                ),
-                Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image.network(
-                        imagePath,
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
+                          fontFamily: 'DM Sans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
+                      const Separator(
+                        height: 8.0,
+                      ),
+                      Text(
+                        caption,
+                        style: const TextStyle(
+                          fontFamily: 'DM Sans',
+                          fontSize: 12,
+                        ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                const Separator(
+                  width: 16.0,
+                ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.network(
+                    imagePath,
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ],
             ),
