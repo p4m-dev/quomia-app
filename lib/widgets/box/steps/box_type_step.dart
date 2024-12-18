@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:quomia/designSystem/separator.dart';
+import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/subtitle.dart';
 import 'package:quomia/designSystem/title.dart';
 import 'package:quomia/models/box_helper.dart';
 import 'package:quomia/models/box_type.dart';
-import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/widgets/box/card/box_card.dart';
 
 class BoxTypeStep extends StatefulWidget {
   final BoxHelper boxHelper;
@@ -44,29 +44,47 @@ class _BoxTypeStepState extends State<BoxTypeStep> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const CustomTitle(data: 'Tipologia Box'),
-          const SizedBox(
+          const Gap(
             height: 5.0,
           ),
           const Subtitle(data: 'Scegli il box che più ti si addice'),
-          const SizedBox(
+          const Gap(
             height: 10.0,
           ),
-          _boxTypeCard(
-              widget.future,
-              'Condividi un momento nel futuro con la persona cara.',
-              'https://picsum.photos/seed/37/600'),
-          const SizedBox(
+          BoxCard(
+            title: widget.future,
+            caption: 'Condividi un momento nel futuro con la persona cara.',
+            imagePath: 'https://picsum.photos/seed/37/600',
+            callback: () {
+              setState(() {
+                widget.boxHelper.boxType = _convert(widget.future);
+              });
+            },
+          ),
+          const Gap(
             height: 10.0,
           ),
-          _boxTypeCard(
-              widget.rewind,
-              'Condividi un momento del passato con la persona cara.',
-              'https://picsum.photos/seed/37/600'),
-          const SizedBox(
+          BoxCard(
+              title: widget.rewind,
+              caption: 'Condividi un momento del passato con la persona cara.',
+              imagePath: 'https://picsum.photos/seed/37/600',
+              callback: () {
+                setState(() {
+                  widget.boxHelper.boxType = _convert(widget.rewind);
+                });
+              }),
+          const Gap(
             height: 10.0,
           ),
-          _boxTypeCard(widget.messageInABottle, 'Rendi virale il tuo box.',
-              'https://picsum.photos/seed/37/600')
+          BoxCard(
+              title: widget.messageInABottle,
+              caption: 'Rendi virale il tuo box.',
+              imagePath: 'https://picsum.photos/seed/37/600',
+              callback: () {
+                setState(() {
+                  widget.boxHelper.boxType = _convert(widget.messageInABottle);
+                });
+              })
         ],
       ),
     );
@@ -85,89 +103,5 @@ class _BoxTypeStepState extends State<BoxTypeStep> {
     }
 
     return boxType;
-  }
-
-  Widget _boxTypeCard(String title, String caption, String imagePath) {
-    return Material(
-      color: Colors.transparent,
-      elevation: 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: InkWell(
-        child: Container(
-          width: double.infinity,
-          height: 130,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                AppColors.light.primaryBackground,
-                AppColors.light.secondary,
-              ],
-              stops: const [0, 1],
-              begin: const AlignmentDirectional(-1, 0),
-              end: const AlignmentDirectional(1, 0),
-            ),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          fontFamily: 'DM Sans',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const Separator(
-                        height: 8.0,
-                      ),
-                      Text(
-                        caption,
-                        style: const TextStyle(
-                          fontFamily: 'DM Sans',
-                          fontSize: 12,
-                        ),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-                const Separator(
-                  width: 16.0,
-                ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Image.network(
-                    imagePath,
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        onTap: () {
-          setState(() {
-            widget.boxHelper.boxType = _convert(title.toLowerCase());
-          });
-        },
-      ),
-    );
   }
 }

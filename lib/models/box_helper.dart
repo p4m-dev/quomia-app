@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:quomia/models/category.dart';
 import 'package:quomia/models/box_type.dart';
@@ -32,6 +34,9 @@ class BoxHelper {
   }
 
   Category? get category => _category.value;
+
+  // File
+  File get file => file;
 
   void reset() {
     _boxType.value = null;

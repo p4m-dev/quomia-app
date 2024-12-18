@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:quomia/designSystem/button.dart';
 import 'package:quomia/designSystem/file_input_field.dart';
-import 'package:quomia/designSystem/separator.dart';
+import 'package:quomia/designSystem/gap.dart';
+import 'package:quomia/designSystem/label.dart';
+import 'package:quomia/designSystem/subtitle.dart';
+import 'package:quomia/designSystem/text_form_field.dart';
+import 'package:quomia/designSystem/title.dart';
 import 'package:quomia/models/box_helper.dart';
 import 'package:quomia/models/box_type.dart';
 import 'package:quomia/utils/app_colors.dart';
@@ -9,8 +14,10 @@ import 'package:quomia/widgets/box/user_bottomsheet.dart';
 
 class FormStep extends StatefulWidget {
   final BoxHelper boxHelper;
+  final GlobalKey<UserBottomSheetState> userBottomSheetKey;
 
-  const FormStep({super.key, required this.boxHelper});
+  const FormStep(
+      {super.key, required this.boxHelper, required this.userBottomSheetKey});
 
   @override
   State<FormStep> createState() => _FormStepState();
@@ -22,7 +29,6 @@ class _FormStepState extends State<FormStep> {
   final TextEditingController _contentController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
-  final GlobalKey<UserBottomSheetState> _userBottomSheetKey = GlobalKey();
   bool? _isAnonymousEnabled = false;
 
   @override
@@ -33,10 +39,10 @@ class _FormStepState extends State<FormStep> {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _title('Creazione Box'),
-            const Separator(height: 10.0),
-            _subtitle('Inserisci i dati necessari'),
-            const Separator(height: 10.0),
+            const CustomTitle(data: 'Creazione Box'),
+            const Gap(height: 10.0),
+            const Subtitle(data: 'Inserisci i dati necessari'),
+            const Gap(height: 10.0),
             Container(
               width: double.infinity,
               height: 474,
@@ -56,36 +62,27 @@ class _FormStepState extends State<FormStep> {
                           children: [
                             // make it conditional based on what user has chosen in step 1.
                             _renderUserTextField(),
-                            const Separator(height: 10.0),
-                            _label('Inserisci un titolo'),
-                            const Separator(height: 10.0),
-                            _textFormField(
-                                double.infinity,
-                                _titleController,
-                                'Titolo',
-                                null,
-                                null,
-                                null,
-                                null,
-                                false,
-                                TextInputType.text,
-                                null),
-                            const Separator(height: 10.0),
-                            _label('Contenuto del messaggio'),
-                            const Separator(height: 10.0),
-                            _textFormField(
-                                double.infinity,
-                                _contentController,
-                                'Messaggio',
-                                null,
-                                null,
-                                null,
-                                null,
-                                false,
-                                TextInputType.multiline,
-                                null),
-                            FileInputField(),
-                            const Separator(height: 10.0),
+                            const Gap(height: 10.0),
+                            const Label(data: 'Inserisci un titolo'),
+                            const Gap(height: 10.0),
+                            CustomTextFormField(
+                                width: double.infinity,
+                                controller: _titleController,
+                                hintText: 'Titolo',
+                                hasOnTap: true,
+                                textInput: TextInputType.text),
+                            const Gap(height: 10.0),
+                            const Label(data: 'Contenuto del messaggio'),
+                            const Gap(height: 10.0),
+                            CustomTextFormField(
+                                width: double.infinity,
+                                controller: _contentController,
+                                hintText: 'Messaggio',
+                                textInput: TextInputType.multiline),
+                            FileInputField(
+                              boxHelper: widget.boxHelper,
+                            ),
+                            const Gap(height: 10.0),
                             Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -94,49 +91,50 @@ class _FormStepState extends State<FormStep> {
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    _label('Data'),
-                                    const Separator(height: 10.0),
-                                    _textFormField(
-                                        155,
-                                        _dateController,
-                                        'Data',
-                                        null,
-                                        true,
-                                        Icons.date_range,
-                                        null,
-                                        true,
-                                        TextInputType.datetime, () {
-                                      _selectDate(context);
-                                    })
+                                    const Label(data: 'Data'),
+                                    const Gap(height: 10.0),
+                                    CustomTextFormField(
+                                      width: 155,
+                                      controller: _dateController,
+                                      hintText: 'Data',
+                                      hasPrefixIcon: true,
+                                      prefixIcon: Icons.date_range,
+                                      hasOnTap: true,
+                                      textInput: TextInputType.datetime,
+                                      callback: () {
+                                        _selectDate(context);
+                                      },
+                                    )
                                   ],
                                 ),
-                                const Separator(width: 10.0),
+                                const Gap(width: 10.0),
                                 Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    _label('Tempo'),
-                                    const Separator(height: 10.0),
-                                    _textFormField(
-                                        155,
-                                        _timeController,
-                                        'Tempo',
-                                        null,
-                                        true,
-                                        Icons.timelapse,
-                                        null,
-                                        true,
-                                        TextInputType.datetime, () {
-                                      _selectTime(context);
-                                    })
+                                    const Label(data: 'Tempo'),
+                                    const Gap(height: 10.0),
+                                    CustomTextFormField(
+                                      width: 155,
+                                      controller: _timeController,
+                                      hintText: 'Tempo',
+                                      hasPrefixIcon: true,
+                                      prefixIcon: Icons.timelapse,
+                                      hasOnTap: true,
+                                      textInput: TextInputType.datetime,
+                                      callback: () {
+                                        _selectTime(context);
+                                      },
+                                    )
                                   ],
                                 ),
                               ],
                             ),
-                            const Separator(height: 10.0),
-                            _label(
-                                'Vuoi rivelare la tua identità alla persona cara?'),
-                            const Separator(height: 10.0),
+                            const Gap(height: 10.0),
+                            const Label(
+                                data:
+                                    'Vuoi rivelare la tua identità alla persona cara?'),
+                            const Gap(height: 10.0),
                             ListTileTheme(
                               horizontalTitleGap: 0.0,
                               child: CheckboxListTile(
@@ -155,16 +153,19 @@ class _FormStepState extends State<FormStep> {
                                     });
                                   }),
                             ),
-                            const Separator(height: 10.0),
+                            const Gap(height: 10.0),
                             Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                _button(
-                                    AppColors.light.tertiary, 'Annulla', () {}),
-                                const Separator(height: 10.0),
-                                _button(AppColors.light.primary, 'Sigilla', () {
-                                  print('test');
-                                }),
+                                Button(
+                                    backgroundColor: AppColors.light.tertiary,
+                                    label: 'Annulla',
+                                    onPressed: () {}),
+                                const Gap(width: 10.0),
+                                Button(
+                                    backgroundColor: AppColors.light.primary,
+                                    label: 'Sigilla',
+                                    onPressed: () {})
                               ],
                             ),
                           ]),
@@ -187,129 +188,27 @@ class _FormStepState extends State<FormStep> {
     super.dispose();
   }
 
-  Text _title(String data) {
-    return Text(data,
-        style: const TextStyle(
-            fontFamily: 'DM Sans', fontSize: 28, fontWeight: FontWeight.w600));
-  }
-
-  Text _label(String data) {
-    return Text(data,
-        style: const TextStyle(
-            fontFamily: 'DM Sans', fontSize: 16, fontWeight: FontWeight.w600));
-  }
-
-  Text _subtitle(String data) {
-    return Text(data,
-        style: TextStyle(
-            fontFamily: 'DM Sans',
-            fontSize: 16,
-            color: AppColors.light.secondaryText));
-  }
-
   Column _renderUserTextField() {
     return widget.boxHelper.boxType != BoxType.messageInABottle
         ? Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _label('A chi desideri inviarlo?'),
-              const Separator(height: 10.0),
-              _textFormField(double.infinity, _userController, 'Nome utente',
-                  true, null, null, true, true, TextInputType.text, () {
-                print('test');
-                print(_userBottomSheetKey.currentState);
-                _userBottomSheetKey.currentState?.openBottomSheet();
-              })
+              const Label(data: 'A chi desideri inviarlo?'),
+              const Gap(height: 10.0),
+              CustomTextFormField(
+                width: double.infinity,
+                controller: _userController,
+                hintText: 'Nome utente',
+                textInput: TextInputType.text,
+                hasOnTap: true,
+                callback: () {
+                  widget.userBottomSheetKey.currentState?.openBottomSheet();
+                },
+              )
             ],
           )
         : const Column();
-  }
-
-  Widget _textFormField(
-      double width,
-      TextEditingController controller,
-      String hintText,
-      bool? suffixIcon,
-      bool? hasPrefixIcon,
-      IconData? prefixIcon,
-      bool? readOnly,
-      bool? hasOnTap,
-      TextInputType textInput,
-      VoidCallback? callback) {
-    var outlineBorder = OutlineInputBorder(
-      borderSide: const BorderSide(
-        color: Color(0x00000000),
-        width: 1,
-      ),
-      borderRadius: BorderRadius.circular(24),
-    );
-
-    return SizedBox(
-      width: width,
-      child: TextFormField(
-          controller: controller,
-          autofocus: false,
-          obscureText: false,
-          decoration: InputDecoration(
-            isDense: true,
-            hintText: hintText,
-            hintStyle: const TextStyle(fontFamily: 'DM Sans'),
-            enabledBorder: outlineBorder,
-            focusedBorder: outlineBorder,
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.light.error,
-                width: 1,
-              ),
-              borderRadius: BorderRadius.circular(24),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.light.error,
-                width: 1,
-              ),
-              borderRadius: BorderRadius.circular(24),
-            ),
-            filled: true,
-            fillColor: AppColors.light.background,
-            prefixIcon: hasPrefixIcon != null
-                ? Icon(
-                    prefixIcon,
-                  )
-                : null,
-            suffixIcon: suffixIcon != null && suffixIcon
-                ? const Icon(
-                    Icons.search_sharp,
-                  )
-                : null,
-          ),
-          readOnly: readOnly != null ? true : false,
-          style: const TextStyle(fontFamily: 'DM Sans', fontSize: 14),
-          cursorColor: AppColors.light.primaryText,
-          onTap: hasOnTap != null && hasOnTap ? callback : null,
-          keyboardType: textInput,
-          maxLines: textInput == TextInputType.multiline ? 8 : null,
-          maxLength: textInput == TextInputType.multiline ? 1000 : null),
-    );
-  }
-
-  ElevatedButton _button(
-      Color backgroundColor, String label, VoidCallback onPressed) {
-    const size = Size(150, 48);
-
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            minimumSize: size,
-            backgroundColor: backgroundColor,
-            shadowColor: Colors.transparent,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(26))),
-        onPressed: onPressed,
-        child: Text(
-          label,
-          style: const TextStyle(color: Colors.white, fontSize: 18),
-        ));
   }
 
   Future<void> _selectDate(BuildContext context) async {

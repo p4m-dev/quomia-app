@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class Separator extends StatelessWidget {
+class Gap extends StatelessWidget {
   final double? height;
   final double? width;
 
-  const Separator({super.key, this.width, this.height});
+  const Gap({super.key, this.width, this.height});
 
   @override
   Widget build(BuildContext context) {

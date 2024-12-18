@@ -4,10 +4,15 @@ import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:quomia/models/box_helper.dart';
 
 class FileInputField extends StatefulWidget {
+  final BoxHelper boxHelper;
+
+  const FileInputField({super.key, required this.boxHelper});
+
   @override
-  _FileInputFieldState createState() => _FileInputFieldState();
+  State<FileInputField> createState() => _FileInputFieldState();
 }
 
 class _FileInputFieldState extends State<FileInputField> {

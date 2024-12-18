@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:quomia/designSystem/separator.dart';
+import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/step_progress_view.dart';
 import 'package:quomia/models/box_helper.dart';
 import 'package:quomia/utils/app_colors.dart';
@@ -8,6 +8,7 @@ import 'package:quomia/widgets/box/steps/box_category_step.dart';
 import 'package:quomia/widgets/box/steps/box_type_step.dart';
 import 'package:quomia/widgets/box/steps/form_step.dart';
 import 'package:quomia/widgets/box/steps/intro_step.dart';
+import 'package:quomia/widgets/box/user_bottomsheet.dart';
 
 class BuyBoxScreen extends StatefulWidget {
   const BuyBoxScreen({super.key});
@@ -23,13 +24,15 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
     'Tipo',
     'Categoria',
     'Creazione',
-    'Tempo'
+    'Pagamento'
   ];
   final BoxHelper boxHelper = BoxHelper();
+  final GlobalKey<UserBottomSheetState> _userBottomSheetKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _userBottomSheetKey,
         backgroundColor: AppColors.light.background,
         appBar: AppBar(
           backgroundColor: AppColors.light.primaryBackground,
@@ -71,9 +74,10 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
                   : const SizedBox(),
               _currentStep == 4
                   ? FormStep(
+                      userBottomSheetKey: _userBottomSheetKey,
                       boxHelper: boxHelper,
                     )
-                  : const Separator(),
+                  : const Gap(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

@@ -29,10 +29,8 @@ class UserBottomSheetState extends State<UserBottomSheet> {
     final query = _searchController.text.toLowerCase();
     setState(() {
       _filteredUsers = _users
-          .where((user) => user["username"]!
-              .toLowerCase()
-              .contains(query)) // Confronta il testo
-          .toList(); // Aggiorna la lista filtrata
+          .where((user) => user["username"]!.toLowerCase().contains(query))
+          .toList();
     });
   }
 
