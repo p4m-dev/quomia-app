@@ -8,11 +8,18 @@ import 'package:quomia/widgets/box/card/box_card.dart';
 
 class BoxTypeStep extends StatefulWidget {
   final BoxHelper boxHelper;
+  final ValueChanged<int> onStepChanged;
+  final int currentStep;
+
   final String messageInABottle = 'Message in a bottle';
   final String future = 'Future';
   final String rewind = 'Rewind';
 
-  const BoxTypeStep({super.key, required this.boxHelper});
+  const BoxTypeStep(
+      {super.key,
+      required this.boxHelper,
+      required this.onStepChanged,
+      required this.currentStep});
 
   @override
   State<BoxTypeStep> createState() => _BoxTypeStepState();
@@ -58,6 +65,7 @@ class _BoxTypeStepState extends State<BoxTypeStep> {
             callback: () {
               setState(() {
                 widget.boxHelper.boxType = _convert(widget.future);
+                widget.onStepChanged(widget.currentStep + 1);
               });
             },
           ),
@@ -71,6 +79,7 @@ class _BoxTypeStepState extends State<BoxTypeStep> {
               callback: () {
                 setState(() {
                   widget.boxHelper.boxType = _convert(widget.rewind);
+                  widget.onStepChanged(widget.currentStep + 1);
                 });
               }),
           const Gap(
@@ -83,6 +92,7 @@ class _BoxTypeStepState extends State<BoxTypeStep> {
               callback: () {
                 setState(() {
                   widget.boxHelper.boxType = _convert(widget.messageInABottle);
+                  widget.onStepChanged(widget.currentStep + 1);
                 });
               })
         ],

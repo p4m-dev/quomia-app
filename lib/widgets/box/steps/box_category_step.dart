@@ -10,10 +10,17 @@ import 'package:quomia/widgets/box/card/box_card.dart';
 
 class BoxCategoryStep extends StatefulWidget {
   final BoxHelper boxHelper;
+  final ValueChanged<int> onStepChanged;
+  final int currentStep;
+
   final String interactive = 'Interattivo';
   final String text = 'Testuale';
 
-  const BoxCategoryStep({super.key, required this.boxHelper});
+  const BoxCategoryStep(
+      {super.key,
+      required this.boxHelper,
+      required this.onStepChanged,
+      required this.currentStep});
 
   @override
   State<BoxCategoryStep> createState() => _BoxCategoryStepState();
@@ -54,11 +61,13 @@ class _BoxCategoryStepState extends State<BoxCategoryStep> {
             ),
             BoxCard(
               title: widget.interactive,
-              caption: 'Condividi un momento nel futuro con la persona cara.',
+              caption:
+                  'Crea un box interattivo, puoi aggiungere un video, un immagine o registrare un momento vocale',
               imagePath: 'https://picsum.photos/seed/37/600',
               callback: () {
                 setState(() {
                   widget.boxHelper.category = _convert(widget.interactive);
+                  widget.onStepChanged(widget.currentStep + 1);
                 });
               },
             ),
@@ -66,12 +75,13 @@ class _BoxCategoryStepState extends State<BoxCategoryStep> {
               height: 10.0,
             ),
             BoxCard(
-              title: widget.interactive,
-              caption: 'Condividi un momento nel futuro con la persona cara.',
+              title: widget.text,
+              caption: 'Riassapora il concetto di ',
               imagePath: 'https://picsum.photos/seed/37/600',
               callback: () {
                 setState(() {
                   widget.boxHelper.category = _convert(widget.interactive);
+                  widget.onStepChanged(widget.currentStep + 1);
                 });
               },
             ),
@@ -83,14 +93,10 @@ class _BoxCategoryStepState extends State<BoxCategoryStep> {
     cat.Category category = cat.Category.text;
 
     switch (title) {
+      case 'interactive':
+        category = cat.Category.interactive;
       case 'text':
         category = cat.Category.text;
-      case 'audio':
-        category = cat.Category.audio;
-      case 'image':
-        category = cat.Category.image;
-      case 'video':
-        category = cat.Category.video;
     }
 
     return category;

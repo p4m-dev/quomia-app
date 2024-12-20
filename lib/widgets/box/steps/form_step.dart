@@ -9,6 +9,7 @@ import 'package:quomia/designSystem/text_form_field.dart';
 import 'package:quomia/designSystem/title.dart';
 import 'package:quomia/models/box_helper.dart';
 import 'package:quomia/models/box_type.dart';
+import 'package:quomia/models/category.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/box/user_bottomsheet.dart';
 
@@ -45,7 +46,7 @@ class _FormStepState extends State<FormStep> {
             const Gap(height: 10.0),
             Container(
               width: double.infinity,
-              height: 474,
+              height: 420,
               decoration: BoxDecoration(
                 color: AppColors.light.primaryBackground,
                 borderRadius: BorderRadius.circular(16),
@@ -60,7 +61,6 @@ class _FormStepState extends State<FormStep> {
                           mainAxisSize: MainAxisSize.max,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // make it conditional based on what user has chosen in step 1.
                             _renderUserTextField(),
                             const Gap(height: 10.0),
                             const Label(data: 'Inserisci un titolo'),
@@ -72,16 +72,7 @@ class _FormStepState extends State<FormStep> {
                                 hasOnTap: true,
                                 textInput: TextInputType.text),
                             const Gap(height: 10.0),
-                            const Label(data: 'Contenuto del messaggio'),
-                            const Gap(height: 10.0),
-                            CustomTextFormField(
-                                width: double.infinity,
-                                controller: _contentController,
-                                hintText: 'Messaggio',
-                                textInput: TextInputType.multiline),
-                            FileInputField(
-                              boxHelper: widget.boxHelper,
-                            ),
+                            _renderMediaTextField(),
                             const Gap(height: 10.0),
                             Row(
                               mainAxisSize: MainAxisSize.max,
@@ -93,17 +84,18 @@ class _FormStepState extends State<FormStep> {
                                   children: [
                                     const Label(data: 'Data'),
                                     const Gap(height: 10.0),
-                                    CustomTextFormField(
-                                      width: 155,
-                                      controller: _dateController,
-                                      hintText: 'Data',
-                                      hasPrefixIcon: true,
-                                      prefixIcon: Icons.date_range,
-                                      hasOnTap: true,
-                                      textInput: TextInputType.datetime,
-                                      callback: () {
-                                        _selectDate(context);
-                                      },
+                                    Expanded(
+                                      child: CustomTextFormField(
+                                        controller: _dateController,
+                                        hintText: 'Data',
+                                        hasPrefixIcon: true,
+                                        prefixIcon: Icons.date_range,
+                                        hasOnTap: true,
+                                        textInput: TextInputType.datetime,
+                                        callback: () {
+                                          _selectDate(context);
+                                        },
+                                      ),
                                     )
                                   ],
                                 ),
@@ -114,17 +106,19 @@ class _FormStepState extends State<FormStep> {
                                   children: [
                                     const Label(data: 'Tempo'),
                                     const Gap(height: 10.0),
-                                    CustomTextFormField(
-                                      width: 155,
-                                      controller: _timeController,
-                                      hintText: 'Tempo',
-                                      hasPrefixIcon: true,
-                                      prefixIcon: Icons.timelapse,
-                                      hasOnTap: true,
-                                      textInput: TextInputType.datetime,
-                                      callback: () {
-                                        _selectTime(context);
-                                      },
+                                    Expanded(
+                                      child: CustomTextFormField(
+                                        width: 155,
+                                        controller: _timeController,
+                                        hintText: 'Tempo',
+                                        hasPrefixIcon: true,
+                                        prefixIcon: Icons.timelapse,
+                                        hasOnTap: true,
+                                        textInput: TextInputType.datetime,
+                                        callback: () {
+                                          _selectTime(context);
+                                        },
+                                      ),
                                     )
                                   ],
                                 ),
@@ -186,6 +180,32 @@ class _FormStepState extends State<FormStep> {
     _dateController.dispose();
     _timeController.dispose();
     super.dispose();
+  }
+
+  Column _renderMediaTextField() {
+    return widget.boxHelper.category == Category.text
+        ? Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Label(data: 'Contenuto del messaggio'),
+              const Gap(height: 10.0),
+              CustomTextFormField(
+                  width: double.infinity,
+                  controller: _contentController,
+                  hintText: 'Messaggio',
+                  textInput: TextInputType.multiline)
+            ],
+          )
+        : Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Label(data: 'Carica un file'),
+              const Gap(height: 10.0),
+              FileInputField(boxHelper: widget.boxHelper)
+            ],
+          );
   }
 
   Column _renderUserTextField() {

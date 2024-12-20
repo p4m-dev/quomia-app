@@ -1,1 +1,1 @@
-enum Category { text, image, video, audio }
+enum Category { interactive, text }

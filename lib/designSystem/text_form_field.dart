@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quomia/utils/app_colors.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  final double width;
+  final double? width;
   final TextEditingController controller;
   final String hintText;
   final bool? suffixIcon;
@@ -15,7 +15,7 @@ class CustomTextFormField extends StatelessWidget {
 
   const CustomTextFormField(
       {super.key,
-      required this.width,
+      this.width,
       required this.controller,
       required this.hintText,
       this.suffixIcon,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/step_progress_view.dart';
 import 'package:quomia/models/box_helper.dart';
 import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/widgets/appbar/custom_app_bar.dart';
 import 'package:quomia/widgets/box/steps/box_category_step.dart';
 import 'package:quomia/widgets/box/steps/box_type_step.dart';
 import 'package:quomia/widgets/box/steps/form_step.dart';
@@ -29,30 +29,20 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
   final BoxHelper boxHelper = BoxHelper();
   final GlobalKey<UserBottomSheetState> _userBottomSheetKey = GlobalKey();
 
+  void _updateStep(int newStep) {
+    print('newStep: $newStep');
+    setState(() {
+      _currentStep = newStep;
+      print('_currentStep: $_currentStep');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: _userBottomSheetKey,
         backgroundColor: AppColors.light.background,
-        appBar: AppBar(
-          backgroundColor: AppColors.light.primaryBackground,
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back_rounded,
-                color: AppColors.light.primaryText,
-                size: 30,
-              ),
-              onPressed: () async {}),
-          title: Text('Quomia',
-              style: TextStyle(
-                fontFamily: 'DM Sans',
-                color: AppColors.light.info,
-                fontSize: 28,
-              )),
-          actions: [],
-          centerTitle: false,
-        ),
+        appBar: _appBar(),
         body: Padding(
           padding: const EdgeInsets.all(0.0),
           child: Column(
@@ -65,11 +55,14 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
               _currentStep == 2
                   ? BoxTypeStep(
                       boxHelper: boxHelper,
-                    )
+                      currentStep: _currentStep,
+                      onStepChanged: _updateStep)
                   : const SizedBox(),
               _currentStep == 3
                   ? BoxCategoryStep(
                       boxHelper: boxHelper,
+                      currentStep: _currentStep,
+                      onStepChanged: _updateStep,
                     )
                   : const SizedBox(),
               _currentStep == 4
@@ -93,11 +86,13 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
                         foregroundColor: AppColors.light.primary),
                     child: const Text('Indietro'),
                   ),
-                  TextButton(
-                      onPressed: _enableNextButton(),
-                      style: TextButton.styleFrom(
-                          foregroundColor: AppColors.light.primary),
-                      child: const Text('Avanti')),
+                  _currentStep == 1
+                      ? TextButton(
+                          onPressed: _enableNextButton(),
+                          style: TextButton.styleFrom(
+                              foregroundColor: AppColors.light.primary),
+                          child: const Text('Avanti'))
+                      : const SizedBox(),
                 ],
               ),
             ],
@@ -105,14 +100,59 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
         ));
   }
 
+  AppBar _appBar() {
+    return AppBar(
+      backgroundColor: AppColors.light.primaryBackground,
+      automaticallyImplyLeading: false,
+      leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: AppColors.light.primaryText,
+            size: 26,
+          ),
+          onPressed: () async {}),
+      title: Text('Quomia',
+          style: TextStyle(
+            fontFamily: 'DM Sans',
+            color: AppColors.light.info,
+            fontSize: 28,
+          )),
+      actions: const [],
+      centerTitle: false,
+    );
+  }
+
+  Row _buttonsRow() {
+    return _currentStep == 1
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              TextButton(
+                onPressed: _currentStep > 1
+                    ? () {
+                        setState(() {
+                          _currentStep--;
+                        });
+                      }
+                    : null,
+                style: TextButton.styleFrom(
+                    foregroundColor: AppColors.light.primary),
+                child: const Text('Indietro'),
+              ),
+              TextButton(
+                  onPressed: _enableNextButton(),
+                  style: TextButton.styleFrom(
+                      foregroundColor: AppColors.light.primary),
+                  child: const Text('Avanti')),
+            ],
+          )
+        : const Row();
+  }
+
   VoidCallback? _enableNextButton() {
     VoidCallback? onPressed;
 
-    if (_currentStep == 2 && boxHelper.boxType == null) {
-      onPressed = null;
-    } else if (_currentStep == 3 && boxHelper.category == null) {
-      onPressed = null;
-    } else if (_currentStep < titles.length) {
+    if (_currentStep == 1) {
       onPressed = () {
         setState(() {
           _currentStep++;
