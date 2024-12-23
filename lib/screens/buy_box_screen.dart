@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/step_progress_view.dart';
-import 'package:quomia/models/box_helper.dart';
-import 'package:quomia/models/box_type.dart';
+import 'package:quomia/models/box/box_helper.dart';
+import 'package:quomia/models/box/box_type.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/box/steps/box_category_step.dart';
 import 'package:quomia/widgets/box/steps/box_type_step.dart';

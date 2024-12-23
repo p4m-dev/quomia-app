@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:quomia/models/category.dart';
-import 'package:quomia/models/box_type.dart';
+import 'package:quomia/models/box/category.dart';
+import 'package:quomia/models/box/box_type.dart';
 
 class BoxHelper {
   static final BoxHelper _instance = BoxHelper._internal();

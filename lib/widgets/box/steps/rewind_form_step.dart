@@ -10,8 +10,8 @@ import 'package:quomia/designSystem/label.dart';
 import 'package:quomia/designSystem/subtitle.dart';
 import 'package:quomia/designSystem/text_form_field.dart';
 import 'package:quomia/designSystem/title.dart';
-import 'package:quomia/models/box_helper.dart';
-import 'package:quomia/models/category.dart';
+import 'package:quomia/models/box/box_helper.dart';
+import 'package:quomia/models/box/category.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/box/user_bottomsheet.dart';
@@ -64,6 +64,17 @@ class _RewindFormStepState extends State<RewindFormStep> {
         .map<MenuEntry>((String name) => MenuEntry(value: name, label: name))
         .toList();
     dropdownValue = menuList.first;
+  }
+
+  @override
+  void dispose() {
+    _userController.dispose();
+    _titleController.dispose();
+    _contentController.dispose();
+    _dateController.dispose();
+    _timeController.dispose();
+    _fileController.dispose();
+    super.dispose();
   }
 
   @override
@@ -257,17 +268,6 @@ class _RewindFormStepState extends State<RewindFormStep> {
       ),
       if (isLoading) const CustomLoader()
     ]);
-  }
-
-  @override
-  void dispose() {
-    _userController.dispose();
-    _titleController.dispose();
-    _contentController.dispose();
-    _dateController.dispose();
-    _timeController.dispose();
-    _fileController.dispose();
-    super.dispose();
   }
 
   Widget _datesDropdown() {

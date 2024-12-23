@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/subtitle.dart';
 import 'package:quomia/designSystem/title.dart';
-import 'package:quomia/models/box_helper.dart';
-import 'package:quomia/models/box_type.dart';
+import 'package:quomia/models/box/box_helper.dart';
+import 'package:quomia/models/box/box_type.dart';
 import 'package:quomia/widgets/box/card/box_card.dart';
 
 class BoxTypeStep extends StatefulWidget {
