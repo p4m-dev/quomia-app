@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/step_progress_view.dart';
 import 'package:quomia/models/box_helper.dart';
+import 'package:quomia/models/box_type.dart';
 import 'package:quomia/utils/app_colors.dart';
-import 'package:quomia/widgets/appbar/custom_app_bar.dart';
 import 'package:quomia/widgets/box/steps/box_category_step.dart';
 import 'package:quomia/widgets/box/steps/box_type_step.dart';
-import 'package:quomia/widgets/box/steps/form_step.dart';
+import 'package:quomia/widgets/box/steps/future_form_step.dart';
 import 'package:quomia/widgets/box/steps/intro_step.dart';
+import 'package:quomia/widgets/box/steps/rewind_form_step.dart';
+import 'package:quomia/widgets/box/steps/social_form_step.dart';
 import 'package:quomia/widgets/box/user_bottomsheet.dart';
 
 class BuyBoxScreen extends StatefulWidget {
@@ -65,12 +67,7 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
                       onStepChanged: _updateStep,
                     )
                   : const SizedBox(),
-              _currentStep == 4
-                  ? FormStep(
-                      userBottomSheetKey: _userBottomSheetKey,
-                      boxHelper: boxHelper,
-                    )
-                  : const Gap(),
+              _renderFormStep(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -98,6 +95,25 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
             ],
           ),
         ));
+  }
+
+  Widget _renderFormStep() {
+    if (_currentStep == 4) {
+      switch (boxHelper.boxType) {
+        case BoxType.rewind:
+          return RewindFormStep(
+              boxHelper: boxHelper, userBottomSheetKey: _userBottomSheetKey);
+        case BoxType.future:
+          return FutureFormStep(
+              boxHelper: boxHelper, userBottomSheetKey: _userBottomSheetKey);
+        case BoxType.messageInABottle:
+          return SocialFormStep(boxHelper: boxHelper);
+        default:
+          return RewindFormStep(
+              boxHelper: boxHelper, userBottomSheetKey: _userBottomSheetKey);
+      }
+    }
+    return const Gap();
   }
 
   AppBar _appBar() {

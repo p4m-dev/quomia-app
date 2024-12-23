@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/subtitle.dart';
 import 'package:quomia/designSystem/title.dart';
 import 'package:quomia/models/box_helper.dart';
-import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/models/category.dart' as cat;
 import 'package:quomia/widgets/box/card/box_card.dart';
 
@@ -66,7 +64,8 @@ class _BoxCategoryStepState extends State<BoxCategoryStep> {
               imagePath: 'https://picsum.photos/seed/37/600',
               callback: () {
                 setState(() {
-                  widget.boxHelper.category = _convert(widget.interactive);
+                  widget.boxHelper.category =
+                      _convert(widget.interactive.toLowerCase());
                   widget.onStepChanged(widget.currentStep + 1);
                 });
               },
@@ -80,7 +79,8 @@ class _BoxCategoryStepState extends State<BoxCategoryStep> {
               imagePath: 'https://picsum.photos/seed/37/600',
               callback: () {
                 setState(() {
-                  widget.boxHelper.category = _convert(widget.interactive);
+                  widget.boxHelper.category =
+                      _convert(widget.text.toLowerCase());
                   widget.onStepChanged(widget.currentStep + 1);
                 });
               },
@@ -90,12 +90,13 @@ class _BoxCategoryStepState extends State<BoxCategoryStep> {
   }
 
   cat.Category _convert(String title) {
+    print("current $title");
     cat.Category category = cat.Category.text;
 
     switch (title) {
-      case 'interactive':
+      case 'interattivo':
         category = cat.Category.interactive;
-      case 'text':
+      case 'testuale':
         category = cat.Category.text;
     }
 
