@@ -5,7 +5,8 @@ class CustomTextFormField extends StatelessWidget {
   final double? width;
   final TextEditingController controller;
   final String hintText;
-  final bool? suffixIcon;
+  final bool? hasSuffixIcon;
+  final IconButton? suffixIcon;
   final bool? hasPrefixIcon;
   final IconData? prefixIcon;
   final bool? readOnly;
@@ -18,6 +19,7 @@ class CustomTextFormField extends StatelessWidget {
       this.width,
       required this.controller,
       required this.hintText,
+      this.hasSuffixIcon,
       this.suffixIcon,
       this.hasPrefixIcon,
       this.prefixIcon,
@@ -61,10 +63,8 @@ class CustomTextFormField extends StatelessWidget {
                     prefixIcon,
                   )
                 : null,
-            suffixIcon: suffixIcon != null && suffixIcon == true
-                ? const Icon(
-                    Icons.search_sharp,
-                  )
+            suffixIcon: hasSuffixIcon != null && hasSuffixIcon == true
+                ? suffixIcon
                 : null,
           ),
           readOnly: readOnly != null ? true : false,

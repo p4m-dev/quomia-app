@@ -39,6 +39,8 @@ class _RewindFormStepState extends State<RewindFormStep> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _fileController = TextEditingController();
+  final TextEditingController _futureDateController = TextEditingController();
+
   String selectedFilePath = '';
   bool? _isAnonymousEnabled = false;
   bool isLoading = false;
@@ -56,6 +58,8 @@ class _RewindFormStepState extends State<RewindFormStep> {
 
   late List<MenuEntry> menuEntries;
   String dropdownValue = '';
+  DateTime futureDate = DateTime.now();
+  DateTime previousDate = DateTime.now();
 
   @override
   void initState() {
@@ -74,6 +78,7 @@ class _RewindFormStepState extends State<RewindFormStep> {
     _dateController.dispose();
     _timeController.dispose();
     _fileController.dispose();
+    _futureDateController.dispose();
     super.dispose();
   }
 
@@ -128,13 +133,16 @@ class _RewindFormStepState extends State<RewindFormStep> {
                                   CustomTextFormField(
                                     width: double.infinity,
                                     controller: _userController,
-                                    hintText: 'Nome utente',
+                                    hintText: 'Destinatario',
                                     textInput: TextInputType.text,
                                     hasOnTap: true,
-                                    callback: () {
-                                      widget.userBottomSheetKey.currentState
-                                          ?.openBottomSheet();
-                                    },
+                                    hasSuffixIcon: true,
+                                    suffixIcon: IconButton(
+                                        onPressed: () {
+                                          widget.userBottomSheetKey.currentState
+                                              ?.openBottomSheet();
+                                        },
+                                        icon: const Icon(Icons.search)),
                                   )
                                 ],
                               ),
@@ -215,6 +223,28 @@ class _RewindFormStepState extends State<RewindFormStep> {
                               ),
                               const Gap(height: 10.0),
                               _datesDropdown(),
+                              const Gap(height: 10.0),
+                              const Label(
+                                data: 'Data in cui il box verrà consegnato',
+                              ),
+                              const Gap(height: 10.0),
+                              InfoMessage(
+                                  title: 'Promemoria',
+                                  content:
+                                      'Lo slot temporale scelto indica che il messaggio verrà inoltrato al destinatario ogni anno al momento indicato fino alla data specificata.\nCliccando sul tasto info puoi vedere le date di consegna future.',
+                                  color: AppColors.light.primary),
+                              const Gap(height: 10.0),
+                              CustomTextFormField(
+                                  controller: _futureDateController,
+                                  hintText: 'Data',
+                                  textInput: TextInputType.datetime,
+                                  readOnly: true,
+                                  hasSuffixIcon: true,
+                                  suffixIcon: IconButton(
+                                      onPressed: () {
+                                        _showBottomSheet();
+                                      },
+                                      icon: const Icon(Icons.info_outline))),
                               const Gap(height: 20.0),
                               const Divider(
                                 height: 5,
@@ -270,6 +300,34 @@ class _RewindFormStepState extends State<RewindFormStep> {
     ]);
   }
 
+  void _showBottomSheet() {
+    showModalBottomSheet(
+        backgroundColor: AppColors.light.primaryBackground,
+        context: context,
+        builder: (BuildContext context) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                String formattedDate =
+                    DateFormat('dd-MM-yyyy HH:mm').format(futureDate);
+
+                return Container(
+                  margin: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: AppColors.light.background,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Label(data: formattedDate),
+                );
+              },
+            ),
+          );
+        });
+  }
+
   Widget _datesDropdown() {
     return DropdownButtonFormField<String>(
       value: dropdownValue,
@@ -308,11 +366,76 @@ class _RewindFormStepState extends State<RewindFormStep> {
       onChanged: (String? newValue) {
         setState(() {
           dropdownValue = newValue!;
+          futureDate = _convertDates(dropdownValue);
+
+          print("FutureDate: $futureDate");
+
+          String formattedDate =
+              DateFormat('dd/MM/yyyy HH:mm').format(futureDate);
+          _futureDateController.text = formattedDate;
         });
       },
       style: TextStyle(fontSize: 16, color: AppColors.light.primaryText),
       icon: Icon(Icons.arrow_drop_down, color: AppColors.light.primary),
       dropdownColor: AppColors.light.background,
+    );
+  }
+
+  DateTime _convertDates(String dropdownValue) {
+    var timeText = _timeController.text;
+    var dateText = _dateController.text;
+
+    DateFormat timeFormat = DateFormat("HH:mm");
+    DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+
+    DateTime time = timeFormat.parse(timeText);
+    DateTime date = dateFormat.parse(dateText);
+
+    previousDate = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      time.hour,
+      time.minute,
+    );
+
+    DateTime currentDate = DateTime.now();
+
+    switch (dropdownValue) {
+      case '1 Anno':
+        currentDate = addYears(previousDate, 1);
+      case '2 Anni':
+        currentDate = addYears(previousDate, 2);
+      case '5 Anni':
+        currentDate = addYears(previousDate, 5);
+      case '10 Anni':
+        currentDate = addYears(previousDate, 10);
+      case '15 Anni':
+        currentDate = addYears(previousDate, 15);
+      case '20 Anni':
+        currentDate = addYears(previousDate, 20);
+      case '25 Anni':
+        currentDate = addYears(previousDate, 25);
+      case '30 Anni':
+        currentDate = addYears(previousDate, 30);
+    }
+
+    futureDate = DateTime(
+      currentDate.year,
+      currentDate.month,
+      currentDate.day,
+      time.hour,
+      time.minute,
+    );
+
+    return futureDate;
+  }
+
+  DateTime addYears(DateTime date, int years) {
+    return DateTime(
+      date.year + years,
+      date.month,
+      date.day,
     );
   }
 
@@ -404,11 +527,14 @@ class _RewindFormStepState extends State<RewindFormStep> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
+    var previousDate = DateTime.now().subtract(const Duration(days: 1));
+
     DateTime? selectedDate = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(1970, 1, 1),
-        lastDate: DateTime(2150, 1, 1),
+        initialDate: previousDate,
+        firstDate: DateTime(1900, 1, 1),
+        lastDate:
+            DateTime(previousDate.year, previousDate.month, previousDate.day),
         confirmText: 'Conferma',
         cancelText: 'Annulla',
         builder: (context, child) {
