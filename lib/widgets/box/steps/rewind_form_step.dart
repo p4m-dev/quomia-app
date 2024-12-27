@@ -14,6 +14,7 @@ import 'package:quomia/models/box/box_helper.dart';
 import 'package:quomia/models/box/category.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/utils/date_utils.dart';
 import 'package:quomia/widgets/box/user_bottomsheet.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
@@ -163,7 +164,7 @@ class _RewindFormStepState extends State<RewindFormStep> {
                               ),
                               const Gap(height: 20.0),
                               const Label(
-                                data: 'Data di acquisto',
+                                data: 'Seleziona una data passata',
                                 fontSize: 20,
                               ),
                               const Gap(height: 10.0),
@@ -311,7 +312,7 @@ class _RewindFormStepState extends State<RewindFormStep> {
               itemCount: 10,
               itemBuilder: (context, index) {
                 String formattedDate =
-                    DateFormat('dd-MM-yyyy HH:mm').format(futureDate);
+                    CustomDateUtils.fullFormat.format(futureDate);
 
                 return Container(
                   margin: EdgeInsets.all(8.0),
@@ -370,8 +371,7 @@ class _RewindFormStepState extends State<RewindFormStep> {
 
           print("FutureDate: $futureDate");
 
-          String formattedDate =
-              DateFormat('dd/MM/yyyy HH:mm').format(futureDate);
+          String formattedDate = CustomDateUtils.dateFormat.format(futureDate);
           _futureDateController.text = formattedDate;
         });
       },
@@ -385,11 +385,8 @@ class _RewindFormStepState extends State<RewindFormStep> {
     var timeText = _timeController.text;
     var dateText = _dateController.text;
 
-    DateFormat timeFormat = DateFormat("HH:mm");
-    DateFormat dateFormat = DateFormat("dd/MM/yyyy");
-
-    DateTime time = timeFormat.parse(timeText);
-    DateTime date = dateFormat.parse(dateText);
+    DateTime time = CustomDateUtils.timeFormat.parse(timeText);
+    DateTime date = CustomDateUtils.dateFormat.parse(dateText);
 
     previousDate = DateTime(
       date.year,
@@ -399,43 +396,33 @@ class _RewindFormStepState extends State<RewindFormStep> {
       time.minute,
     );
 
-    DateTime currentDate = DateTime.now();
+    DateTime currentDate = CustomDateUtils.findNextFutureDate(previousDate);
 
     switch (dropdownValue) {
       case '1 Anno':
-        currentDate = addYears(previousDate, 1);
+        currentDate = CustomDateUtils.addYears(currentDate, 1);
       case '2 Anni':
-        currentDate = addYears(previousDate, 2);
+        currentDate = CustomDateUtils.addYears(currentDate, 2);
       case '5 Anni':
-        currentDate = addYears(previousDate, 5);
+        currentDate = CustomDateUtils.addYears(currentDate, 5);
       case '10 Anni':
-        currentDate = addYears(previousDate, 10);
+        currentDate = CustomDateUtils.addYears(currentDate, 10);
       case '15 Anni':
-        currentDate = addYears(previousDate, 15);
+        currentDate = CustomDateUtils.addYears(currentDate, 15);
       case '20 Anni':
-        currentDate = addYears(previousDate, 20);
+        currentDate = CustomDateUtils.addYears(currentDate, 20);
       case '25 Anni':
-        currentDate = addYears(previousDate, 25);
+        currentDate = CustomDateUtils.addYears(currentDate, 25);
       case '30 Anni':
-        currentDate = addYears(previousDate, 30);
+        currentDate = CustomDateUtils.addYears(currentDate, 30);
     }
 
-    futureDate = DateTime(
+    return DateTime(
       currentDate.year,
       currentDate.month,
       currentDate.day,
       time.hour,
       time.minute,
-    );
-
-    return futureDate;
-  }
-
-  DateTime addYears(DateTime date, int years) {
-    return DateTime(
-      date.year + years,
-      date.month,
-      date.day,
     );
   }
 
@@ -550,7 +537,7 @@ class _RewindFormStepState extends State<RewindFormStep> {
 
     if (selectedDate != null) {
       setState(() {
-        _dateController.text = DateFormat('dd/MM/yyyy').format(selectedDate);
+        _dateController.text = CustomDateUtils.dateFormat.format(selectedDate);
       });
     }
   }
