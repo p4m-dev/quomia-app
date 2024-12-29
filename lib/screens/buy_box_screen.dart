@@ -21,6 +21,7 @@ class BuyBoxScreen extends StatefulWidget {
 
 class _BuyBoxScreenState extends State<BuyBoxScreen> {
   int _currentStep = 1;
+  BoxType _boxType = BoxType.future;
   final List<String> titles = [
     'Intro',
     'Tipo',
@@ -29,7 +30,6 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
     'Pagamento'
   ];
   final BoxHelper boxHelper = BoxHelper();
-  final GlobalKey<UserBottomSheetState> _userBottomSheetKey = GlobalKey();
 
   void _updateStep(int newStep) {
     print('newStep: $newStep');
@@ -39,10 +39,18 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
     });
   }
 
+  void _updateBoxType(BoxType? newBoxType) {
+    print("new box type: $newBoxType");
+    setState(() {
+      if (newBoxType != null) {
+        _boxType = newBoxType;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _userBottomSheetKey,
         backgroundColor: AppColors.light.background,
         appBar: _appBar(),
         body: Padding(
@@ -58,7 +66,8 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
                   ? BoxTypeStep(
                       boxHelper: boxHelper,
                       currentStep: _currentStep,
-                      onStepChanged: _updateStep)
+                      onStepChanged: _updateStep,
+                      onBoxTypeChanged: _updateBoxType)
                   : const SizedBox(),
               _currentStep == 3
                   ? BoxCategoryStep(
@@ -99,18 +108,15 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
 
   Widget _renderFormStep() {
     if (_currentStep == 4) {
-      switch (boxHelper.boxType) {
+      switch (_boxType) {
         case BoxType.rewind:
-          return RewindFormStep(
-              boxHelper: boxHelper, userBottomSheetKey: _userBottomSheetKey);
+          return RewindFormStep(boxHelper: boxHelper);
         case BoxType.future:
-          return FutureFormStep(
-              boxHelper: boxHelper, userBottomSheetKey: _userBottomSheetKey);
+          return FutureFormStep(boxHelper: boxHelper);
         case BoxType.messageInABottle:
           return SocialFormStep(boxHelper: boxHelper);
         default:
-          return RewindFormStep(
-              boxHelper: boxHelper, userBottomSheetKey: _userBottomSheetKey);
+          return RewindFormStep(boxHelper: boxHelper);
       }
     }
     return const Gap();

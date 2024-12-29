@@ -9,6 +9,7 @@ import 'package:quomia/widgets/box/card/box_card.dart';
 class BoxTypeStep extends StatefulWidget {
   final BoxHelper boxHelper;
   final ValueChanged<int> onStepChanged;
+  final ValueChanged<BoxType?> onBoxTypeChanged;
   final int currentStep;
 
   final String messageInABottle = 'Message in a bottle';
@@ -19,6 +20,7 @@ class BoxTypeStep extends StatefulWidget {
       {super.key,
       required this.boxHelper,
       required this.onStepChanged,
+      required this.onBoxTypeChanged,
       required this.currentStep});
 
   @override
@@ -66,6 +68,10 @@ class _BoxTypeStepState extends State<BoxTypeStep> {
               setState(() {
                 widget.boxHelper.boxType = _convert(widget.future);
                 widget.onStepChanged(widget.currentStep + 1);
+
+                if (widget.boxHelper.boxType != null) {
+                  widget.onBoxTypeChanged(widget.boxHelper.boxType);
+                }
               });
             },
           ),
@@ -80,6 +86,10 @@ class _BoxTypeStepState extends State<BoxTypeStep> {
                 setState(() {
                   widget.boxHelper.boxType = _convert(widget.rewind);
                   widget.onStepChanged(widget.currentStep + 1);
+
+                  if (widget.boxHelper.boxType != null) {
+                    widget.onBoxTypeChanged(widget.boxHelper.boxType);
+                  }
                 });
               }),
           const Gap(
@@ -93,6 +103,10 @@ class _BoxTypeStepState extends State<BoxTypeStep> {
                 setState(() {
                   widget.boxHelper.boxType = _convert(widget.messageInABottle);
                   widget.onStepChanged(widget.currentStep + 1);
+
+                  if (widget.boxHelper.boxType != null) {
+                    widget.onBoxTypeChanged(widget.boxHelper.boxType);
+                  }
                 });
               })
         ],
@@ -103,7 +117,7 @@ class _BoxTypeStepState extends State<BoxTypeStep> {
   BoxType? _convert(String title) {
     BoxType? boxType;
 
-    switch (title) {
+    switch (title.toLowerCase()) {
       case 'message in a bottle':
         boxType = BoxType.messageInABottle;
       case 'future':

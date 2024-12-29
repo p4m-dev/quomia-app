@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:quomia/utils/app_colors.dart';
 
 class CustomDateUtils {
   static DateFormat dateFormat = DateFormat("dd/MM/yyyy");
@@ -29,7 +31,8 @@ class CustomDateUtils {
     List<DateTime> dateList = [];
 
     for (int year = startDate.year; year <= endDate.year; year++) {
-      dateList.add(DateTime(year, startDate.month, startDate.day));
+      dateList.add(DateTime(year, startDate.month, startDate.day,
+          startDate.hour, startDate.minute));
     }
 
     return dateList;

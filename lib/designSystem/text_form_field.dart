@@ -13,6 +13,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool? hasOnTap;
   final TextInputType textInput;
   final VoidCallback? callback;
+  final FormFieldValidator<String>? validator;
 
   const CustomTextFormField(
       {super.key,
@@ -26,7 +27,8 @@ class CustomTextFormField extends StatelessWidget {
       this.readOnly,
       this.hasOnTap,
       required this.textInput,
-      this.callback});
+      this.callback,
+      this.validator});
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +75,8 @@ class CustomTextFormField extends StatelessWidget {
           onTap: hasOnTap != null && hasOnTap == true ? callback : null,
           keyboardType: textInput,
           maxLines: textInput == TextInputType.multiline ? 8 : null,
-          maxLength: textInput == TextInputType.multiline ? 1000 : null),
+          maxLength: textInput == TextInputType.multiline ? 1000 : null,
+          validator: validator),
     );
   }
 

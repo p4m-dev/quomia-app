@@ -20,7 +20,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
 
-// Funzione per gestire il click su "Accedi"
   Future<void> _handleLogin() async {
     if (_formKey.currentState?.validate() ?? false) {
       setState(() {
@@ -225,7 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                               return 'Inserisci un\'email valida';
                                             }
 
-                                            return null; // Email valida
+                                            return null;
                                           }),
                                     ),
                                   ),

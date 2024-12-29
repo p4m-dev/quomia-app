@@ -1,8 +1,4 @@
-import 'dart:collection';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:quomia/designSystem/button.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/info_message.dart';
@@ -15,17 +11,14 @@ import 'package:quomia/models/box/category.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/utils/date_utils.dart';
+import 'package:quomia/utils/firebase_utils.dart';
 import 'package:quomia/widgets/box/user_bottomsheet.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:quomia/widgets/common/custom_loader.dart';
 
 class RewindFormStep extends StatefulWidget {
   final BoxHelper boxHelper;
-  final GlobalKey<UserBottomSheetState> userBottomSheetKey;
 
-  const RewindFormStep(
-      {super.key, required this.boxHelper, required this.userBottomSheetKey});
+  const RewindFormStep({super.key, required this.boxHelper});
 
   @override
   State<RewindFormStep> createState() => _RewindFormStepState();
@@ -41,6 +34,9 @@ class _RewindFormStepState extends State<RewindFormStep> {
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _fileController = TextEditingController();
   final TextEditingController _futureDateController = TextEditingController();
+  final TextEditingController _dateEndController = TextEditingController();
+  final TextEditingController _timeEndController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   String selectedFilePath = '';
   bool? _isAnonymousEnabled = false;
@@ -61,6 +57,7 @@ class _RewindFormStepState extends State<RewindFormStep> {
   String dropdownValue = '';
   DateTime futureDate = DateTime.now();
   DateTime previousDate = DateTime.now();
+  DateTime startDate = DateTime.now();
 
   @override
   void initState() {
@@ -96,203 +93,319 @@ class _RewindFormStepState extends State<RewindFormStep> {
               const Gap(height: 10.0),
               const Subtitle(data: 'Inserisci i dati necessari'),
               const Gap(height: 10.0),
-              Container(
-                width: double.infinity,
-                height: 440,
-                decoration: BoxDecoration(
-                  color: AppColors.light.primaryBackground,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(15, 20, 15, 20),
-                  child: Stack(children: [
-                    SafeArea(
-                      top: true,
-                      child: SingleChildScrollView(
-                        child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Column(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  InfoMessage(
-                                    title: 'Rewind',
-                                    content:
-                                        'Stai acquistando un box temporale di tipo rewind',
-                                    color: AppColors.light.tertiary,
-                                    onClose: () {
-                                      setState(() {
-                                        showMessage = false;
-                                      });
-                                    },
-                                  ),
-                                  const Gap(height: 10.0),
-                                  const Label(data: 'A chi desideri inviarlo?'),
-                                  const Gap(height: 10.0),
-                                  CustomTextFormField(
-                                    width: double.infinity,
-                                    controller: _userController,
-                                    hintText: 'Destinatario',
-                                    textInput: TextInputType.text,
-                                    hasOnTap: true,
-                                    hasSuffixIcon: true,
-                                    suffixIcon: IconButton(
-                                        onPressed: () {
-                                          widget.userBottomSheetKey.currentState
-                                              ?.openBottomSheet();
-                                        },
-                                        icon: const Icon(Icons.search)),
-                                  )
-                                ],
-                              ),
-                              const Gap(height: 10.0),
-                              const Label(data: 'Inserisci un titolo'),
-                              const Gap(height: 10.0),
-                              CustomTextFormField(
+              Form(
+                key: _formKey,
+                child: Container(
+                  width: double.infinity,
+                  height: 440,
+                  decoration: BoxDecoration(
+                    color: AppColors.light.primaryBackground,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Padding(
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(15, 20, 15, 20),
+                    child: Stack(children: [
+                      SafeArea(
+                        top: true,
+                        child: SingleChildScrollView(
+                          child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    InfoMessage(
+                                      title: 'Rewind',
+                                      content:
+                                          'Stai acquistando un box temporale di tipo rewind',
+                                      color: AppColors.light.tertiary,
+                                      onClose: () {
+                                        setState(() {
+                                          showMessage = false;
+                                        });
+                                      },
+                                    ),
+                                    const Gap(height: 10.0),
+                                    const Label(
+                                        data: 'A chi desideri inviarlo?'),
+                                    const Gap(height: 10.0),
+                                    CustomTextFormField(
+                                      width: double.infinity,
+                                      controller: _userController,
+                                      hintText: 'Destinatario',
+                                      textInput: TextInputType.text,
+                                      hasOnTap: true,
+                                      hasSuffixIcon: true,
+                                      readOnly: true,
+                                      suffixIcon: IconButton(
+                                          onPressed: () async {
+                                            final selectedUser =
+                                                await UserBottomSheetUtils
+                                                    .showUserBottomSheet(
+                                                        context);
+                                            if (selectedUser != null) {
+                                              setState(() {
+                                                _userController.text =
+                                                    selectedUser;
+                                              });
+                                            }
+                                          },
+                                          icon: const Icon(Icons.search)),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Il Destinatario deve essere presente!';
+                                        }
+
+                                        return null;
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                const Gap(height: 10.0),
+                                const Label(data: 'Inserisci un titolo'),
+                                const Gap(height: 10.0),
+                                CustomTextFormField(
                                   width: double.infinity,
                                   controller: _titleController,
                                   hintText: 'Titolo',
                                   hasOnTap: true,
-                                  textInput: TextInputType.text),
-                              const Gap(height: 10.0),
-                              _renderMediaTextField(),
-                              const Gap(height: 20.0),
-                              const Divider(
-                                height: 5,
-                              ),
-                              const Gap(height: 20.0),
-                              const Label(
-                                data: 'Seleziona una data passata',
-                                fontSize: 20,
-                              ),
-                              const Gap(height: 10.0),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Label(data: 'Data'),
-                                      const Gap(height: 10.0),
-                                      CustomTextFormField(
-                                        width: 155,
-                                        controller: _dateController,
-                                        hintText: 'Data',
-                                        hasPrefixIcon: true,
-                                        prefixIcon: Icons.date_range,
-                                        hasOnTap: true,
-                                        textInput: TextInputType.datetime,
-                                        callback: () {
-                                          _selectDate(context);
-                                        },
-                                      )
-                                    ],
-                                  ),
-                                  const Gap(width: 10.0),
-                                  Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Label(data: 'Tempo'),
-                                      const Gap(height: 10.0),
-                                      CustomTextFormField(
-                                        width: 155,
-                                        controller: _timeController,
-                                        hintText: 'Tempo',
-                                        hasPrefixIcon: true,
-                                        prefixIcon: Icons.timelapse,
-                                        hasOnTap: true,
-                                        textInput: TextInputType.datetime,
-                                        callback: () {
-                                          _selectTime(context);
-                                        },
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const Gap(height: 20.0),
-                              const Label(
-                                data:
-                                    'Per quanto tempo desideri acquistarlo nel futuro?',
-                              ),
-                              const Gap(height: 10.0),
-                              _datesDropdown(),
-                              const Gap(height: 10.0),
-                              const Label(
-                                data: 'Data in cui il box verrà consegnato',
-                              ),
-                              const Gap(height: 10.0),
-                              InfoMessage(
-                                  title: 'Promemoria',
-                                  content:
-                                      'Lo slot temporale scelto indica che il messaggio verrà inoltrato al destinatario ogni anno al momento indicato fino alla data specificata.\nCliccando sul tasto info puoi vedere le date di consegna future.',
-                                  color: AppColors.light.primary),
-                              const Gap(height: 10.0),
-                              CustomTextFormField(
-                                  controller: _futureDateController,
-                                  hintText: 'Data',
-                                  textInput: TextInputType.datetime,
-                                  readOnly: true,
-                                  hasSuffixIcon: true,
-                                  suffixIcon: IconButton(
-                                      onPressed: () {
-                                        _showBottomSheet();
-                                      },
-                                      icon: const Icon(Icons.info_outline))),
-                              const Gap(height: 20.0),
-                              const Divider(
-                                height: 5,
-                              ),
-                              const Gap(height: 10.0),
-                              const Label(
+                                  textInput: TextInputType.text,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Il Titolo deve essere presente!';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const Gap(height: 10.0),
+                                _renderMediaTextField(),
+                                const Gap(height: 20.0),
+                                const Divider(
+                                  height: 5,
+                                ),
+                                const Gap(height: 20.0),
+                                const Label(
+                                    data:
+                                        'Seleziona una data passata di inizio'),
+                                const Gap(height: 10.0),
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Label(data: 'Data'),
+                                        const Gap(height: 10.0),
+                                        CustomTextFormField(
+                                          width: 155,
+                                          controller: _dateController,
+                                          hintText: 'Data',
+                                          hasPrefixIcon: true,
+                                          prefixIcon: Icons.date_range,
+                                          hasOnTap: true,
+                                          textInput: TextInputType.datetime,
+                                          callback: () {
+                                            _selectDate(
+                                                context, _dateController);
+                                          },
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'La data deve essere presente!';
+                                            }
+
+                                            return null;
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                    const Gap(width: 10.0),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Label(data: 'Tempo'),
+                                        const Gap(height: 10.0),
+                                        CustomTextFormField(
+                                            width: 155,
+                                            controller: _timeController,
+                                            hintText: 'Tempo',
+                                            hasPrefixIcon: true,
+                                            prefixIcon: Icons.timelapse,
+                                            hasOnTap: true,
+                                            textInput: TextInputType.datetime,
+                                            callback: () {
+                                              _selectTime(
+                                                  context, _timeController);
+                                            },
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Il tempo deve essere presente!';
+                                              }
+
+                                              return null;
+                                            })
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                const Gap(height: 20.0),
+                                const Label(
+                                    data: 'Seleziona una data passata di fine'),
+                                const Gap(height: 10.0),
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Label(data: 'Data'),
+                                        const Gap(height: 10.0),
+                                        CustomTextFormField(
+                                          width: 155,
+                                          controller: _dateEndController,
+                                          hintText: 'Data',
+                                          hasPrefixIcon: true,
+                                          prefixIcon: Icons.date_range,
+                                          hasOnTap: true,
+                                          textInput: TextInputType.datetime,
+                                          callback: () {
+                                            _selectDate(
+                                                context, _dateEndController);
+                                          },
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'La data deve essere presente!';
+                                            }
+
+                                            return null;
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                    const Gap(width: 10.0),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Label(data: 'Tempo'),
+                                        const Gap(height: 10.0),
+                                        CustomTextFormField(
+                                            width: 155,
+                                            controller: _timeEndController,
+                                            hintText: 'Tempo',
+                                            hasPrefixIcon: true,
+                                            prefixIcon: Icons.timelapse,
+                                            hasOnTap: true,
+                                            textInput: TextInputType.datetime,
+                                            callback: () {
+                                              _selectTime(
+                                                  context, _timeEndController);
+                                            },
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Il tempo deve essere presente!';
+                                              }
+
+                                              return null;
+                                            })
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                const Gap(height: 20.0),
+                                const Label(
                                   data:
-                                      'Vuoi rivelare la tua identità alla persona cara?'),
-                              const Gap(height: 10.0),
-                              ListTileTheme(
-                                horizontalTitleGap: 0.0,
-                                child: CheckboxListTile(
-                                    value: _isAnonymousEnabled,
-                                    title: const Text("Anonimo"),
-                                    contentPadding: EdgeInsets.zero,
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    activeColor: AppColors.light.secondary,
-                                    checkColor: AppColors.light.tertiary,
-                                    side: BorderSide(
-                                        width: 2,
-                                        color: AppColors.light.primary),
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        _isAnonymousEnabled = newValue;
-                                      });
-                                    }),
-                              ),
-                              const Gap(height: 10.0),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Button(
-                                      backgroundColor: AppColors.light.tertiary,
-                                      label: 'Annulla',
-                                      onPressed: () {}),
-                                  const Gap(width: 10.0),
-                                  Button(
-                                      backgroundColor: AppColors.light.primary,
-                                      label: 'Sigilla',
-                                      onPressed: _handleBoxBuy)
-                                ],
-                              ),
-                            ]),
+                                      'Per quanto tempo desideri acquistarlo nel futuro?',
+                                ),
+                                const Gap(height: 10.0),
+                                _datesDropdown(),
+                                const Gap(height: 10.0),
+                                const Label(
+                                  data: 'Data in cui il box verrà consegnato',
+                                ),
+                                const Gap(height: 10.0),
+                                InfoMessage(
+                                    title: 'Promemoria',
+                                    content:
+                                        'Lo slot temporale scelto indica che il messaggio verrà inoltrato al destinatario ogni anno al momento indicato fino alla data specificata.\nCliccando sul tasto info puoi vedere le date di consegna future.',
+                                    color: AppColors.light.primary),
+                                const Gap(height: 10.0),
+                                CustomTextFormField(
+                                    controller: _futureDateController,
+                                    hintText: 'Data',
+                                    textInput: TextInputType.datetime,
+                                    readOnly: true,
+                                    hasSuffixIcon: true,
+                                    suffixIcon: IconButton(
+                                        onPressed: () {
+                                          _showBottomSheet();
+                                        },
+                                        icon: const Icon(Icons.info_outline))),
+                                const Gap(height: 20.0),
+                                const Divider(
+                                  height: 5,
+                                ),
+                                const Gap(height: 10.0),
+                                const Label(
+                                    data:
+                                        'Vuoi rivelare la tua identità alla persona cara?'),
+                                const Gap(height: 10.0),
+                                ListTileTheme(
+                                  horizontalTitleGap: 0.0,
+                                  child: CheckboxListTile(
+                                      value: _isAnonymousEnabled,
+                                      title: const Text("Anonimo"),
+                                      contentPadding: EdgeInsets.zero,
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
+                                      activeColor: AppColors.light.secondary,
+                                      checkColor: AppColors.light.tertiary,
+                                      side: BorderSide(
+                                          width: 2,
+                                          color: AppColors.light.primary),
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          _isAnonymousEnabled = newValue;
+                                        });
+                                      }),
+                                ),
+                                const Gap(height: 10.0),
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Button(
+                                        backgroundColor:
+                                            AppColors.light.tertiary,
+                                        label: 'Annulla',
+                                        onPressed: () {}),
+                                    const Gap(width: 10.0),
+                                    Button(
+                                        backgroundColor:
+                                            AppColors.light.primary,
+                                        label: 'Sigilla',
+                                        onPressed: _handleBoxBuy)
+                                  ],
+                                ),
+                              ]),
+                        ),
                       ),
-                    ),
-                  ]),
+                    ]),
+                  ),
                 ),
               ),
             ]),
@@ -302,6 +415,8 @@ class _RewindFormStepState extends State<RewindFormStep> {
   }
 
   void _showBottomSheet() {
+    var dates = CustomDateUtils.generateDateList(startDate, futureDate);
+
     showModalBottomSheet(
         backgroundColor: AppColors.light.primaryBackground,
         context: context,
@@ -309,14 +424,14 @@ class _RewindFormStepState extends State<RewindFormStep> {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListView.builder(
-              itemCount: 10,
+              itemCount: dates.length,
               itemBuilder: (context, index) {
                 String formattedDate =
-                    CustomDateUtils.fullFormat.format(futureDate);
+                    CustomDateUtils.fullFormat.format(dates[index]);
 
                 return Container(
-                  margin: EdgeInsets.all(8.0),
-                  padding: EdgeInsets.all(16.0),
+                  margin: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
                     color: AppColors.light.background,
                     borderRadius: BorderRadius.circular(16),
@@ -371,7 +486,7 @@ class _RewindFormStepState extends State<RewindFormStep> {
 
           print("FutureDate: $futureDate");
 
-          String formattedDate = CustomDateUtils.dateFormat.format(futureDate);
+          String formattedDate = CustomDateUtils.fullFormat.format(futureDate);
           _futureDateController.text = formattedDate;
         });
       },
@@ -382,8 +497,8 @@ class _RewindFormStepState extends State<RewindFormStep> {
   }
 
   DateTime _convertDates(String dropdownValue) {
-    var timeText = _timeController.text;
-    var dateText = _dateController.text;
+    var timeText = _timeEndController.text;
+    var dateText = _dateEndController.text;
 
     DateTime time = CustomDateUtils.timeFormat.parse(timeText);
     DateTime date = CustomDateUtils.dateFormat.parse(dateText);
@@ -396,55 +511,67 @@ class _RewindFormStepState extends State<RewindFormStep> {
       time.minute,
     );
 
-    DateTime currentDate = CustomDateUtils.findNextFutureDate(previousDate);
+    startDate = CustomDateUtils.findNextFutureDate(previousDate);
+
+    startDate = DateTime(
+      startDate.year,
+      startDate.month,
+      startDate.day,
+      time.hour,
+      time.minute,
+    );
+
+    DateTime futureLocalDate = DateTime.now();
 
     switch (dropdownValue) {
       case '1 Anno':
-        currentDate = CustomDateUtils.addYears(currentDate, 1);
+        futureLocalDate = CustomDateUtils.addYears(startDate, 1);
       case '2 Anni':
-        currentDate = CustomDateUtils.addYears(currentDate, 2);
+        futureLocalDate = CustomDateUtils.addYears(startDate, 2);
       case '5 Anni':
-        currentDate = CustomDateUtils.addYears(currentDate, 5);
+        futureLocalDate = CustomDateUtils.addYears(startDate, 5);
       case '10 Anni':
-        currentDate = CustomDateUtils.addYears(currentDate, 10);
+        futureLocalDate = CustomDateUtils.addYears(startDate, 10);
       case '15 Anni':
-        currentDate = CustomDateUtils.addYears(currentDate, 15);
+        futureLocalDate = CustomDateUtils.addYears(startDate, 15);
       case '20 Anni':
-        currentDate = CustomDateUtils.addYears(currentDate, 20);
+        futureLocalDate = CustomDateUtils.addYears(startDate, 20);
       case '25 Anni':
-        currentDate = CustomDateUtils.addYears(currentDate, 25);
+        futureLocalDate = CustomDateUtils.addYears(startDate, 25);
       case '30 Anni':
-        currentDate = CustomDateUtils.addYears(currentDate, 30);
+        futureLocalDate = CustomDateUtils.addYears(startDate, 30);
     }
 
     return DateTime(
-      currentDate.year,
-      currentDate.month,
-      currentDate.day,
+      futureLocalDate.year,
+      futureLocalDate.month,
+      futureLocalDate.day,
       time.hour,
       time.minute,
     );
   }
 
   Future<void> _handleBoxBuy() async {
-    setState(() {
-      isLoading = true;
-    });
+    if (_formKey.currentState?.validate() ?? false) {
+      setState(() {
+        isLoading = true;
+      });
 
-    await Future.delayed(const Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 5));
 
-    setState(() {
-      isLoading = false;
-    });
+      setState(() {
+        isLoading = false;
+      });
 
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text(
-                'Acquisto del box avvenuto correttamente! A breve riceverai una mail di conferma.')),
-      );
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text(
+                  'Acquisto del box avvenuto correttamente! A breve riceverai una mail di conferma.')),
+        );
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()));
+      }
     }
   }
 
@@ -460,7 +587,13 @@ class _RewindFormStepState extends State<RewindFormStep> {
                   width: double.infinity,
                   controller: _contentController,
                   hintText: 'Messaggio',
-                  textInput: TextInputType.multiline)
+                  textInput: TextInputType.multiline,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Si prega di inserire un messaggio!';
+                    }
+                    return null;
+                  })
             ],
           )
         : Column(
@@ -475,45 +608,22 @@ class _RewindFormStepState extends State<RewindFormStep> {
                 textInput: TextInputType.text,
                 readOnly: true,
                 hasOnTap: true,
-                callback: _pickFile,
+                callback: () async {
+                  final selectedFile = await FirebaseUtils.selectFile();
+
+                  if (selectedFile != null) {
+                    setState(() {
+                      selectedFilePath = selectedFile['fileName'];
+                    });
+                  }
+                },
               )
             ],
           );
   }
 
-  void _pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['jpg', 'png', 'mp4', 'mp3', 'wav'],
-        withData: true);
-
-    if (result != null) {
-      setState(() {
-        selectedFilePath = result.files.single.name;
-      });
-
-      _fileController.text = selectedFilePath;
-
-      Uint8List? fileBytes = result.files.first.bytes;
-      String fileName = selectedFilePath;
-
-      final storageRef = FirebaseStorage.instance.ref();
-      final folderRef = storageRef.child('testuser/image');
-      final imageRef = folderRef.child(fileName);
-
-      if (fileBytes != null) {
-        print('saving');
-
-        try {
-          await imageRef.putData(fileBytes);
-        } on FirebaseException catch (e) {
-          print(e.stackTrace);
-        }
-      }
-    }
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> _selectDate(
+      BuildContext context, TextEditingController controller) async {
     var previousDate = DateTime.now().subtract(const Duration(days: 1));
 
     DateTime? selectedDate = await showDatePicker(
@@ -537,12 +647,13 @@ class _RewindFormStepState extends State<RewindFormStep> {
 
     if (selectedDate != null) {
       setState(() {
-        _dateController.text = CustomDateUtils.dateFormat.format(selectedDate);
+        controller.text = CustomDateUtils.dateFormat.format(selectedDate);
       });
     }
   }
 
-  Future<void> _selectTime(BuildContext context) async {
+  Future<void> _selectTime(
+      BuildContext context, TextEditingController controller) async {
     TimeOfDay? selectedTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -562,7 +673,7 @@ class _RewindFormStepState extends State<RewindFormStep> {
 
     if (selectedTime != null) {
       setState(() {
-        _timeController.text = selectedTime.format(context);
+        controller.text = selectedTime.format(context);
       });
     }
   }
