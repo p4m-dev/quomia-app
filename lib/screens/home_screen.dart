@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quomia/screens/buy_box_screen.dart';
 import 'package:quomia/screens/user_profile_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/home/box.dart';
@@ -34,7 +35,10 @@ class HomeScreen extends StatelessWidget {
         centerTitle: false,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const BuyBoxScreen()));
+        },
         tooltip: 'Cool FAB',
         shape: const CircleBorder(),
         child: Container(
