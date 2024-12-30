@@ -284,7 +284,13 @@ class _RewindFormStepState extends State<RewindFormStep> {
                                         backgroundColor:
                                             AppColors.light.tertiary,
                                         label: 'Annulla',
-                                        onPressed: () {}),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const HomeScreen()));
+                                        }),
                                     const Gap(width: 10.0),
                                     Button(
                                         backgroundColor:

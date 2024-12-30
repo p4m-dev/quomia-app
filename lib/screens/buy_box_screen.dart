@@ -13,6 +13,7 @@ import 'package:quomia/widgets/box/steps/future_form_step.dart';
 import 'package:quomia/widgets/box/steps/intro_step.dart';
 import 'package:quomia/widgets/box/steps/rewind_form_step.dart';
 import 'package:quomia/widgets/box/steps/social_form_step.dart';
+import 'package:quomia/widgets/common/custom_bottom_app_bar.dart';
 
 class BuyBoxScreen extends StatefulWidget {
   const BuyBoxScreen({super.key});
@@ -59,125 +60,85 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
           child: Container(
             width: 56,
             height: 56,
-            child: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: RadialGradient(
-                center: Alignment(0.0, 0.0),
+                center: const Alignment(0.0, 0.0),
                 radius: 0.5,
                 colors: [
-                  Color(0xFF00BF63),
-                  Color(0xFF377C45),
+                  AppColors.light.tertiary,
+                  AppColors.light.primary,
                 ],
               ),
+            ),
+            child: FaIcon(
+              FontAwesomeIcons.hourglass,
+              color: AppColors.light.primaryText,
+              size: 24,
             ),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: BottomAppBar(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            height: 60,
-            color: Colors.white,
-            shape: const CircularNotchedRectangle(),
-            notchMargin: 5,
-            elevation: 5,
-            child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    tooltip: 'Open navigation menu',
-                    icon: const Icon(
-                      Icons.home,
-                      color: Colors.black,
-                      size: 32,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeScreen()));
-                    },
-                  ),
-                  IconButton(
-                    tooltip: 'Open navigation menu',
-                    icon: const Icon(
-                      Icons.search,
-                      color: Colors.black,
-                      size: 32,
-                    ),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    tooltip: 'Open navigation menu',
-                    icon: const Icon(Icons.menu),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    tooltip: 'Open navigation menu',
-                    icon: const FaIcon(
-                      FontAwesomeIcons.user,
-                      color: Colors.black,
-                      size: 24,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const UserProfileScreen()));
-                    },
-                  ),
-                ])),
-        body: Padding(
-          padding: const EdgeInsets.all(0.0),
+        bottomNavigationBar: CustomBottomAppBar(onHomePressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()));
+        }, onProfilePressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const UserProfileScreen()));
+        }),
+        body: SafeArea(
           child: Column(
             children: [
               StepProgressView(
                   titles: titles,
                   width: MediaQuery.of(context).size.width,
                   currentStep: _currentStep),
-              _currentStep == 1 ? const IntroStep() : const SizedBox(),
-              _currentStep == 2
-                  ? BoxTypeStep(
-                      boxHelper: boxHelper,
-                      currentStep: _currentStep,
-                      onStepChanged: _updateStep,
-                      onBoxTypeChanged: _updateBoxType)
-                  : const SizedBox(),
-              _currentStep == 3
-                  ? BoxCategoryStep(
-                      boxHelper: boxHelper,
-                      currentStep: _currentStep,
-                      onStepChanged: _updateStep,
-                    )
-                  : const SizedBox(),
-              _renderFormStep(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  TextButton(
-                    onPressed: _currentStep > 1
-                        ? () {
-                            setState(() {
-                              _currentStep--;
-                            });
-                          }
-                        : null,
-                    style: TextButton.styleFrom(
-                        foregroundColor: AppColors.light.primary),
-                    child: const Text('Indietro'),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      if (_currentStep == 1) const IntroStep(),
+                      if (_currentStep == 2)
+                        BoxTypeStep(
+                            boxHelper: boxHelper,
+                            currentStep: _currentStep,
+                            onStepChanged: _updateStep,
+                            onBoxTypeChanged: _updateBoxType),
+                      if (_currentStep == 3)
+                        BoxCategoryStep(
+                          boxHelper: boxHelper,
+                          currentStep: _currentStep,
+                          onStepChanged: _updateStep,
+                        ),
+                      if (_currentStep == 4) _renderFormStep(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          TextButton(
+                            onPressed: _currentStep > 1
+                                ? () {
+                                    setState(() {
+                                      _currentStep--;
+                                    });
+                                  }
+                                : null,
+                            style: TextButton.styleFrom(
+                                foregroundColor: AppColors.light.primary),
+                            child: const Text('Indietro'),
+                          ),
+                          if (_currentStep == 1)
+                            TextButton(
+                                onPressed: _enableNextButton(),
+                                style: TextButton.styleFrom(
+                                    foregroundColor: AppColors.light.primary),
+                                child: const Text('Avanti')),
+                        ],
+                      ),
+                    ],
                   ),
-                  _currentStep == 1
-                      ? TextButton(
-                          onPressed: _enableNextButton(),
-                          style: TextButton.styleFrom(
-                              foregroundColor: AppColors.light.primary),
-                          child: const Text('Avanti'))
-                      : const SizedBox(),
-                ],
+                ),
               ),
             ],
           ),
@@ -185,19 +146,16 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
   }
 
   Widget _renderFormStep() {
-    if (_currentStep == 4) {
-      switch (_boxType) {
-        case BoxType.rewind:
-          return RewindFormStep(boxHelper: boxHelper);
-        case BoxType.future:
-          return FutureFormStep(boxHelper: boxHelper);
-        case BoxType.messageInABottle:
-          return SocialFormStep(boxHelper: boxHelper);
-        default:
-          return RewindFormStep(boxHelper: boxHelper);
-      }
+    switch (_boxType) {
+      case BoxType.rewind:
+        return RewindFormStep(boxHelper: boxHelper);
+      case BoxType.future:
+        return FutureFormStep(boxHelper: boxHelper);
+      case BoxType.messageInABottle:
+        return SocialFormStep(boxHelper: boxHelper);
+      default:
+        return RewindFormStep(boxHelper: boxHelper);
     }
-    return const Gap();
   }
 
   AppBar _appBar() {

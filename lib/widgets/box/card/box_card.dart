@@ -24,10 +24,21 @@ class BoxCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       child: InkWell(
+        splashColor: Colors.white.withOpacity(0.3),
+        highlightColor: Colors.white.withOpacity(0.1),
         onTap: callback,
-        child: Container(
-          width: double.infinity,
-          height: 130,
+        borderRadius: BorderRadius.circular(16),
+        overlayColor: WidgetStateProperty.resolveWith<Color?>(
+          (Set<WidgetState> states) {
+            if (states.contains(WidgetState.pressed)) {
+              return Colors.black.withOpacity(0.1);
+            }
+            return null;
+          },
+        ),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -39,6 +50,13 @@ class BoxCard extends StatelessWidget {
               end: const AlignmentDirectional(1, 0),
             ),
             borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                offset: const Offset(0, 4),
+                blurRadius: 8,
+              ),
+            ],
           ),
           child: Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),

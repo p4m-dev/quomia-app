@@ -51,204 +51,214 @@ class _FutureFormStepState extends State<FutureFormStep> {
     return Stack(children: [
       Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const CustomTitle(data: 'Creazione Box'),
-              const Gap(height: 10.0),
-              const Subtitle(data: 'Inserisci i dati necessari'),
-              const Gap(height: 10.0),
-              Form(
-                key: _formKey,
-                child: Container(
-                  width: double.infinity,
-                  height: 440,
-                  decoration: BoxDecoration(
-                    color: AppColors.light.primaryBackground,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(15, 20, 15, 20),
-                    child: Stack(children: [
-                      SafeArea(
-                        top: true,
-                        child: SingleChildScrollView(
-                          child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(),
-                                Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InfoMessage(
-                                      title: 'Future',
-                                      content:
-                                          'Stai acquistando un box temporale future',
-                                      color: AppColors.light.tertiary,
-                                      onClose: () {
-                                        setState(() {
-                                          showMessage = false;
-                                        });
-                                      },
-                                    ),
-                                    const Gap(height: 10.0),
-                                    const Label(
-                                        data: 'A chi desideri inviarlo?'),
-                                    const Gap(height: 10.0),
-                                    CustomTextFormField(
+        child: SingleChildScrollView(
+          child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const CustomTitle(data: 'Creazione Box'),
+                const Gap(height: 10.0),
+                const Subtitle(data: 'Inserisci i dati necessari'),
+                const Gap(height: 10.0),
+                Form(
+                  key: _formKey,
+                  child: Container(
+                    width: double.infinity,
+                    height: 440,
+                    decoration: BoxDecoration(
+                      color: AppColors.light.primaryBackground,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(15, 20, 15, 20),
+                      child: Stack(children: [
+                        SafeArea(
+                          top: true,
+                          child: SingleChildScrollView(
+                            child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      InfoMessage(
+                                        title: 'Future',
+                                        content:
+                                            'Stai acquistando un box temporale future',
+                                        color: AppColors.light.tertiary,
+                                        onClose: () {
+                                          setState(() {
+                                            showMessage = false;
+                                          });
+                                        },
+                                      ),
+                                      const Gap(height: 10.0),
+                                      const Label(
+                                          data: 'A chi desideri inviarlo?'),
+                                      const Gap(height: 10.0),
+                                      CustomTextFormField(
+                                        width: double.infinity,
+                                        controller: _userController,
+                                        hintText: 'Destinatario',
+                                        textInput: TextInputType.text,
+                                        hasOnTap: true,
+                                        hasSuffixIcon: true,
+                                        readOnly: true,
+                                        suffixIcon: IconButton(
+                                            onPressed: () async {
+                                              final selectedUser =
+                                                  await UserBottomSheetUtils
+                                                      .showUserBottomSheet(
+                                                          context);
+                                              if (selectedUser != null) {
+                                                setState(() {
+                                                  _userController.text =
+                                                      selectedUser;
+                                                });
+                                              }
+                                            },
+                                            icon: const Icon(Icons.search)),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Il Destinatario deve essere presente!';
+                                          }
+                                          return null;
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                  const Gap(height: 10.0),
+                                  const Label(data: 'Inserisci un titolo'),
+                                  const Gap(height: 10.0),
+                                  CustomTextFormField(
                                       width: double.infinity,
-                                      controller: _userController,
-                                      hintText: 'Destinatario',
-                                      textInput: TextInputType.text,
+                                      controller: _titleController,
+                                      hintText: 'Titolo',
                                       hasOnTap: true,
-                                      hasSuffixIcon: true,
-                                      readOnly: true,
-                                      suffixIcon: IconButton(
-                                          onPressed: () async {
-                                            final selectedUser =
-                                                await UserBottomSheetUtils
-                                                    .showUserBottomSheet(
-                                                        context);
-                                            if (selectedUser != null) {
-                                              setState(() {
-                                                _userController.text =
-                                                    selectedUser;
-                                              });
-                                            }
-                                          },
-                                          icon: const Icon(Icons.search)),
+                                      textInput: TextInputType.text,
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'Il Destinatario deve essere presente!';
+                                          return 'Il Titolo deve essere presente!';
                                         }
                                         return null;
-                                      },
-                                    )
-                                  ],
-                                ),
-                                const Gap(height: 10.0),
-                                const Label(data: 'Inserisci un titolo'),
-                                const Gap(height: 10.0),
-                                CustomTextFormField(
-                                    width: double.infinity,
-                                    controller: _titleController,
-                                    hintText: 'Titolo',
-                                    hasOnTap: true,
-                                    textInput: TextInputType.text,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Il Titolo deve essere presente!';
-                                      }
-                                      return null;
-                                    }),
-                                const Gap(height: 10.0),
-                                MediaTextFieldWidget(
-                                  category: widget.boxHelper.category,
-                                  contentController: _contentController,
-                                  fileController: _fileController,
-                                  onFileSelected: (filePath) {
-                                    print(
-                                        'Percorso del file selezionato: $filePath');
-                                    _selectedFilePath = filePath ?? '';
-                                  },
-                                ),
-                                const Gap(height: 20.0),
-                                const Divider(
-                                  height: 5,
-                                ),
-                                const Gap(height: 20.0),
-                                const Label(
-                                  data:
-                                      'Seleziona l intervallo di tempo che vuoi acquistare',
-                                  fontSize: 20,
-                                ),
-                                const Gap(height: 10.0),
-                                const Label(
-                                  data: 'Tempo iniziale',
-                                ),
-                                const Gap(height: 10.0),
-                                DateTimeRow(
-                                  dateController: _dateStartController,
-                                  timeController: _timeStartController,
-                                  isFutureDate: true,
-                                ),
-                                const Gap(height: 20.0),
-                                const Label(
-                                  data: 'Tempo finale',
-                                ),
-                                const Gap(height: 20.0),
-                                DateTimeRow(
-                                  dateController: _dateEndController,
-                                  timeController: _timeEndController,
-                                  isFutureDate: true,
-                                ),
-                                const Gap(height: 20.0),
-                                const Label(
-                                  data: 'Vuoi aggiungere una data di consegna?',
-                                ),
-                                const Gap(height: 20.0),
-                                DateTimeRow(
-                                  dateController: _deliveryDateController,
-                                  timeController: _deliveryTimeController,
-                                  isFutureDate: true,
-                                ),
-                                const Gap(height: 20.0),
-                                const Divider(
-                                  height: 5,
-                                ),
-                                const Gap(height: 20.0),
-                                const Label(
-                                    data:
-                                        'Vuoi rivelare la tua identità alla persona cara?'),
-                                const Gap(height: 10.0),
-                                ListTileTheme(
-                                  horizontalTitleGap: 0.0,
-                                  child: CheckboxListTile(
-                                      value: _isAnonymousEnabled,
-                                      title: const Text("Anonimo"),
-                                      contentPadding: EdgeInsets.zero,
-                                      controlAffinity:
-                                          ListTileControlAffinity.leading,
-                                      activeColor: AppColors.light.secondary,
-                                      checkColor: AppColors.light.tertiary,
-                                      side: BorderSide(
-                                          width: 2,
-                                          color: AppColors.light.primary),
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          _isAnonymousEnabled = newValue;
-                                        });
                                       }),
-                                ),
-                                const Gap(height: 10.0),
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Button(
-                                        backgroundColor:
-                                            AppColors.light.tertiary,
-                                        label: 'Annulla',
-                                        onPressed: () {}),
-                                    const Gap(width: 10.0),
-                                    Button(
-                                        backgroundColor:
-                                            AppColors.light.primary,
-                                        label: 'Sigilla',
-                                        onPressed: _handleBoxBuy)
-                                  ],
-                                ),
-                              ]),
+                                  const Gap(height: 10.0),
+                                  MediaTextFieldWidget(
+                                    category: widget.boxHelper.category,
+                                    contentController: _contentController,
+                                    fileController: _fileController,
+                                    onFileSelected: (filePath) {
+                                      print(
+                                          'Percorso del file selezionato: $filePath');
+                                      _selectedFilePath = filePath ?? '';
+                                    },
+                                  ),
+                                  const Gap(height: 20.0),
+                                  const Divider(
+                                    height: 5,
+                                  ),
+                                  const Gap(height: 20.0),
+                                  const Label(
+                                    data:
+                                        'Seleziona l intervallo di tempo che vuoi acquistare',
+                                    fontSize: 20,
+                                  ),
+                                  const Gap(height: 10.0),
+                                  const Label(
+                                    data: 'Tempo iniziale',
+                                  ),
+                                  const Gap(height: 10.0),
+                                  DateTimeRow(
+                                    dateController: _dateStartController,
+                                    timeController: _timeStartController,
+                                    isFutureDate: true,
+                                  ),
+                                  const Gap(height: 20.0),
+                                  const Label(
+                                    data: 'Tempo finale',
+                                  ),
+                                  const Gap(height: 20.0),
+                                  DateTimeRow(
+                                    dateController: _dateEndController,
+                                    timeController: _timeEndController,
+                                    isFutureDate: true,
+                                  ),
+                                  const Gap(height: 20.0),
+                                  const Label(
+                                    data:
+                                        'Vuoi aggiungere una data di consegna?',
+                                  ),
+                                  const Gap(height: 20.0),
+                                  DateTimeRow(
+                                    dateController: _deliveryDateController,
+                                    timeController: _deliveryTimeController,
+                                    isFutureDate: true,
+                                  ),
+                                  const Gap(height: 20.0),
+                                  const Divider(
+                                    height: 5,
+                                  ),
+                                  const Gap(height: 20.0),
+                                  const Label(
+                                      data:
+                                          'Vuoi rivelare la tua identità alla persona cara?'),
+                                  const Gap(height: 10.0),
+                                  ListTileTheme(
+                                    horizontalTitleGap: 0.0,
+                                    child: CheckboxListTile(
+                                        value: _isAnonymousEnabled,
+                                        title: const Text("Anonimo"),
+                                        contentPadding: EdgeInsets.zero,
+                                        controlAffinity:
+                                            ListTileControlAffinity.leading,
+                                        activeColor: AppColors.light.secondary,
+                                        checkColor: AppColors.light.tertiary,
+                                        side: BorderSide(
+                                            width: 2,
+                                            color: AppColors.light.primary),
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            _isAnonymousEnabled = newValue;
+                                          });
+                                        }),
+                                  ),
+                                  const Gap(height: 10.0),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Button(
+                                          backgroundColor:
+                                              AppColors.light.tertiary,
+                                          label: 'Annulla',
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const HomeScreen()));
+                                          }),
+                                      const Gap(width: 10.0),
+                                      Button(
+                                          backgroundColor:
+                                              AppColors.light.primary,
+                                          label: 'Sigilla',
+                                          onPressed: _handleBoxBuy)
+                                    ],
+                                  ),
+                                ]),
+                          ),
                         ),
-                      ),
-                    ]),
+                      ]),
+                    ),
                   ),
                 ),
-              ),
-            ]),
+              ]),
+        ),
       ),
       if (isLoading) const CustomLoader()
     ]);

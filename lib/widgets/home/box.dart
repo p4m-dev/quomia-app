@@ -19,7 +19,7 @@ class _BoxState extends State<Box> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(12, 6, 12, 6),
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: Container(
         width: 345,
         height: 600,
