@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:quomia/designSystem/button.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/info_message.dart';

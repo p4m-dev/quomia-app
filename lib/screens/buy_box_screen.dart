@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/step_progress_view.dart';
 import 'package:quomia/models/box/box_helper.dart';
 import 'package:quomia/models/box/box_type.dart';

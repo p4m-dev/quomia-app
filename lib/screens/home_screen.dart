@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quomia/designSystem/label.dart';
 import 'package:quomia/screens/buy_box_screen.dart';
 import 'package:quomia/screens/user_profile_screen.dart';
