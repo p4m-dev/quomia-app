@@ -14,4 +14,12 @@ class Box {
       required this.content,
       required this.dates,
       required this.user});
+
+  factory Box.fromJson(Map<String, dynamic> json) {
+    return Box(
+        info: json['info'],
+        content: json['content'],
+        dates: json['dates'],
+        user: json['user']);
+  }
 }

@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:quomia/http/constants.dart';
 import 'package:quomia/models/box/box.dart';
 
-class Http {
-  Future<void> _postBox(Box box) async {
+class HttpBoxService {
+  Future<void> postBox(Box box) async {
     var client = http.Client();
     var baseUrl = Constants.baseUrl;
     var url = Uri.parse("$baseUrl/v1/box");
