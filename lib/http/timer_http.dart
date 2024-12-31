@@ -7,11 +7,10 @@ class HttpTimerService {
     final url = Uri.parse('https://jsonplaceholder.typicode.com/photos');
     final response = await http.get(url);
 
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      return data.take(20).map((json) => Timer.fromJson(json)).toList();
-    } else {
+    if (response.statusCode != 200) {
       throw Exception('Failed to load boxes');
     }
+    final List<dynamic> data = jsonDecode(response.body);
+    return data.take(20).map((json) => Timer.fromJson(json)).toList();
   }
 }
