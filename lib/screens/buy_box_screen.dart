@@ -70,10 +70,12 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
                 ],
               ),
             ),
-            child: FaIcon(
-              FontAwesomeIcons.hourglass,
-              color: AppColors.light.primaryText,
-              size: 24,
+            child: Center(
+              child: FaIcon(
+                FontAwesomeIcons.hourglass,
+                color: AppColors.light.primaryText,
+                size: 24,
+              ),
             ),
           ),
         ),

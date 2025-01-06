@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quomia/screens/buy_box_screen.dart';
+import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:quomia/widgets/common/custom_bottom_app_bar.dart';
 import 'package:quomia/widgets/user/chips_choice.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -24,6 +28,46 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     return Scaffold(
         backgroundColor: AppColors.light.background,
         appBar: appBar(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const BuyBoxScreen()));
+          },
+          tooltip: 'Cool FAB',
+          shape: const CircleBorder(),
+          child: Container(
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: RadialGradient(
+                center: const Alignment(0.0, 0.0),
+                radius: 0.5,
+                colors: [
+                  AppColors.light.tertiary,
+                  AppColors.light.primary,
+                ],
+              ),
+            ),
+            child: Center(
+              child: FaIcon(
+                FontAwesomeIcons.hourglass,
+                color: AppColors.light.primaryText,
+                size: 24,
+              ),
+            ),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: CustomBottomAppBar(onHomePressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()));
+        }, onProfilePressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const UserProfileScreen()));
+        }),
         body: Stack(
           children: [
             SafeArea(

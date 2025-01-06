@@ -4,12 +4,14 @@ import 'package:quomia/models/box/timer.dart';
 
 class HttpTimerService {
   Future<List<Timer>> fetchTimers() async {
-    final url = Uri.parse('https://jsonplaceholder.typicode.com/photos');
+    final url = Uri.parse('https://api-arluua2rla-ey.a.run.app/timers');
     final response = await http.get(url);
+    print('Response: $response');
 
     if (response.statusCode != 200) {
       throw Exception('Failed to load boxes');
     }
+
     final List<dynamic> data = jsonDecode(response.body);
     return data.take(20).map((json) => Timer.fromJson(json)).toList();
   }

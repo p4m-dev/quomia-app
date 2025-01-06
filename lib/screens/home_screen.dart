@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quomia/designSystem/label.dart';
 import 'package:quomia/screens/buy_box_screen.dart';
 import 'package:quomia/screens/user_profile_screen.dart';
@@ -46,19 +47,22 @@ class HomeScreen extends StatelessWidget {
         child: Container(
           width: 56,
           height: 56,
-          child: Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: RadialGradient(
-              center: Alignment(0.0, 0.0),
+              center: const Alignment(0.0, 0.0),
               radius: 0.5,
               colors: [
-                Color(0xFF00BF63),
-                Color(0xFF377C45),
+                AppColors.light.tertiary,
+                AppColors.light.primary,
               ],
+            ),
+          ),
+          child: Center(
+            child: FaIcon(
+              FontAwesomeIcons.hourglass,
+              color: AppColors.light.primaryText,
+              size: 24,
             ),
           ),
         ),
