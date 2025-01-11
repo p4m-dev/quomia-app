@@ -18,7 +18,6 @@ import 'package:quomia/widgets/box/steps/date_time_row.dart';
 import 'package:quomia/widgets/box/steps/media_textfield.dart';
 import 'package:quomia/widgets/box/user_bottomsheet.dart';
 import 'package:quomia/widgets/common/custom_loader.dart';
-import 'package:quomia/models/box/category.dart';
 
 class RewindFormStep extends StatefulWidget {
   final BoxHelper boxHelper;

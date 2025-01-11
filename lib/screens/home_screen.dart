@@ -5,7 +5,7 @@ import 'package:quomia/screens/buy_box_screen.dart';
 import 'package:quomia/screens/user_profile_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/common/custom_bottom_app_bar.dart';
-import 'package:quomia/widgets/home/box.dart';
+import 'package:quomia/widgets/home/social_box.dart';
 import 'package:quomia/widgets/home/suggestions.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -72,36 +72,24 @@ class HomeScreen extends StatelessWidget {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const UserProfileScreen()));
       }),
-      body: SafeArea(
+      body: const SafeArea(
         top: true,
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Label(
+              Label(
                 data: 'I miei suggerimenti',
                 fontSize: 24,
               ),
-              const TimerSuggestion(),
-              const Label(
+              Flexible(child: TimerSuggestion()),
+              Label(
                 data: 'Per te',
                 fontSize: 24,
               ),
-              Expanded(
-                  child: ListView(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                children: [
-                  const Box(),
-                  const Box(),
-                  const Box(),
-                  const Box(),
-                  const Box()
-                ],
-              ))
+              Flexible(child: SocialBox()),
             ],
           ),
         ),

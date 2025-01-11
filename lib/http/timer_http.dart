@@ -12,7 +12,10 @@ class HttpTimerService {
       throw Exception('Failed to load boxes');
     }
 
-    final List<dynamic> data = jsonDecode(response.body);
-    return data.take(20).map((json) => Timer.fromJson(json)).toList();
+    final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+
+    final List<dynamic> timersList = jsonResponse['timers'];
+
+    return timersList.take(20).map((json) => Timer.fromJson(json)).toList();
   }
 }

@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:quomia/utils/app_colors.dart';
 
 class CustomDateUtils {
   static DateFormat dateFormat = DateFormat("dd/MM/yyyy");
@@ -36,5 +34,10 @@ class CustomDateUtils {
     }
 
     return dateList;
+  }
+
+  static DateTime timestampToDateTime(Map<String, dynamic> timestamp) {
+    return DateTime.fromMillisecondsSinceEpoch(timestamp['_seconds'] * 1000 +
+        (timestamp['_nanoseconds'] / 1000000).round());
   }
 }

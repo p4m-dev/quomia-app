@@ -152,7 +152,7 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
         return RewindFormStep(boxHelper: boxHelper);
       case BoxType.future:
         return FutureFormStep(boxHelper: boxHelper);
-      case BoxType.messageInABottle:
+      case BoxType.social:
         return SocialFormStep(boxHelper: boxHelper);
       default:
         return RewindFormStep(boxHelper: boxHelper);

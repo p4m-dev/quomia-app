@@ -7,7 +7,7 @@ class HttpBoxService {
   Future<void> postBox(Box box) async {
     var client = http.Client();
     var baseUrl = Constants.baseUrl;
-    var url = Uri.parse("$baseUrl/v1/box");
+    var url = Uri.parse("$baseUrl/v1/box/social");
 
     try {
       final response = await client.post(
@@ -26,6 +26,33 @@ class HttpBoxService {
       }
     } catch (e) {
       print(e);
+    } finally {
+      client.close();
+    }
+  }
+
+  Future<List<Box>> fetchSocialBoxes() async {
+    var client = http.Client();
+    var baseUrl = Constants.baseUrl;
+    var url = Uri.parse("$baseUrl/box/social");
+
+    try {
+      final response = await client.get(url);
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to load boxes');
+      }
+
+      final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+
+      final socialBoxes = jsonResponse['boxes'];
+
+      List<Box> boxes = socialBoxes.map((json) => Box.fromJson(json)).toList();
+
+      return boxes;
+    } catch (e) {
+      print(e);
+      return List.empty();
     } finally {
       client.close();
     }

@@ -125,7 +125,7 @@ class _BoxTypeStepState extends State<BoxTypeStep> {
 
     switch (title.toLowerCase()) {
       case 'message in a bottle':
-        boxType = BoxType.messageInABottle;
+        boxType = BoxType.social;
       case 'future':
         boxType = BoxType.future;
       case 'rewind':

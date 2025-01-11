@@ -17,9 +17,10 @@ class Box {
 
   factory Box.fromJson(Map<String, dynamic> json) {
     return Box(
-        info: json['info'],
-        content: json['content'],
-        dates: json['dates'],
-        user: json['user']);
+      info: Info.fromJson(json['info']),
+      content: Content.fromJson(json['content']),
+      dates: Dates.fromJson(json['dates']),
+      user: BoxUser.fromJson(json['user']),
+    );
   }
 }

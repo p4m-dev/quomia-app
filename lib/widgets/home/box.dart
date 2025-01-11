@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:quomia/designSystem/gap.dart';
+import 'package:quomia/models/box/box.dart';
 
-class Box extends StatefulWidget {
-  const Box({super.key});
+class BoxWidget extends StatefulWidget {
+  final Box box;
+
+  const BoxWidget({super.key, required this.box});
 
   @override
-  State<Box> createState() => _BoxState();
+  State<BoxWidget> createState() => _BoxWidgetState();
 }
 
-class _BoxState extends State<Box> {
+class _BoxWidgetState extends State<BoxWidget> {
   final chatController = TextEditingController();
 
   @override
@@ -69,7 +73,7 @@ class _BoxState extends State<Box> {
                       ),
                     ],
                   ),
-                  Spacer(),
+                  const Gap(),
                   Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [

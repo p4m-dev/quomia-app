@@ -14,4 +14,14 @@ class Info {
       required this.category,
       this.isAnonymous,
       required this.accessCode});
+
+  factory Info.fromJson(Map<String, dynamic> json) {
+    return Info(
+      title: json['title'],
+      type: BoxTypeExtension.fromString(json['type']),
+      category: CategoryExtension.fromString(json['category']),
+      isAnonymous: json['isAnonymous'],
+      accessCode: json['accessCode'],
+    );
+  }
 }
