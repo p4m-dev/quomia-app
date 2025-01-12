@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quomia/designSystem/gap.dart';
+import 'package:quomia/designSystem/label.dart';
 import 'package:quomia/models/box/box.dart';
 
 class BoxWidget extends StatefulWidget {
@@ -61,15 +62,14 @@ class _BoxWidgetState extends State<BoxWidget> {
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Laura Scolari',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                      Text(
-                        'Roma, Italia',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w300, fontSize: 14),
+                      Label(
+                          data: widget.box.user.sender,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                      Label(
+                        data: 'widget.box.user.location',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
                       ),
                     ],
                   ),

@@ -1,5 +1,3 @@
-import 'package:quomia/utils/date_utils.dart';
-
 class Dates {
   DateTime startDate;
   DateTime endDate;
@@ -9,7 +7,8 @@ class Dates {
 
   factory Dates.fromJson(Map<String, dynamic> json) {
     return Dates(
-        startDate: CustomDateUtils.timestampToDateTime(json['startDate']),
-        endDate: CustomDateUtils.timestampToDateTime(json['endDate']));
+        startDate: DateTime.parse(json['startDate']),
+        endDate: DateTime.parse(json['endDate']),
+        deliveryDate: DateTime.parse(json['deliveryDate']));
   }
 }

@@ -45,11 +45,9 @@ class HttpBoxService {
 
       final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
 
-      final socialBoxes = jsonResponse['boxes'];
+      final List<dynamic> socialBoxes = jsonResponse['boxes'];
 
-      List<Box> boxes = socialBoxes.map((json) => Box.fromJson(json)).toList();
-
-      return boxes;
+      return socialBoxes.map((json) => Box.fromJson(json)).toList();
     } catch (e) {
       print(e);
       return List.empty();
