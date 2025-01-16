@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/label.dart';
 import 'package:quomia/screens/buy_box_screen.dart';
 import 'package:quomia/screens/user_profile_screen.dart';
@@ -72,25 +73,30 @@ class HomeScreen extends StatelessWidget {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const UserProfileScreen()));
       }),
-      body: const SafeArea(
+      body: SafeArea(
         top: true,
         child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Label(
-                data: 'I miei suggerimenti',
-                fontSize: 24,
-              ),
-              Flexible(child: TimerSuggestion()),
-              Label(
-                data: 'Per te',
-                fontSize: 24,
-              ),
-              Flexible(child: SocialBox()),
-            ],
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                Label(
+                  data: 'I miei suggerimenti',
+                  fontSize: 24,
+                ),
+                TimerSuggestion(),
+                Label(
+                  data: 'Per te',
+                  fontSize: 24,
+                ),
+                Gap(
+                  height: 20.0,
+                ),
+                SocialBox(),
+              ],
+            ),
           ),
         ),
       ),

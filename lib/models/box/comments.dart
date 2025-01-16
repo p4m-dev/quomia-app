@@ -7,8 +7,11 @@ class Comments {
   Comments({required this.totalOfComments, required this.timerComments});
 
   factory Comments.fromJson(Map<String, dynamic> json) {
+    var list = json['timerComments'] as List;
+    List<TimerComment> timerComments =
+        list.map((i) => TimerComment.fromJson(i)).toList();
+
     return Comments(
-        totalOfComments: json['totalOfComments'],
-        timerComments: json['timerComments']);
+        totalOfComments: json['totalOfComments'], timerComments: timerComments);
   }
 }

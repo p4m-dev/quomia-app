@@ -35,8 +35,7 @@ class _TimerSuggestionState extends State<TimerSuggestion> {
 
             // Error state
             if (snapshot.hasError) {
-              print("error");
-              return const Center(child: Text('No timers found'));
+              return const TimerSuggestionsPlaceholderWidget();
             }
 
             if (!snapshot.hasData || snapshot.data!.isEmpty) {

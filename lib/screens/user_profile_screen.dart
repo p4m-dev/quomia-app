@@ -181,7 +181,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const CircleAvatar(
-                          //backgroundColor: Colors.greenAccent[400],
                           radius: 30,
                           child: Text(
                             'SM',
@@ -204,15 +203,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    const Text('Piano Gratuito',
-                        style: TextStyle(
-                          fontFamily: 'DM Sans',
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        )),
                     const SizedBox(
                       height: 10.0,
                     ),

@@ -9,7 +9,6 @@ extension BoxTypeExtension on BoxType {
         return BoxType.rewind;
       case 'social':
         return BoxType.social;
-      // aggiungi altri casi se necessario
       default:
         throw Exception('Unknown BoxType: $type');
     }

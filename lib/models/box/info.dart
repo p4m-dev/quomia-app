@@ -28,6 +28,6 @@ class Info {
         isAnonymous: json['isAnonymous'],
         accessCode: json['accessCode'],
         likes: json['likes'],
-        comments: json['comments']);
+        comments: Comments.fromJson(json['comments']));
   }
 }

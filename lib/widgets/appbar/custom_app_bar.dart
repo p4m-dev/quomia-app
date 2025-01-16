@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quomia/utils/app_colors.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -10,8 +11,8 @@ class CustomAppBar extends StatelessWidget {
       backgroundColor: AppColors.light.primaryBackground,
       automaticallyImplyLeading: false,
       leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_rounded,
+          icon: FaIcon(
+            FontAwesomeIcons.arrowLeft,
             color: AppColors.light.primaryText,
             size: 26,
           ),

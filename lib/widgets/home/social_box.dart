@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/http/box_http.dart';
 import 'package:quomia/models/box/box.dart';
 import 'package:quomia/widgets/home/box.dart';
@@ -43,9 +44,19 @@ class _SocialBoxState extends State<SocialBox> {
 
               final boxes = snapshot.data!;
 
-              return ListView.builder(itemBuilder: (context, index) {
-                return BoxWidget(box: boxes[index]);
-              });
+              return ListView.builder(
+                  itemCount: boxes.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        BoxWidget(box: boxes[index]),
+                        if (index < boxes.length - 1)
+                          const Gap(
+                            height: 16,
+                          )
+                      ],
+                    );
+                  });
             }));
   }
 }
