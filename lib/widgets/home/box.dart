@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -177,9 +179,9 @@ class _BoxWidgetState extends State<BoxWidget> {
         const Spacer(),
         IconButton(
           tooltip: 'Apri menu box',
-          icon: const Icon(
+          icon: Icon(
             Icons.keyboard_control,
-            color: Colors.black,
+            color: AppColors.light.primaryText,
           ),
           onPressed: () {},
         )
@@ -198,15 +200,7 @@ class _BoxWidgetState extends State<BoxWidget> {
 
   Widget _buildBoxContent(Content content) {
     if (content.fileType == FileType.image) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: Image.network(
-          content.filePath!,
-          width: 350,
-          height: 300,
-          fit: BoxFit.cover,
-        ),
-      );
+      return _buildImageContent(content.filePath!);
     } else if (content.fileType == FileType.video) {
       _videoController =
           VideoPlayerController.networkUrl(Uri(path: content.filePath));
@@ -225,30 +219,77 @@ class _BoxWidgetState extends State<BoxWidget> {
           : const SizedBox(
               width: 350, height: 300, child: CircularProgressIndicator());
     } else if (content.fileType == FileType.text) {
+      return _buildTextContent(content.message!);
     } else if (content.fileType == FileType.audio) {
       return _buildAudioPlayer(content.filePath!);
     }
     return const Gap();
   }
 
+  Widget _buildTextContent(String message) {
+    return SizedBox(
+      width: 350,
+      height: 300,
+      child: Label(data: message),
+    );
+  }
+
+  Widget _buildImageContent(String filePath) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: Image.network(
+        filePath,
+        width: 350,
+        height: 300,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
   Widget _buildAudioPlayer(String filePath) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        IconButton(
-          icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
-          onPressed: () async {
-            if (isPlaying) {
-              await _audioPlayer.pause();
-            } else {
-              await _audioPlayer.play(UrlSource(filePath));
-            }
-            setState(() {
-              isPlaying = !isPlaying;
-            });
-          },
+        SizedBox(
+          width: 350,
+          height: 300,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image(
+                    image: const AssetImage(
+                        'assets/images/audio-record-image-placeholder.png'),
+                    fit: BoxFit.cover,
+                    color: Colors.black.withOpacity(0.6),
+                    colorBlendMode: BlendMode.darken,
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: IconButton(
+                  icon: Icon(
+                    isPlaying ? Icons.pause : Icons.play_arrow,
+                    color: Colors.white,
+                    size: 64.0,
+                  ),
+                  onPressed: () async {
+                    if (isPlaying) {
+                      await _audioPlayer.pause();
+                    } else {
+                      await _audioPlayer.play(UrlSource(filePath));
+                    }
+                    setState(() {
+                      isPlaying = !isPlaying;
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
-        const Text('Audio Player')
       ],
     );
   }
