@@ -1,7 +1,7 @@
 enum FileType { image, video, audio, text }
 
 extension FileTypeExtension on FileType {
-  static FileType fromString(String type) {
+  static FileType? fromString(String type) {
     switch (type) {
       case 'image':
         return FileType.image;
@@ -12,7 +12,7 @@ extension FileTypeExtension on FileType {
       case 'text':
         return FileType.text;
       default:
-        throw Exception('Unknown FileType: $type');
+        return null;
     }
   }
 }

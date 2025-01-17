@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -39,7 +37,6 @@ class _BoxWidgetState extends State<BoxWidget> {
       }).catchError((error) {
         print('Errore durante il caricamento del video: $error');
       });
-    ;
   }
 
   @override
@@ -145,6 +142,11 @@ class _BoxWidgetState extends State<BoxWidget> {
                   color: AppColors.light.primaryText,
                   size: 24,
                 )),
+            const Label(
+              data: 'Tempo',
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
           ],
         ),
       ],
@@ -219,18 +221,48 @@ class _BoxWidgetState extends State<BoxWidget> {
           : const SizedBox(
               width: 350, height: 300, child: CircularProgressIndicator());
     } else if (content.fileType == FileType.text) {
-      return _buildTextContent(content.message!);
+      return _buildTextContent(widget.box.info.title, content.message!);
     } else if (content.fileType == FileType.audio) {
       return _buildAudioPlayer(content.filePath!);
     }
     return const Gap();
   }
 
-  Widget _buildTextContent(String message) {
-    return SizedBox(
+  Widget _buildTextContent(String title, String message) {
+    return Container(
       width: 350,
       height: 300,
-      child: Label(data: message),
+      decoration: BoxDecoration(
+        color: AppColors.light.background,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Label(
+                  data: title.toUpperCase(),
+                  color: AppColors.light.primaryText,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const Gap(
+                height: 10.0,
+              ),
+              Label(
+                data: message,
+                color: AppColors.light.primaryText,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
