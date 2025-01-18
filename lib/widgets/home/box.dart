@@ -29,11 +29,15 @@ class _BoxWidgetState extends State<BoxWidget> {
   @override
   void initState() {
     super.initState();
-    _videoController = VideoPlayerController.networkUrl(Uri(
-        path:
-            'https://firebasestorage.googleapis.com/v0/b/quomia.appspot.com/o/files%2FSimone%20Zanetti%2Fvideo%2F3195394-uhd_3840_2160_25fps.mp4?alt=media&token=393b02bd-07d4-4331-946d-5f8fde19eee6'))
+    _initializeVideo(
+        'https://firebasestorage.googleapis.com/v0/b/quomia.appspot.com/o/files%2Fsimone_zanetti%2Fvideo%2Fsample.mp4?alt=media&token=4dfe687c-bb01-41da-8092-b052bff762fe');
+  }
+
+  void _initializeVideo(String url) {
+    _videoController = VideoPlayerController.networkUrl(Uri.parse(url))
       ..initialize().then((_) {
         setState(() {});
+        _videoController.play();
       }).catchError((error) {
         print('Errore durante il caricamento del video: $error');
       });
@@ -201,31 +205,36 @@ class _BoxWidgetState extends State<BoxWidget> {
   }
 
   Widget _buildBoxContent(Content content) {
-    if (content.fileType == FileType.image) {
-      return _buildImageContent(content.filePath!);
-    } else if (content.fileType == FileType.video) {
-      _videoController =
-          VideoPlayerController.networkUrl(Uri(path: content.filePath));
-
-      return _videoController.value.isInitialized
-          ? Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: AspectRatio(
-                  aspectRatio: _videoController.value.aspectRatio,
-                  child: VideoPlayer(_videoController),
-                ),
-              ),
-            )
-          : const SizedBox(
-              width: 350, height: 300, child: CircularProgressIndicator());
-    } else if (content.fileType == FileType.text) {
-      return _buildTextContent(widget.box.info.title, content.message!);
-    } else if (content.fileType == FileType.audio) {
-      return _buildAudioPlayer(content.filePath!);
+    switch (content.fileType) {
+      case FileType.image:
+        return _buildImageContent(content.filePath!);
+      case FileType.video:
+        return _buildVideoContent(content.filePath!);
+      case FileType.text:
+        return _buildTextContent(widget.box.info.title, content.filePath!);
+      case FileType.audio:
+        return _buildAudioContent(content.filePath!);
+      default:
+        return const Gap();
     }
-    return const Gap();
+  }
+
+  Widget _buildVideoContent(String filePath) {
+    _initializeVideo(filePath);
+
+    return _videoController.value.isInitialized
+        ? Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: AspectRatio(
+                aspectRatio: _videoController.value.aspectRatio,
+                child: VideoPlayer(_videoController),
+              ),
+            ),
+          )
+        : const SizedBox(
+            width: 350, height: 300, child: CircularProgressIndicator());
   }
 
   Widget _buildTextContent(String title, String message) {
@@ -278,7 +287,7 @@ class _BoxWidgetState extends State<BoxWidget> {
     );
   }
 
-  Widget _buildAudioPlayer(String filePath) {
+  Widget _buildAudioContent(String filePath) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
