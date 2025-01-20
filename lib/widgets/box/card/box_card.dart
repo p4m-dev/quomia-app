@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/widgets/common/cached_image.dart';
 
 class BoxCard extends StatelessWidget {
   final String title;
@@ -97,15 +99,7 @@ class BoxCard extends StatelessWidget {
                 const Gap(
                   width: 16.0,
                 ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Image.network(
-                    imagePath,
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                CachedImage(imagePath: imagePath, width: 100, height: 100)
               ],
             ),
           ),

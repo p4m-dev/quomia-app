@@ -23,7 +23,7 @@ class CustomBottomAppBar extends StatelessWidget {
       height: 60,
       color: Colors.white,
       shape: const CircularNotchedRectangle(),
-      notchMargin: 5,
+      notchMargin: 6.0,
       elevation: 5,
       child: Row(
         mainAxisSize: MainAxisSize.max,

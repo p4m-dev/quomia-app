@@ -2,28 +2,28 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:quomia/http/constants.dart';
 import 'package:quomia/models/box/box.dart';
+import 'package:quomia/models/box/request/box_request.dart';
 
 class HttpBoxService {
-  Future<void> postBox(Box box) async {
+  Future<void> createBox(BoxRequest boxRequest, String url) async {
     var client = http.Client();
-    var baseUrl = Constants.baseUrl;
-    var url = Uri.parse("$baseUrl/v1/box/social");
+    var uri = Uri.parse(url);
 
     try {
       final response = await client.post(
-        url,
+        uri,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: box,
+        body: boxRequest,
       );
 
-      if (response.statusCode == 201) {
-        final responseData = jsonDecode(response.body);
-        print(responseData);
-      } else {
+      if (response.statusCode != 201) {
         throw Exception('Failed to post data');
       }
+
+      final responseData = jsonDecode(response.body);
+      print(responseData);
     } catch (e) {
       print(e);
     } finally {

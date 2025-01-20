@@ -20,6 +20,18 @@ class Info {
       required this.likes,
       required this.comments});
 
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'type': type,
+      'category': category,
+      'isAnonymous': isAnonymous,
+      'accessCode': accessCode,
+      'likes': likes,
+      'comments': comments,
+    };
+  }
+
   factory Info.fromJson(Map<String, dynamic> json) {
     return Info(
         title: json['title'],

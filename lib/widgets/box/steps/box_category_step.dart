@@ -92,7 +92,6 @@ class _BoxCategoryStepState extends State<BoxCategoryStep> {
   }
 
   cat.Category _convert(String title) {
-    print("current $title");
     cat.Category category = cat.Category.text;
 
     switch (title) {

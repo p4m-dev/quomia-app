@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quomia/designSystem/gap.dart';
@@ -59,12 +60,16 @@ class _BoxWidgetState extends State<BoxWidget> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
       ),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Padding(padding: const EdgeInsets.all(16.0), child: _timerRow()),
+          _timerRow(),
+          Align(
+              alignment: Alignment.topLeft,
+              child: Label(data: widget.box.info.title.toUpperCase())),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.only(bottom: 16.0),
             child: _buildBoxContent(widget.box.content),
           ),
           Padding(
@@ -277,12 +282,16 @@ class _BoxWidgetState extends State<BoxWidget> {
 
   Widget _buildImageContent(String filePath) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
-      child: Image.network(
-        filePath,
+      borderRadius: BorderRadius.circular(16.0),
+      child: CachedNetworkImage(
         width: 350,
         height: 300,
         fit: BoxFit.cover,
+        imageUrl: filePath,
+        placeholder: (context, url) =>
+            const Center(child: CircularProgressIndicator()),
+        errorWidget: (context, url, error) => const Icon(Icons.error),
+        fadeInDuration: const Duration(milliseconds: 500),
       ),
     );
   }

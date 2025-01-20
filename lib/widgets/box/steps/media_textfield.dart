@@ -9,7 +9,7 @@ class MediaTextFieldWidget extends StatefulWidget {
   final Category? category;
   final TextEditingController contentController;
   final TextEditingController fileController;
-  final ValueChanged<String?>? onFileSelected;
+  final ValueChanged<Map<String, dynamic>>? onFileSelected;
 
   const MediaTextFieldWidget({
     super.key,
@@ -63,7 +63,7 @@ class _MediaTextFieldWidgetState extends State<MediaTextFieldWidget> {
                     widget.fileController.text = _selectedFilePath ?? '';
 
                     if (widget.onFileSelected != null) {
-                      widget.onFileSelected!(_selectedFilePath);
+                      widget.onFileSelected!(selectedFile);
                     }
                   });
                 },

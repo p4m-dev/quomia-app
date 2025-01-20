@@ -8,8 +8,17 @@ import 'package:quomia/designSystem/label.dart';
 import 'package:quomia/designSystem/subtitle.dart';
 import 'package:quomia/designSystem/text_form_field.dart';
 import 'package:quomia/designSystem/title.dart';
+import 'package:quomia/http/box_http.dart';
+import 'package:quomia/http/constants.dart';
+import 'package:quomia/models/box/box.dart';
 import 'package:quomia/models/box/box_helper.dart';
+import 'package:quomia/models/box/box_type.dart';
 import 'package:quomia/models/box/category.dart';
+import 'package:quomia/models/box/file_type.dart';
+import 'package:quomia/models/box/request/box_request.dart';
+import 'package:quomia/models/box/request/dates.dart';
+import 'package:quomia/models/box/request/file.dart';
+import 'package:quomia/models/box/request/range.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/utils/firebase_utils.dart';
@@ -39,6 +48,7 @@ class _SocialFormStepState extends State<SocialFormStep> {
 
   String _selectedFilePath = '';
   bool isLoading = false;
+  late Uint8List _fileBytes;
 
   @override
   void dispose() {
@@ -111,10 +121,10 @@ class _SocialFormStepState extends State<SocialFormStep> {
                                     category: widget.boxHelper.category,
                                     contentController: _contentController,
                                     fileController: _fileController,
-                                    onFileSelected: (filePath) {
-                                      print(
-                                          'Percorso del file selezionato: $filePath');
-                                      _selectedFilePath = filePath ?? '';
+                                    onFileSelected: (fileData) {
+                                      _selectedFilePath =
+                                          fileData['fileName'] ?? '';
+                                      _fileBytes = fileData['fileBytes'];
                                     }),
                                 const Gap(height: 20.0),
                                 const Divider(
@@ -192,15 +202,26 @@ class _SocialFormStepState extends State<SocialFormStep> {
         isLoading = true;
       });
 
-      // Check for file upload -> upload to firebase only if category is interactive.
-      if (widget.boxHelper.category == Category.interactive) {
-        Uint8List fileBytes = selectedFile['fileBytes'];
+      BoxRequest boxRequest = BoxRequest(
+          sender: 'Samuel Maggio',
+          title: _titleController.text,
+          type: BoxType.social,
+          category: widget.boxHelper.category ?? Category.text,
+          file: widget.boxHelper.category == Category.interactive
+              ? File(
+                  name: _fileController.text,
+                  fileType: FileType.image,
+                  content: _fileBytes)
+              : null,
+          message: widget.boxHelper.category == Category.text
+              ? _contentController.text
+              : null,
+          dates:
+              Dates(range: Range(start: DateTime.now(), end: DateTime.now())));
 
-        FirebaseUtils.uploadFileToFirebase(
-            fileBytes: fileBytes, fileName: _selectedFilePath, folderPath: '');
-      }
-
-      // TODO: add call to BE
+      HttpBoxService httpBoxService = HttpBoxService();
+      var baseUrl = Constants.baseUrl;
+      await httpBoxService.createBox(boxRequest, '$baseUrl/box/social');
 
       setState(() {
         isLoading = false;
