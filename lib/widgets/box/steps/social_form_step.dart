@@ -21,6 +21,7 @@ import 'package:quomia/models/box/request/file.dart';
 import 'package:quomia/models/box/request/range.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/utils/date_utils.dart';
 import 'package:quomia/utils/firebase_utils.dart';
 import 'package:quomia/widgets/box/steps/date_time_row.dart';
 import 'package:quomia/widgets/box/steps/media_textfield.dart';
@@ -202,6 +203,11 @@ class _SocialFormStepState extends State<SocialFormStep> {
         isLoading = true;
       });
 
+      _dateStartController.text = '21/07/2028';
+      _timeStartController.text = '10:26';
+      _dateEndController.text = '22/07/2028';
+      _timeEndController.text = '12:26';
+
       BoxRequest boxRequest = BoxRequest(
           sender: 'Samuel Maggio',
           title: _titleController.text,
@@ -216,8 +222,12 @@ class _SocialFormStepState extends State<SocialFormStep> {
           message: widget.boxHelper.category == Category.text
               ? _contentController.text
               : null,
-          dates:
-              Dates(range: Range(start: DateTime.now(), end: DateTime.now())));
+          dates: Dates(
+              range: Range(
+                  start: CustomDateUtils.transformDate(
+                      _dateStartController.text, _timeStartController.text),
+                  end: CustomDateUtils.transformDate(
+                      _dateEndController.text, _timeEndController.text))));
 
       HttpBoxService httpBoxService = HttpBoxService();
       var baseUrl = Constants.baseUrl;

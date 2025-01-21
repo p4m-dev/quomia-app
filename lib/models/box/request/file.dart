@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:quomia/models/box/file_type.dart';
@@ -9,4 +10,12 @@ class File {
 
   const File(
       {required this.name, required this.fileType, required this.content});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'fileType': fileType.name,
+      'content': base64Encode(content),
+    };
+  }
 }

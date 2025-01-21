@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quomia/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:quomia/screens/buy_box_screen.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 
@@ -20,7 +21,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
           fontFamily: 'DM Sans', primaryColor: AppColors.light.primary),
-      home: const HomeScreen(),
+      home: const BuyBoxScreen(),
     );
   }
 }

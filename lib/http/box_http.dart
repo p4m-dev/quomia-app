@@ -15,7 +15,7 @@ class HttpBoxService {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: boxRequest,
+        body: jsonEncode(boxRequest),
       );
 
       if (response.statusCode != 201) {

@@ -25,6 +25,19 @@ class CustomDateUtils {
     );
   }
 
+  static DateTime transformDate(String dateText, String timeText) {
+    DateTime date = dateFormat.parse(dateText);
+    DateTime time = timeFormat.parse(timeText);
+
+    return DateTime(
+      date.year,
+      date.month,
+      date.day,
+      time.hour,
+      time.minute,
+    );
+  }
+
   static List<DateTime> generateDateList(DateTime startDate, DateTime endDate) {
     List<DateTime> dateList = [];
 
@@ -39,5 +52,9 @@ class CustomDateUtils {
   static DateTime timestampToDateTime(Map<String, dynamic> timestamp) {
     return DateTime.fromMillisecondsSinceEpoch(timestamp['_seconds'] * 1000 +
         (timestamp['_nanoseconds'] / 1000000).round());
+  }
+
+  static String parseDate(DateTime dateTime) {
+    return fullFormat.format(dateTime);
   }
 }

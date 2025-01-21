@@ -216,7 +216,7 @@ class _BoxWidgetState extends State<BoxWidget> {
       case FileType.video:
         return _buildVideoContent(content.filePath!);
       case FileType.text:
-        return _buildTextContent(widget.box.info.title, content.filePath!);
+        return _buildTextContent(widget.box.info.title, content.message!);
       case FileType.audio:
         return _buildAudioContent(content.filePath!);
       default:
@@ -255,15 +255,6 @@ class _BoxWidgetState extends State<BoxWidget> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Label(
-                  data: title.toUpperCase(),
-                  color: AppColors.light.primaryText,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
               const Gap(
                 height: 10.0,
               ),

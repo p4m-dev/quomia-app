@@ -9,8 +9,8 @@ class Content {
 
   factory Content.fromJson(Map<String, dynamic> json) {
     return Content(
-        message: json['message'],
-        filePath: json['filePath'],
+        message: json['message'] as String?,
+        filePath: json['filePath'] as String?,
         fileType: FileTypeExtension.fromString(json['fileType']));
   }
 }

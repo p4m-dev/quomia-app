@@ -24,4 +24,18 @@ class BoxRequest {
       this.message,
       this.isAnonymous,
       required this.dates});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'sender': sender,
+      'receiver': receiver,
+      'title': title,
+      'type': type.name,
+      'category': category.name,
+      'file': file?.toJson(),
+      'message': message,
+      'isAnonymous': isAnonymous,
+      'dates': dates.toJson(),
+    };
+  }
 }
