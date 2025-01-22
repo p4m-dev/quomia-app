@@ -82,10 +82,6 @@ class HomeScreen extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                Label(
-                  data: 'I miei suggerimenti',
-                  fontSize: 24,
-                ),
                 TimerSuggestion(),
                 Label(
                   data: 'Per te',

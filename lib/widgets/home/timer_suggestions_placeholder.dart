@@ -51,10 +51,20 @@ class TimerSuggestionsPlaceholderWidget extends StatelessWidget {
                 baseColor: Colors.grey[300]!,
                 highlightColor: Colors.grey[100]!,
                 child: CircleAvatar(
-                  radius: 40.0,
+                  minRadius: 30.0,
+                  maxRadius: 30.0,
                   backgroundColor: Colors.grey[300],
                 ),
               ),
+              Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                      width: 100,
+                      height: 15,
+                      decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(16.0)))),
             ],
           ),
         ));

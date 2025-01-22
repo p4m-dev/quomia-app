@@ -50,8 +50,6 @@ class _SocialFormStepState extends State<SocialFormStep> {
   late Uint8List _fileBytes;
   late String _selectedFilePath;
 
-  bool isLoading = false;
-
   @override
   void dispose() {
     _titleController.dispose();
@@ -66,136 +64,130 @@ class _SocialFormStepState extends State<SocialFormStep> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const CustomTitle(data: 'Creazione Box'),
-              const Gap(height: 10.0),
-              const Subtitle(data: 'Inserisci i dati necessari'),
-              const Gap(height: 10.0),
-              Form(
-                key: _formKey,
-                child: Container(
-                  width: double.infinity,
-                  height: 440,
-                  decoration: BoxDecoration(
-                    color: AppColors.light.primaryBackground,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(15, 20, 15, 20),
-                    child: Stack(children: [
-                      SafeArea(
-                        top: true,
-                        child: SingleChildScrollView(
-                          child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                InfoMessage(
-                                  title: 'Message in a bottle',
-                                  content:
-                                      'Stai acquistando un box temporale message in a bottle',
-                                  color: AppColors.light.tertiary,
-                                ),
-                                const Gap(height: 10.0),
-                                const Label(data: 'Inserisci un titolo'),
-                                const Gap(height: 10.0),
-                                CustomTextFormField(
-                                    width: double.infinity,
-                                    controller: _titleController,
-                                    hintText: 'Titolo',
-                                    hasOnTap: true,
-                                    textInput: TextInputType.text,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Il Titolo deve essere presente!';
-                                      }
-                                      return null;
-                                    }),
-                                const Gap(height: 10.0),
-                                MediaTextFieldWidget(
-                                    category: widget.boxHelper.category,
-                                    contentController: _contentController,
-                                    fileController: _fileController,
-                                    onFileSelected: (fileData) {
-                                      _selectedFilePath =
-                                          fileData['fileName'] ?? '';
-                                      _fileBytes = fileData['fileBytes'];
-                                    }),
-                                const Gap(height: 20.0),
-                                const Divider(
-                                  height: 5,
-                                ),
-                                const Gap(height: 10.0),
-                                const Label(
-                                  data:
-                                      'Seleziona l intervallo di tempo che vuoi acquistare',
-                                  fontSize: 20,
-                                ),
-                                const Gap(height: 10.0),
-                                const Label(
-                                  data: 'Tempo iniziale',
-                                ),
-                                const Gap(height: 10.0),
-                                DateTimeRow(
-                                  dateController: _dateStartController,
-                                  timeController: _timeStartController,
-                                  isFutureDate: true,
-                                ),
-                                const Gap(height: 20.0),
-                                const Label(
-                                  data: 'Tempo finale',
-                                ),
-                                const Gap(height: 10.0),
-                                DateTimeRow(
-                                  dateController: _dateEndController,
-                                  timeController: _timeEndController,
-                                  isFutureDate: true,
-                                ),
-                                const Gap(height: 10.0),
-                                const Divider(
-                                  height: 5,
-                                ),
-                                const Gap(height: 20.0),
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Button(
-                                        backgroundColor:
-                                            AppColors.light.tertiary,
-                                        label: 'Annulla',
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const HomeScreen()));
-                                        }),
-                                    const Gap(width: 10.0),
-                                    Button(
-                                        backgroundColor:
-                                            AppColors.light.primary,
-                                        label: 'Sigilla',
-                                        onPressed: _handleBoxBuy)
-                                  ],
-                                ),
-                              ]),
-                        ),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const CustomTitle(data: 'Creazione Box'),
+            const Gap(height: 10.0),
+            const Subtitle(data: 'Inserisci i dati necessari'),
+            const Gap(height: 10.0),
+            Form(
+              key: _formKey,
+              child: Container(
+                width: double.infinity,
+                height: 440,
+                decoration: BoxDecoration(
+                  color: AppColors.light.primaryBackground,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(15, 20, 15, 20),
+                  child: Stack(children: [
+                    SafeArea(
+                      top: true,
+                      child: SingleChildScrollView(
+                        child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              InfoMessage(
+                                title: 'Message in a bottle',
+                                content:
+                                    'Stai acquistando un box temporale message in a bottle',
+                                color: AppColors.light.tertiary,
+                              ),
+                              const Gap(height: 10.0),
+                              const Label(data: 'Inserisci un titolo'),
+                              const Gap(height: 10.0),
+                              CustomTextFormField(
+                                  width: double.infinity,
+                                  controller: _titleController,
+                                  hintText: 'Titolo',
+                                  hasOnTap: true,
+                                  textInput: TextInputType.text,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Il Titolo deve essere presente!';
+                                    }
+                                    return null;
+                                  }),
+                              const Gap(height: 10.0),
+                              MediaTextFieldWidget(
+                                  category: widget.boxHelper.category,
+                                  contentController: _contentController,
+                                  fileController: _fileController,
+                                  onFileSelected: (fileData) {
+                                    _selectedFilePath =
+                                        fileData['fileName'] ?? '';
+                                    _fileBytes = fileData['fileBytes'];
+                                  }),
+                              const Gap(height: 20.0),
+                              const Divider(
+                                height: 5,
+                              ),
+                              const Gap(height: 10.0),
+                              const Label(
+                                data:
+                                    'Seleziona l intervallo di tempo che vuoi acquistare',
+                                fontSize: 20,
+                              ),
+                              const Gap(height: 10.0),
+                              const Label(
+                                data: 'Tempo iniziale',
+                              ),
+                              const Gap(height: 10.0),
+                              DateTimeRow(
+                                dateController: _dateStartController,
+                                timeController: _timeStartController,
+                                isFutureDate: true,
+                              ),
+                              const Gap(height: 20.0),
+                              const Label(
+                                data: 'Tempo finale',
+                              ),
+                              const Gap(height: 10.0),
+                              DateTimeRow(
+                                dateController: _dateEndController,
+                                timeController: _timeEndController,
+                                isFutureDate: true,
+                              ),
+                              const Gap(height: 10.0),
+                              const Divider(
+                                height: 5,
+                              ),
+                              const Gap(height: 20.0),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Button(
+                                      backgroundColor: AppColors.light.tertiary,
+                                      label: 'Annulla',
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const HomeScreen()));
+                                      }),
+                                  const Gap(width: 10.0),
+                                  Button(
+                                      backgroundColor: AppColors.light.primary,
+                                      label: 'Sigilla',
+                                      onPressed: _handleBoxBuy)
+                                ],
+                              ),
+                            ]),
                       ),
-                    ]),
-                  ),
+                    ),
+                  ]),
                 ),
               ),
-            ]),
-      ),
-      if (isLoading) const CustomLoader()
-    ]);
+            ),
+          ]),
+    );
   }
 
   Future<void> _handleBoxBuy() async {
