@@ -42,11 +42,11 @@ class _DateTimeRowState extends State<DateTimeRow> {
               hasOnTap: true,
               textInput: TextInputType.datetime,
               callback: () {
-                if (widget.isFutureDate != null &&
-                    widget.isFutureDate == true) {
+                if (widget.isFutureDate == true) {
                   _selectFutureDate(context);
+                } else {
+                  _selectPastDate(context);
                 }
-                _selectPastDate(context);
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -93,7 +93,7 @@ class _DateTimeRowState extends State<DateTimeRow> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1970, 1, 1),
-      lastDate: DateTime(2150, 1, 1),
+      lastDate: DateTime.now(),
       confirmText: 'Conferma',
       cancelText: 'Annulla',
       builder: (context, child) {
@@ -124,7 +124,7 @@ class _DateTimeRowState extends State<DateTimeRow> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
-      lastDate: DateTime.now(),
+      lastDate: DateTime(2150, 1, 1),
       confirmText: 'Conferma',
       cancelText: 'Annulla',
       builder: (context, child) {
