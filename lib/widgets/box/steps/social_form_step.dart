@@ -27,8 +27,10 @@ import 'package:quomia/widgets/common/custom_loader.dart';
 
 class SocialFormStep extends StatefulWidget {
   final BoxHelper boxHelper;
+  final Function(bool) onLoading;
 
-  const SocialFormStep({super.key, required this.boxHelper});
+  const SocialFormStep(
+      {super.key, required this.boxHelper, required this.onLoading});
 
   @override
   State<SocialFormStep> createState() => _SocialFormStepState();
@@ -199,7 +201,7 @@ class _SocialFormStepState extends State<SocialFormStep> {
   Future<void> _handleBoxBuy() async {
     if (_formKey.currentState?.validate() ?? false) {
       setState(() {
-        isLoading = true;
+        widget.onLoading(true);
       });
 
       BoxRequest boxRequest = BoxRequest(
@@ -228,7 +230,7 @@ class _SocialFormStepState extends State<SocialFormStep> {
       await httpBoxService.createBox(boxRequest, '$baseUrl/box/social');
 
       setState(() {
-        isLoading = false;
+        widget.onLoading(false);
       });
 
       if (mounted) {

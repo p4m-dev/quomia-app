@@ -25,13 +25,16 @@ class _SplashScreenState extends State<SplashScreen> {
 
     var user = FirebaseAuth.instance.currentUser;
 
-    if (user != null) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
-    } else {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const PreLoginScreen()));
-    }
+    // if (user != null) {
+    //   Navigator.push(
+    //       context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+    // } else {
+    //   Navigator.push(context,
+    //       MaterialPageRoute(builder: (context) => const PreLoginScreen()));
+    // }
+
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const HomeScreen()));
   }
 
   @override

@@ -13,6 +13,7 @@ import 'package:quomia/widgets/box/steps/intro_step.dart';
 import 'package:quomia/widgets/box/steps/rewind_form_step.dart';
 import 'package:quomia/widgets/box/steps/social_form_step.dart';
 import 'package:quomia/widgets/common/custom_bottom_app_bar.dart';
+import 'package:quomia/widgets/common/custom_loader.dart';
 
 class BuyBoxScreen extends StatefulWidget {
   const BuyBoxScreen({super.key});
@@ -24,6 +25,8 @@ class BuyBoxScreen extends StatefulWidget {
 class _BuyBoxScreenState extends State<BuyBoxScreen> {
   int _currentStep = 1;
   BoxType _boxType = BoxType.future;
+  bool isLoading = false;
+
   final List<String> titles = [
     'Intro',
     'Tipo',
@@ -45,6 +48,26 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
         _boxType = newBoxType;
       }
     });
+  }
+
+  void _toggleLoading(bool show) {
+    setState(() {
+      isLoading = show;
+    });
+  }
+
+  VoidCallback? _enableNextButton() {
+    VoidCallback? onPressed;
+
+    if (_currentStep == 1) {
+      onPressed = () {
+        setState(() {
+          _currentStep++;
+        });
+      };
+    }
+
+    return onPressed;
   }
 
   @override
@@ -89,60 +112,66 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
               MaterialPageRoute(
                   builder: (context) => const UserProfileScreen()));
         }),
-        body: SafeArea(
-          child: Column(
-            children: [
-              StepProgressView(
-                  titles: titles,
-                  width: MediaQuery.of(context).size.width,
-                  currentStep: _currentStep),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      if (_currentStep == 1) const IntroStep(),
-                      if (_currentStep == 2)
-                        BoxTypeStep(
-                            boxHelper: boxHelper,
-                            currentStep: _currentStep,
-                            onStepChanged: _updateStep,
-                            onBoxTypeChanged: _updateBoxType),
-                      if (_currentStep == 3)
-                        BoxCategoryStep(
-                          boxHelper: boxHelper,
-                          currentStep: _currentStep,
-                          onStepChanged: _updateStep,
-                        ),
-                      if (_currentStep == 4) _renderFormStep(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        body: Stack(
+          children: [
+            SafeArea(
+              child: Column(
+                children: [
+                  StepProgressView(
+                      titles: titles,
+                      width: MediaQuery.of(context).size.width,
+                      currentStep: _currentStep),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
                         children: [
-                          TextButton(
-                            onPressed: _currentStep > 1
-                                ? () {
-                                    setState(() {
-                                      _currentStep--;
-                                    });
-                                  }
-                                : null,
-                            style: TextButton.styleFrom(
-                                foregroundColor: AppColors.light.primary),
-                            child: const Text('Indietro'),
-                          ),
-                          if (_currentStep == 1)
-                            TextButton(
-                                onPressed: _enableNextButton(),
+                          if (_currentStep == 1) const IntroStep(),
+                          if (_currentStep == 2)
+                            BoxTypeStep(
+                                boxHelper: boxHelper,
+                                currentStep: _currentStep,
+                                onStepChanged: _updateStep,
+                                onBoxTypeChanged: _updateBoxType),
+                          if (_currentStep == 3)
+                            BoxCategoryStep(
+                              boxHelper: boxHelper,
+                              currentStep: _currentStep,
+                              onStepChanged: _updateStep,
+                            ),
+                          if (_currentStep == 4) _renderFormStep(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              TextButton(
+                                onPressed: _currentStep > 1
+                                    ? () {
+                                        setState(() {
+                                          _currentStep--;
+                                        });
+                                      }
+                                    : null,
                                 style: TextButton.styleFrom(
                                     foregroundColor: AppColors.light.primary),
-                                child: const Text('Avanti')),
+                                child: const Text('Indietro'),
+                              ),
+                              if (_currentStep == 1)
+                                TextButton(
+                                    onPressed: _enableNextButton(),
+                                    style: TextButton.styleFrom(
+                                        foregroundColor:
+                                            AppColors.light.primary),
+                                    child: const Text('Avanti')),
+                            ],
+                          ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+            if (isLoading) const CustomLoader()
+          ],
         ));
   }
 
@@ -153,7 +182,10 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
       case BoxType.future:
         return FutureFormStep(boxHelper: boxHelper);
       case BoxType.social:
-        return SocialFormStep(boxHelper: boxHelper);
+        return SocialFormStep(
+          boxHelper: boxHelper,
+          onLoading: _toggleLoading,
+        );
       default:
         return RewindFormStep(boxHelper: boxHelper);
     }
@@ -179,19 +211,5 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
       actions: const [],
       centerTitle: false,
     );
-  }
-
-  VoidCallback? _enableNextButton() {
-    VoidCallback? onPressed;
-
-    if (_currentStep == 1) {
-      onPressed = () {
-        setState(() {
-          _currentStep++;
-        });
-      };
-    }
-
-    return onPressed;
   }
 }

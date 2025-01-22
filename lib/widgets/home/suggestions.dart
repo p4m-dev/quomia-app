@@ -44,13 +44,15 @@ class _TimerSuggestionState extends State<TimerSuggestion> {
 
             final timers = snapshot.data!;
 
-            return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: timers.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return TimerSuggestionsWidget(timer: timers[index]);
-                });
+            return const TimerSuggestionsPlaceholderWidget();
+
+            // return ListView.builder(
+            //     scrollDirection: Axis.horizontal,
+            //     itemCount: timers.length,
+            //     shrinkWrap: true,
+            //     itemBuilder: (context, index) {
+            //       return TimerSuggestionsWidget(timer: timers[index]);
+            //     });
           }),
     );
   }

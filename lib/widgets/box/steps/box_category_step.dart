@@ -61,7 +61,7 @@ class _BoxCategoryStepState extends State<BoxCategoryStep> {
               BoxCard(
                 title: widget.interactive,
                 caption:
-                    'Crea un box interattivo, puoi aggiungere un video, un immagine o registrare un momento vocale',
+                    'Crea un box interattivo, puoi aggiungere un video, un immagine o registrare un momento vocale.',
                 imagePath: 'https://picsum.photos/seed/37/600',
                 callback: () {
                   setState(() {
@@ -76,7 +76,8 @@ class _BoxCategoryStepState extends State<BoxCategoryStep> {
               ),
               BoxCard(
                 title: widget.text,
-                caption: 'Riassapora il concetto di ',
+                caption:
+                    "Riassapora l'emozione di inviare un messaggio come fosse una lettera virtuale a una persona cara.",
                 imagePath: 'https://picsum.photos/seed/37/600',
                 callback: () {
                   setState(() {
