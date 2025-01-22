@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
               color: AppColors.light.info,
               fontSize: 28,
             )),
-        actions: [],
+        actions: const [],
         centerTitle: false,
       ),
       floatingActionButton: FloatingActionButton(
@@ -69,10 +69,6 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: CustomBottomAppBar(onProfilePressed: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const UserProfileScreen()));
-      }),
       body: SafeArea(
         top: true,
         child: Padding(
@@ -96,6 +92,10 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar: CustomBottomAppBar(onProfilePressed: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const UserProfileScreen()));
+      }),
     );
   }
 }

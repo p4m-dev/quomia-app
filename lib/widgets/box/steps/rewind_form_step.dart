@@ -21,7 +21,6 @@ import 'package:quomia/models/box/request/range.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/utils/date_utils.dart';
-import 'package:quomia/utils/firebase_utils.dart';
 import 'package:quomia/widgets/box/steps/date_time_row.dart';
 import 'package:quomia/widgets/box/steps/media_textfield.dart';
 import 'package:quomia/widgets/box/user_bottomsheet.dart';
