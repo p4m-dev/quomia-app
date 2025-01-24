@@ -4,8 +4,8 @@ import 'package:quomia/screens/buy_box_screen.dart';
 import 'package:quomia/screens/user_profile_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/common/custom_bottom_app_bar.dart';
-import 'package:quomia/widgets/home/social_box.dart';
-import 'package:quomia/widgets/home/suggestions.dart';
+import 'package:quomia/widgets/home/boxes/social_box.dart';
+import 'package:quomia/widgets/home/timers/suggestions.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -25,7 +25,9 @@ class HomeScreen extends StatelessWidget {
               size: 30,
             ),
             onPressed: () async {
-              //context.();
+              if (Navigator.canPop(context)) {
+                Navigator.pop(context);
+              }
             }),
         title: Text('Quomia',
             style: TextStyle(

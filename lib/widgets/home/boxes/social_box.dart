@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/label.dart';
+import 'package:quomia/designSystem/label_placeholder.dart';
 import 'package:quomia/http/box_http.dart';
 import 'package:quomia/models/box/box.dart';
-import 'package:quomia/widgets/home/box.dart';
+import 'package:quomia/widgets/home/boxes/box.dart';
+import 'package:quomia/widgets/home/boxes/box_placeholder.dart';
 
 class SocialBox extends StatefulWidget {
   const SocialBox({super.key});
@@ -15,11 +17,25 @@ class SocialBox extends StatefulWidget {
 class _SocialBoxState extends State<SocialBox> {
   late Future<List<Box>> _socialBoxes;
   final HttpBoxService httpBoxService = HttpBoxService();
+  bool _isLoading = true;
+
+  Future<void> _loadSocialBoxes() async {
+    try {
+      _socialBoxes = httpBoxService.fetchSocialBoxes();
+      await _socialBoxes;
+    } catch (e) {
+      debugPrint('Errore durante il caricamento dei timers: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _socialBoxes = httpBoxService.fetchSocialBoxes();
+    _loadSocialBoxes();
   }
 
   @override
@@ -28,10 +44,12 @@ class _SocialBoxState extends State<SocialBox> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: [
-        const Label(
-          data: 'Per te',
-          fontSize: 24,
-        ),
+        _isLoading
+            ? const LabelPlaceholder()
+            : const Label(
+                data: 'Per te',
+                fontSize: 24,
+              ),
         const Gap(
           height: 20.0,
         ),
@@ -42,12 +60,12 @@ class _SocialBoxState extends State<SocialBox> {
                 builder: (context, snapshot) {
                   // Loading state
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    print("waiting...");
+                    return const BoxWidgetPlaceholder();
                   }
 
                   // Error state
                   if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
+                    return const BoxWidgetPlaceholder();
                   }
 
                   if (!snapshot.hasData || snapshot.data!.isEmpty) {

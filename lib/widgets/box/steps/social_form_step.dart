@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quomia/designSystem/button.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/info_message.dart';
@@ -196,43 +197,65 @@ class _SocialFormStepState extends State<SocialFormStep> {
         widget.onLoading(true);
       });
 
-      BoxRequest boxRequest = BoxRequest(
-          sender: 'Samuel Maggio',
-          title: _titleController.text,
-          type: BoxType.social,
-          category: widget.boxHelper.category ?? Category.text,
-          file: widget.boxHelper.category == Category.interactive
-              ? File(
-                  name: _fileController.text,
-                  fileType: FileType.image,
-                  content: _fileBytes)
-              : null,
-          message: widget.boxHelper.category == Category.text
-              ? _contentController.text
-              : null,
-          dates: Dates(
-              range: Range(
-                  start: CustomDateUtils.transformDate(
-                      _dateStartController.text, _timeStartController.text),
-                  end: CustomDateUtils.transformDate(
-                      _dateEndController.text, _timeEndController.text))));
+      try {
+        BoxRequest boxRequest = BoxRequest(
+            sender: 'Samuel Maggio',
+            title: _titleController.text,
+            type: BoxType.social,
+            category: widget.boxHelper.category ?? Category.text,
+            file: widget.boxHelper.category == Category.interactive
+                ? File(
+                    name: _fileController.text,
+                    fileType: FileType.image,
+                    content: _fileBytes)
+                : null,
+            message: widget.boxHelper.category == Category.text
+                ? _contentController.text
+                : null,
+            dates: Dates(
+                range: Range(
+                    start: CustomDateUtils.transformDate(
+                        _dateStartController.text, _timeStartController.text),
+                    end: CustomDateUtils.transformDate(
+                        _dateEndController.text, _timeEndController.text))));
 
-      HttpBoxService httpBoxService = HttpBoxService();
-      var baseUrl = Constants.baseUrl;
-      await httpBoxService.createBox(boxRequest, '$baseUrl/box/social');
+        HttpBoxService httpBoxService = HttpBoxService();
+        var baseUrl = Constants.baseUrl;
+        await httpBoxService.createBox(boxRequest, '$baseUrl/box/social');
 
-      setState(() {
-        widget.onLoading(false);
-      });
+        if (mounted) {
+          Fluttertoast.showToast(
+            msg:
+                "Acquisto del box avvenuto correttamente! A breve riceverai una mail di conferma.",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            backgroundColor: AppColors.light.tertiary,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
 
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text(
-                  'Acquisto del box avvenuto correttamente! A breve riceverai una mail di conferma.')),
-        );
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          Fluttertoast.showToast(
+            msg: "Errore durante l'acquisto del box: $e",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            backgroundColor: AppColors.light.error,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        }
+      } finally {
+        if (mounted) {
+          setState(() {
+            widget.onLoading(false);
+          });
+        }
       }
     }
   }

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/utils/app_colors.dart';

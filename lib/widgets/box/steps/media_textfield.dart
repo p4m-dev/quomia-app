@@ -36,11 +36,16 @@ class _MediaTextFieldWidgetState extends State<MediaTextFieldWidget> {
               const Label(data: 'Contenuto del messaggio'),
               const Gap(height: 10.0),
               CustomTextFormField(
-                width: double.infinity,
-                controller: widget.contentController,
-                hintText: 'Messaggio',
-                textInput: TextInputType.multiline,
-              ),
+                  width: double.infinity,
+                  controller: widget.contentController,
+                  hintText: 'Messaggio',
+                  textInput: TextInputType.multiline,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Il Messaggio deve essere presente!';
+                    }
+                    return null;
+                  }),
             ],
           )
         : Column(
@@ -50,24 +55,29 @@ class _MediaTextFieldWidgetState extends State<MediaTextFieldWidget> {
               const Label(data: 'Carica un file'),
               const Gap(height: 10.0),
               CustomTextFormField(
-                controller: widget.fileController,
-                hintText: 'Aggiungi un file',
-                textInput: TextInputType.text,
-                readOnly: true,
-                hasOnTap: true,
-                callback: () async {
-                  final selectedFile = await FirebaseUtils.selectFile();
+                  controller: widget.fileController,
+                  hintText: 'Aggiungi un file',
+                  textInput: TextInputType.text,
+                  readOnly: true,
+                  hasOnTap: true,
+                  callback: () async {
+                    final selectedFile = await FirebaseUtils.selectFile();
 
-                  setState(() {
-                    _selectedFilePath = selectedFile['fileName'];
-                    widget.fileController.text = _selectedFilePath ?? '';
+                    setState(() {
+                      _selectedFilePath = selectedFile['fileName'];
+                      widget.fileController.text = _selectedFilePath ?? '';
 
-                    if (widget.onFileSelected != null) {
-                      widget.onFileSelected!(selectedFile);
+                      if (widget.onFileSelected != null) {
+                        widget.onFileSelected!(selectedFile);
+                      }
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Il File deve essere presente!';
                     }
-                  });
-                },
-              ),
+                    return null;
+                  }),
             ],
           );
   }
