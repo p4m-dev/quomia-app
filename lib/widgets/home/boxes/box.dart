@@ -55,7 +55,7 @@ class _BoxWidgetState extends State<BoxWidget> {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 570,
+      height: 575,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -65,44 +65,54 @@ class _BoxWidgetState extends State<BoxWidget> {
         mainAxisSize: MainAxisSize.max,
         children: [
           _timerRow(),
+          const Gap(
+            height: 16.0,
+          ),
           Align(
               alignment: Alignment.topLeft,
-              child: Label(data: widget.box.info.title.toUpperCase())),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
-            child: _buildBoxContent(widget.box.content),
+              child: Label(
+                data: widget.box.info.title,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              )),
+          const Gap(
+            height: 10.0,
+          ),
+          _buildBoxContent(widget.box.content),
+          const Gap(
+            height: 10.0,
           ),
           Padding(
-              padding: const EdgeInsets.fromLTRB(30, 10, 10, 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: _quickActionsRow(widget.box.info)),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                _avatar('SM'),
-                const Gap(
-                  width: 10.0,
+          const Gap(
+            height: 10.0,
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              _avatar('SM'),
+              const Gap(
+                width: 10.0,
+              ),
+              Expanded(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: CustomTextFormField(
+                      controller: chatController,
+                      hintText: 'Scrivi un commento...',
+                      textInput: TextInputType.text,
+                      hasSuffixIcon: true,
+                      suffixIcon: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.emoji_emotions,
+                            color: Colors.black,
+                            size: 24,
+                          ))),
                 ),
-                Expanded(
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: CustomTextFormField(
-                        controller: chatController,
-                        hintText: 'Scrivi un commento...',
-                        textInput: TextInputType.text,
-                        hasSuffixIcon: true,
-                        suffixIcon: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.emoji_emotions,
-                              color: Colors.black,
-                              size: 24,
-                            ))),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
@@ -254,6 +264,7 @@ class _BoxWidgetState extends State<BoxWidget> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Gap(
                 height: 10.0,

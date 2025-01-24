@@ -51,10 +51,10 @@ class _SocialBoxState extends State<SocialBox> {
                 fontSize: 24,
               ),
         const Gap(
-          height: 20.0,
+          height: 10.0,
         ),
         SizedBox(
-            height: 400,
+            height: 500,
             child: FutureBuilder<List<Box>>(
                 future: _socialBoxes,
                 builder: (context, snapshot) {

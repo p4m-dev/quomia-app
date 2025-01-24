@@ -26,6 +26,7 @@ class HttpBoxService {
       print(responseData);
     } catch (e) {
       print(e);
+      throw Exception(e);
     } finally {
       client.close();
     }
