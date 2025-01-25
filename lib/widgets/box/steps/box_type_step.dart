@@ -48,73 +48,71 @@ class _BoxTypeStepState extends State<BoxTypeStep> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Expanded(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const CustomTitle(data: 'Tipologia Box'),
-              const Gap(
-                height: 5.0,
-              ),
-              const Subtitle(data: 'Scegli il box che più ti si addice'),
-              const Gap(
-                height: 10.0,
-              ),
-              BoxCard(
-                title: widget.future,
-                caption: 'Condividi un momento nel futuro con la persona cara.',
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const CustomTitle(data: 'Tipologia Box'),
+            const Gap(
+              height: 5.0,
+            ),
+            const Subtitle(data: 'Scegli il box che più ti si addice'),
+            const Gap(
+              height: 10.0,
+            ),
+            BoxCard(
+              title: widget.future,
+              caption: 'Condividi un momento nel futuro con la persona cara.',
+              imagePath: 'https://picsum.photos/seed/37/600',
+              callback: () {
+                setState(() {
+                  widget.boxHelper.boxType = _convert(widget.future);
+                  widget.onStepChanged(widget.currentStep + 1);
+
+                  if (widget.boxHelper.boxType != null) {
+                    widget.onBoxTypeChanged(widget.boxHelper.boxType);
+                  }
+                });
+              },
+            ),
+            const Gap(
+              height: 10.0,
+            ),
+            BoxCard(
+                title: widget.rewind,
+                caption:
+                    'Condividi un momento del passato con la persona cara.',
                 imagePath: 'https://picsum.photos/seed/37/600',
                 callback: () {
                   setState(() {
-                    widget.boxHelper.boxType = _convert(widget.future);
+                    widget.boxHelper.boxType = _convert(widget.rewind);
                     widget.onStepChanged(widget.currentStep + 1);
 
                     if (widget.boxHelper.boxType != null) {
                       widget.onBoxTypeChanged(widget.boxHelper.boxType);
                     }
                   });
-                },
-              ),
-              const Gap(
-                height: 10.0,
-              ),
-              BoxCard(
-                  title: widget.rewind,
-                  caption:
-                      'Condividi un momento del passato con la persona cara.',
-                  imagePath: 'https://picsum.photos/seed/37/600',
-                  callback: () {
-                    setState(() {
-                      widget.boxHelper.boxType = _convert(widget.rewind);
-                      widget.onStepChanged(widget.currentStep + 1);
+                }),
+            const Gap(
+              height: 10.0,
+            ),
+            BoxCard(
+                title: widget.messageInABottle,
+                caption: 'Rendi virale il tuo box.',
+                imagePath: 'https://picsum.photos/seed/37/600',
+                callback: () {
+                  setState(() {
+                    widget.boxHelper.boxType =
+                        _convert(widget.messageInABottle);
+                    widget.onStepChanged(widget.currentStep + 1);
 
-                      if (widget.boxHelper.boxType != null) {
-                        widget.onBoxTypeChanged(widget.boxHelper.boxType);
-                      }
-                    });
-                  }),
-              const Gap(
-                height: 10.0,
-              ),
-              BoxCard(
-                  title: widget.messageInABottle,
-                  caption: 'Rendi virale il tuo box.',
-                  imagePath: 'https://picsum.photos/seed/37/600',
-                  callback: () {
-                    setState(() {
-                      widget.boxHelper.boxType =
-                          _convert(widget.messageInABottle);
-                      widget.onStepChanged(widget.currentStep + 1);
-
-                      if (widget.boxHelper.boxType != null) {
-                        widget.onBoxTypeChanged(widget.boxHelper.boxType);
-                      }
-                    });
-                  })
-            ],
-          ),
+                    if (widget.boxHelper.boxType != null) {
+                      widget.onBoxTypeChanged(widget.boxHelper.boxType);
+                    }
+                  });
+                })
+          ],
         ),
       ),
     );
