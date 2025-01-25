@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quomia/designSystem/button.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/info_message.dart';
@@ -20,6 +21,7 @@ import 'package:quomia/models/box/request/file.dart';
 import 'package:quomia/models/box/request/range.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/utils/date_utils.dart';
 import 'package:quomia/widgets/box/steps/date_time_row.dart';
 import 'package:quomia/widgets/box/steps/media_textfield.dart';
 import 'package:quomia/widgets/box/user_bottomsheet.dart';
@@ -27,8 +29,10 @@ import 'package:quomia/widgets/common/custom_loader.dart';
 
 class FutureFormStep extends StatefulWidget {
   final BoxHelper boxHelper;
+  final Function(bool) onLoading;
 
-  const FutureFormStep({super.key, required this.boxHelper});
+  const FutureFormStep(
+      {super.key, required this.boxHelper, required this.onLoading});
 
   @override
   State<FutureFormStep> createState() => _FutureFormStepState();
@@ -52,7 +56,6 @@ class _FutureFormStepState extends State<FutureFormStep> {
   bool? _isAnonymousEnabled = false;
   bool isLoading = false;
   bool showMessage = true;
-  String _selectedFilePath = '';
 
   @override
   Widget build(BuildContext context) {
@@ -161,8 +164,6 @@ class _FutureFormStepState extends State<FutureFormStep> {
                                       contentController: _contentController,
                                       fileController: _fileController,
                                       onFileSelected: (fileData) {
-                                        _selectedFilePath =
-                                            fileData['fileName'] ?? '';
                                         _fileBytes = fileData['fileBytes'];
                                       }),
                                   const Gap(height: 20.0),
@@ -289,42 +290,73 @@ class _FutureFormStepState extends State<FutureFormStep> {
   Future<void> _handleBoxBuy() async {
     if (_formKey.currentState?.validate() ?? false) {
       setState(() {
-        isLoading = true;
+        widget.onLoading(true);
       });
 
-      BoxRequest boxRequest = BoxRequest(
-          sender: 'Samuel Maggio',
-          title: _titleController.text,
-          type: BoxType.social,
-          category: widget.boxHelper.category ?? Category.text,
-          file: widget.boxHelper.category == Category.interactive
-              ? File(
-                  name: _fileController.text,
-                  fileType: FileType.image,
-                  content: _fileBytes)
-              : null,
-          message: widget.boxHelper.category == Category.text
-              ? _contentController.text
-              : null,
-          dates:
-              Dates(range: Range(start: DateTime.now(), end: DateTime.now())));
+      try {
+        BoxRequest boxRequest = BoxRequest(
+            sender: 'Samuel Maggio',
+            receiver: _userController.text,
+            title: _titleController.text,
+            type: BoxType.future,
+            category: widget.boxHelper.category ?? Category.text,
+            isAnonymous: _isAnonymousEnabled,
+            file: widget.boxHelper.category == Category.interactive
+                ? File(
+                    name: _fileController.text,
+                    fileType: FileType.image,
+                    content: _fileBytes)
+                : null,
+            message: widget.boxHelper.category == Category.text
+                ? _contentController.text
+                : null,
+            dates: Dates(
+                range: Range(
+                    start: CustomDateUtils.transformDate(
+                        _dateStartController.text, _timeStartController.text),
+                    end: CustomDateUtils.transformDate(
+                        _dateEndController.text, _timeEndController.text)),
+                deliveryDate: CustomDateUtils.transformDate(
+                    _deliveryDateController.text,
+                    _deliveryTimeController.text)));
 
-      HttpBoxService httpBoxService = HttpBoxService();
-      var baseUrl = Constants.baseUrl;
-      await httpBoxService.createBox(boxRequest, '$baseUrl/box/rewind');
+        HttpBoxService httpBoxService = HttpBoxService();
+        var baseUrl = Constants.baseUrl;
+        await httpBoxService.createBox(boxRequest, '$baseUrl/box/future');
 
-      setState(() {
-        isLoading = false;
-      });
+        if (mounted) {
+          Fluttertoast.showToast(
+            msg:
+                "Acquisto del box avvenuto correttamente! A breve riceverai una mail di conferma.",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            backgroundColor: AppColors.light.tertiary,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
 
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text(
-                  'Acquisto del box avvenuto correttamente! A breve riceverai una mail di conferma.')),
-        );
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          Fluttertoast.showToast(
+            msg: "Errore durante l'acquisto del box: $e",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            backgroundColor: AppColors.light.error,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        }
+      } finally {
+        if (mounted) {
+          setState(() {
+            widget.onLoading(false);
+          });
+        }
       }
     }
   }

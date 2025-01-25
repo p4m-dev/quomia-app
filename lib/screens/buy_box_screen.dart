@@ -178,16 +178,25 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
   Widget _renderFormStep() {
     switch (_boxType) {
       case BoxType.rewind:
-        return RewindFormStep(boxHelper: boxHelper);
+        return RewindFormStep(
+          boxHelper: boxHelper,
+          onLoading: _toggleLoading,
+        );
       case BoxType.future:
-        return FutureFormStep(boxHelper: boxHelper);
+        return FutureFormStep(
+          boxHelper: boxHelper,
+          onLoading: _toggleLoading,
+        );
       case BoxType.social:
         return SocialFormStep(
           boxHelper: boxHelper,
           onLoading: _toggleLoading,
         );
       default:
-        return RewindFormStep(boxHelper: boxHelper);
+        return RewindFormStep(
+          boxHelper: boxHelper,
+          onLoading: _toggleLoading,
+        );
     }
   }
 

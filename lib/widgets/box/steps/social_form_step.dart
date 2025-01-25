@@ -49,7 +49,6 @@ class _SocialFormStepState extends State<SocialFormStep> {
 
   late Map<String, dynamic> selectedFile;
   late Uint8List _fileBytes;
-  late String _selectedFilePath;
 
   @override
   void dispose() {
@@ -121,8 +120,6 @@ class _SocialFormStepState extends State<SocialFormStep> {
                                   contentController: _contentController,
                                   fileController: _fileController,
                                   onFileSelected: (fileData) {
-                                    _selectedFilePath =
-                                        fileData['fileName'] ?? '';
                                     _fileBytes = fileData['fileBytes'];
                                   }),
                               const Gap(height: 20.0),
@@ -225,8 +222,7 @@ class _SocialFormStepState extends State<SocialFormStep> {
 
         if (mounted) {
           Fluttertoast.showToast(
-            msg:
-                "Acquisto del box avvenuto correttamente! A breve riceverai una mail di conferma.",
+            msg: "Acquisto del box avvenuto correttamente!",
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.TOP,
             backgroundColor: AppColors.light.tertiary,
