@@ -14,7 +14,6 @@ import 'package:quomia/http/constants.dart';
 import 'package:quomia/models/box/box_helper.dart';
 import 'package:quomia/models/box/box_type.dart';
 import 'package:quomia/models/box/category.dart';
-import 'package:quomia/models/box/file_type.dart';
 import 'package:quomia/models/box/request/box_request.dart';
 import 'package:quomia/models/box/request/dates.dart';
 import 'package:quomia/models/box/request/file.dart';
@@ -22,6 +21,7 @@ import 'package:quomia/models/box/request/range.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/utils/date_utils.dart';
+import 'package:quomia/utils/file_utils.dart';
 import 'package:quomia/widgets/box/steps/date_time_row.dart';
 import 'package:quomia/widgets/box/steps/media_textfield.dart';
 import 'package:quomia/widgets/common/custom_loader.dart';
@@ -49,6 +49,7 @@ class _SocialFormStepState extends State<SocialFormStep> {
 
   late Map<String, dynamic> selectedFile;
   late Uint8List _fileBytes;
+  late String _fileExtension;
 
   @override
   void dispose() {
@@ -120,7 +121,9 @@ class _SocialFormStepState extends State<SocialFormStep> {
                                   contentController: _contentController,
                                   fileController: _fileController,
                                   onFileSelected: (fileData) {
-                                    _fileBytes = fileData['fileBytes'];
+                                    _fileBytes = fileData['fileBytes'] ?? '';
+                                    _fileExtension =
+                                        fileData['fileExtension'] ?? '';
                                   }),
                               const Gap(height: 20.0),
                               const Divider(
@@ -203,7 +206,8 @@ class _SocialFormStepState extends State<SocialFormStep> {
             file: widget.boxHelper.category == Category.interactive
                 ? File(
                     name: _fileController.text,
-                    fileType: FileType.image,
+                    fileType:
+                        FileUtils.convertExtensionToFileType(_fileExtension),
                     content: _fileBytes)
                 : null,
             message: widget.boxHelper.category == Category.text

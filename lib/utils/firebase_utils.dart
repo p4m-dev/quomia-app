@@ -15,9 +15,13 @@ class FirebaseUtils {
       return Map.identity();
     }
 
+    final fileName = result.files.single.name;
+    final fileExtension = fileName.split('.').last.toLowerCase();
+
     return {
-      'fileName': result.files.single.name,
+      'fileName': fileName,
       'fileBytes': result.files.first.bytes,
+      'fileExtension': fileExtension
     };
   }
 
