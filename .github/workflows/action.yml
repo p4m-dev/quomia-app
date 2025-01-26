@@ -21,12 +21,18 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Extract version from pubspec.yaml
+        id: extract_version
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}' | cut -d'+' -f1)
+          echo "version=$VERSION" >> $GITHUB_ENV
+
       - name: Build APK
         run: flutter build apk --release
 
       - name: Deploy to Firebase App Distribution
         run:
           firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
-          --app quomia_0.0.1
+          --app quomia_${{ env.version }}
         env:
           FIREBASE_AUTH_TOKEN: ${{ secrets.FIREBASE_AUTH_TOKEN }}
