@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:quomia/designSystem/gap.dart';
-import 'package:quomia/designSystem/label_placeholder.dart';
 import 'package:quomia/widgets/common/avatar_placeholder.dart';
 import 'package:quomia/widgets/common/button_placeholder.dart';
 import 'package:quomia/widgets/common/placeholder.dart';

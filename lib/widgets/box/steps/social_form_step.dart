@@ -22,9 +22,9 @@ import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/utils/date_utils.dart';
 import 'package:quomia/utils/file_utils.dart';
+import 'package:quomia/utils/firebase_utils.dart';
 import 'package:quomia/widgets/box/steps/date_time_row.dart';
 import 'package:quomia/widgets/box/steps/media_textfield.dart';
-import 'package:quomia/widgets/common/custom_loader.dart';
 
 class SocialFormStep extends StatefulWidget {
   final BoxHelper boxHelper;
@@ -50,6 +50,8 @@ class _SocialFormStepState extends State<SocialFormStep> {
   late Map<String, dynamic> selectedFile;
   late Uint8List _fileBytes;
   late String _fileExtension;
+  late String _fileName;
+  late String _downloadUrl;
 
   @override
   void dispose() {
@@ -124,6 +126,7 @@ class _SocialFormStepState extends State<SocialFormStep> {
                                     _fileBytes = fileData['fileBytes'] ?? '';
                                     _fileExtension =
                                         fileData['fileExtension'] ?? '';
+                                    _fileName = fileData['fileName'] ?? '';
                                   }),
                               const Gap(height: 20.0),
                               const Divider(
@@ -197,6 +200,15 @@ class _SocialFormStepState extends State<SocialFormStep> {
         widget.onLoading(true);
       });
 
+      // Upload file to firebase
+      if (widget.boxHelper.category == Category.interactive) {
+        _downloadUrl = await FirebaseUtils.uploadFileToFirebase(
+            fileBytes: _fileBytes,
+            fileName: _fileName,
+            fileExtension: _fileExtension,
+            sender: 'Samuel Maggio');
+      }
+
       try {
         BoxRequest boxRequest = BoxRequest(
             sender: 'Samuel Maggio',
@@ -205,10 +217,9 @@ class _SocialFormStepState extends State<SocialFormStep> {
             category: widget.boxHelper.category ?? Category.text,
             file: widget.boxHelper.category == Category.interactive
                 ? File(
-                    name: _fileController.text,
                     fileType:
                         FileUtils.convertExtensionToFileType(_fileExtension),
-                    content: _fileBytes)
+                    downloadUrl: _downloadUrl)
                 : null,
             message: widget.boxHelper.category == Category.text
                 ? _contentController.text
