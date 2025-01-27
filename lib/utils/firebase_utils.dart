@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:typed_data';
+
+import 'package:video_compress/video_compress.dart';
 
 class FirebaseUtils {
   static Future<Map<String, dynamic>> selectFile() async {
@@ -15,10 +19,12 @@ class FirebaseUtils {
       return Map.identity();
     }
 
+    final filePath = result.files.single.path;
     final fileName = result.files.single.name;
     final fileExtension = fileName.split('.').last.toLowerCase();
 
     return {
+      'filePath': filePath,
       'fileName': fileName,
       'fileBytes': result.files.first.bytes,
       'fileExtension': fileExtension
@@ -68,28 +74,43 @@ class FirebaseUtils {
     return "$basePath/$contentPath";
   }
 
-  static Future<String> uploadFileToFirebase(
-      {required Uint8List fileBytes,
-      required String fileName,
+  static Future<File?> _optimizeFile(String filePath) async {
+    final info = await VideoCompress.compressVideo(
+      filePath,
+      quality: VideoQuality.DefaultQuality,
+      deleteOrigin: false,
+    );
+
+    return info?.file;
+  }
+
+  static Future<String?> uploadFileToFirebase(
+      {required String filePath,
       required String fileExtension,
       required String sender}) async {
     final storageRef = FirebaseStorage.instance.ref();
 
-    final folderPath = _buildFilePath(fileExtension, sender);
+    File? file = await _optimizeFile(filePath);
 
+    if (file == null) {
+      print("Errore durante l'ottimizzazione del file");
+      return null;
+    }
+
+    final folderPath = _buildFilePath(fileExtension, sender);
     final folderRef = storageRef.child(folderPath);
-    final fileRef = folderRef.child(fileName);
+
     late String publicUrl;
 
     try {
-      await fileRef.putData(
-          fileBytes,
+      await folderRef.putFile(
+          file,
           SettableMetadata(
             contentType: _retrieveContentType(fileExtension),
           ));
-      print('File caricato con successo: $fileName');
+      print('File caricato con successo: $file');
 
-      publicUrl = await fileRef.getDownloadURL();
+      publicUrl = await folderRef.getDownloadURL();
     } on FirebaseException catch (e) {
       print('Errore durante il caricamento: ${e.message}');
       print(e.stackTrace);

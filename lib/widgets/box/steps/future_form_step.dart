@@ -282,72 +282,72 @@ class _FutureFormStepState extends State<FutureFormStep> {
         widget.onLoading(true);
       });
 
-      try {
-        BoxRequest boxRequest = BoxRequest(
-            sender: 'Samuel Maggio',
-            receiver: _userController.text,
-            title: _titleController.text,
-            type: BoxType.future,
-            category: widget.boxHelper.category ?? Category.text,
-            isAnonymous: _isAnonymousEnabled,
-            file: widget.boxHelper.category == Category.interactive
-                ? File(
-                    name: _fileController.text,
-                    fileType:
-                        FileUtils.convertExtensionToFileType(_fileExtension),
-                    content: _fileBytes)
-                : null,
-            message: widget.boxHelper.category == Category.text
-                ? _contentController.text
-                : null,
-            dates: Dates(
-                range: Range(
-                    start: CustomDateUtils.transformDate(
-                        _dateStartController.text, _timeStartController.text),
-                    end: CustomDateUtils.transformDate(
-                        _dateEndController.text, _timeEndController.text)),
-                deliveryDate: CustomDateUtils.transformDate(
-                    _deliveryDateController.text,
-                    _deliveryTimeController.text)));
+      // try {
+      //   BoxRequest boxRequest = BoxRequest(
+      //       sender: 'Samuel Maggio',
+      //       receiver: _userController.text,
+      //       title: _titleController.text,
+      //       type: BoxType.future,
+      //       category: widget.boxHelper.category ?? Category.text,
+      //       isAnonymous: _isAnonymousEnabled,
+      //       file: widget.boxHelper.category == Category.interactive
+      //           ? File(
+      //               name: _fileController.text,
+      //               fileType:
+      //                   FileUtils.convertExtensionToFileType(_fileExtension),
+      //               content: _fileBytes)
+      //           : null,
+      //       message: widget.boxHelper.category == Category.text
+      //           ? _contentController.text
+      //           : null,
+      //       dates: Dates(
+      //           range: Range(
+      //               start: CustomDateUtils.transformDate(
+      //                   _dateStartController.text, _timeStartController.text),
+      //               end: CustomDateUtils.transformDate(
+      //                   _dateEndController.text, _timeEndController.text)),
+      //           deliveryDate: CustomDateUtils.transformDate(
+      //               _deliveryDateController.text,
+      //               _deliveryTimeController.text)));
 
-        HttpBoxService httpBoxService = HttpBoxService();
-        var baseUrl = Constants.baseUrl;
-        await httpBoxService.createBox(boxRequest, '$baseUrl/box/future');
+      //   HttpBoxService httpBoxService = HttpBoxService();
+      //   var baseUrl = Constants.baseUrl;
+      //   await httpBoxService.createBox(boxRequest, '$baseUrl/box/future');
 
-        if (mounted) {
-          Fluttertoast.showToast(
-            msg:
-                "Acquisto del box avvenuto correttamente! A breve riceverai una mail di conferma.",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            backgroundColor: AppColors.light.tertiary,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+      //   if (mounted) {
+      //     Fluttertoast.showToast(
+      //       msg:
+      //           "Acquisto del box avvenuto correttamente! A breve riceverai una mail di conferma.",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.TOP,
+      //       backgroundColor: AppColors.light.tertiary,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0,
+      //     );
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
-          );
-        }
-      } catch (e) {
-        if (mounted) {
-          Fluttertoast.showToast(
-            msg: "Errore durante l'acquisto del box: $e",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            backgroundColor: AppColors.light.error,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
-        }
-      } finally {
-        if (mounted) {
-          setState(() {
-            widget.onLoading(false);
-          });
-        }
-      }
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(builder: (context) => const HomeScreen()),
+      //     );
+      //   }
+      // } catch (e) {
+      //   if (mounted) {
+      //     Fluttertoast.showToast(
+      //       msg: "Errore durante l'acquisto del box: $e",
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.TOP,
+      //       backgroundColor: AppColors.light.error,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0,
+      //     );
+      //   }
+      // } finally {
+      //   if (mounted) {
+      //     setState(() {
+      //       widget.onLoading(false);
+      //     });
+      //   }
+      // }
     }
   }
 }

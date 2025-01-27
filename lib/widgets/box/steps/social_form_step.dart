@@ -51,7 +51,8 @@ class _SocialFormStepState extends State<SocialFormStep> {
   late Uint8List _fileBytes;
   late String _fileExtension;
   late String _fileName;
-  late String _downloadUrl;
+  late String? _downloadUrl;
+  late String _filePath;
 
   @override
   void dispose() {
@@ -123,10 +124,10 @@ class _SocialFormStepState extends State<SocialFormStep> {
                                   contentController: _contentController,
                                   fileController: _fileController,
                                   onFileSelected: (fileData) {
-                                    _fileBytes = fileData['fileBytes'] ?? '';
                                     _fileExtension =
                                         fileData['fileExtension'] ?? '';
                                     _fileName = fileData['fileName'] ?? '';
+                                    _filePath = fileData['filePath'] ?? '';
                                   }),
                               const Gap(height: 20.0),
                               const Divider(
@@ -203,8 +204,7 @@ class _SocialFormStepState extends State<SocialFormStep> {
       // Upload file to firebase
       if (widget.boxHelper.category == Category.interactive) {
         _downloadUrl = await FirebaseUtils.uploadFileToFirebase(
-            fileBytes: _fileBytes,
-            fileName: _fileName,
+            filePath: _filePath,
             fileExtension: _fileExtension,
             sender: 'Samuel Maggio');
       }
@@ -219,7 +219,7 @@ class _SocialFormStepState extends State<SocialFormStep> {
                 ? File(
                     fileType:
                         FileUtils.convertExtensionToFileType(_fileExtension),
-                    downloadUrl: _downloadUrl)
+                    downloadUrl: _downloadUrl ?? '')
                 : null,
             message: widget.boxHelper.category == Category.text
                 ? _contentController.text
