@@ -154,7 +154,9 @@ class _FutureFormStepState extends State<FutureFormStep> {
                                     contentController: _contentController,
                                     fileController: _fileController,
                                     onFileSelected: (fileData) {
-                                      _fileBytes = fileData['fileBytes'];
+                                      _fileBytes = fileData['fileBytes'] ?? '';
+                                      _fileExtension =
+                                          fileData['fileExtension'] ?? '';
                                     }),
                                 const Gap(height: 20.0),
                                 const Divider(

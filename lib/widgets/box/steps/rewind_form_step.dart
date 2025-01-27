@@ -51,6 +51,10 @@ class _RewindFormStepState extends State<RewindFormStep> {
   final TextEditingController _fileController = TextEditingController();
   final TextEditingController _futureDateController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  late List<MenuEntry> menuEntries;
+  late Uint8List _fileBytes;
+  late String _fileExtension;
+  late List<DateTime> _dates;
   late Map<String, dynamic> selectedFile;
 
   bool? _isAnonymousEnabled = false;
@@ -64,14 +68,10 @@ class _RewindFormStepState extends State<RewindFormStep> {
     '25 Anni',
     '30 Anni'
   ];
-
-  late List<MenuEntry> menuEntries;
   String dropdownValue = '';
   DateTime futureDate = DateTime.now();
   DateTime previousDate = DateTime.now();
   DateTime startDate = DateTime.now();
-  late Uint8List _fileBytes;
-  late String _fileExtension;
 
   @override
   void initState() {
@@ -192,7 +192,9 @@ class _RewindFormStepState extends State<RewindFormStep> {
                                   contentController: _contentController,
                                   fileController: _fileController,
                                   onFileSelected: (fileData) {
-                                    _fileBytes = fileData['fileBytes'];
+                                    _fileBytes = fileData['fileBytes'] ?? '';
+                                    _fileExtension =
+                                        fileData['fileExtension'] ?? '';
                                   }),
                               const Gap(height: 20.0),
                               const Divider(
@@ -310,7 +312,7 @@ class _RewindFormStepState extends State<RewindFormStep> {
   }
 
   void _showBottomSheet() {
-    var dates = CustomDateUtils.generateDateList(startDate, futureDate);
+    _dates = CustomDateUtils.generateDateList(startDate, futureDate);
 
     showModalBottomSheet(
         backgroundColor: AppColors.light.primaryBackground,
@@ -319,10 +321,10 @@ class _RewindFormStepState extends State<RewindFormStep> {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListView.builder(
-              itemCount: dates.length,
+              itemCount: _dates.length,
               itemBuilder: (context, index) {
                 String formattedDate =
-                    CustomDateUtils.fullFormat.format(dates[index]);
+                    CustomDateUtils.fullFormat.format(_dates[index]);
 
                 return Container(
                   margin: const EdgeInsets.all(8.0),
@@ -475,7 +477,8 @@ class _RewindFormStepState extends State<RewindFormStep> {
                     start: CustomDateUtils.transformDate(
                         _dateStartController.text, _timeStartController.text),
                     end: CustomDateUtils.transformDate(
-                        _dateEndController.text, _timeEndController.text))));
+                        _dateEndController.text, _timeEndController.text)),
+                future: _dates));
 
         HttpBoxService httpBoxService = HttpBoxService();
         var baseUrl = Constants.baseUrl;
