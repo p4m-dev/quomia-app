@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quomia/designSystem/gap.dart';
+import 'package:quomia/designSystem/image.dart';
 import 'package:quomia/utils/app_colors.dart';
-import 'package:quomia/widgets/common/cached_image.dart';
 
 class BoxCard extends StatelessWidget {
   final String title;
@@ -98,7 +98,11 @@ class BoxCard extends StatelessWidget {
                 const Gap(
                   width: 16.0,
                 ),
-                CachedImage(imagePath: imagePath, width: 100, height: 100)
+                CustomImage(
+                    width: 100,
+                    height: 100,
+                    imageUrl: imagePath,
+                    blurHash: "LEHV6nWB2yk8pyo0adR*.7kCMdnj")
               ],
             ),
           ),

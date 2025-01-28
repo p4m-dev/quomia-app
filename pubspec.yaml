@@ -1,5 +1,5 @@
 name: quomia
-description: "A new Flutter project."
+description: "The greatest social application ever created"
 publish_to: "none"
 version: 0.0.1
 
@@ -28,6 +28,7 @@ dependencies:
   shimmer: ^3.0.0
   fluttertoast: ^8.2.10
   video_compress: ^3.1.0
+  flutter_blurhash: ^0.8.2
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quomia/designSystem/gap.dart';
+import 'package:quomia/designSystem/image.dart';
 import 'package:quomia/designSystem/label.dart';
 import 'package:quomia/designSystem/text_form_field.dart';
 import 'package:quomia/models/box/box.dart';
@@ -283,19 +284,11 @@ class _BoxWidgetState extends State<BoxWidget> {
   }
 
   Widget _buildImageContent(String filePath) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16.0),
-      child: CachedNetworkImage(
+    return CustomImage(
         width: 350,
         height: 300,
-        fit: BoxFit.cover,
         imageUrl: filePath,
-        placeholder: (context, url) =>
-            const Center(child: CircularProgressIndicator()),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
-        fadeInDuration: const Duration(milliseconds: 500),
-      ),
-    );
+        blurHash: "LEHV6nWB2yk8pyo0adR*.7kCMdnj");
   }
 
   Widget _buildAudioContent(String filePath) {

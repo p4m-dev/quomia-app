@@ -1,16 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 
-class CachedImage extends StatelessWidget {
-  final String imagePath;
+class CustomImage extends StatelessWidget {
   final double width;
   final double height;
+  final String imageUrl;
+  final String blurHash;
 
-  const CachedImage(
+  const CustomImage(
       {super.key,
-      required this.imagePath,
       required this.width,
-      required this.height});
+      required this.height,
+      required this.imageUrl,
+      required this.blurHash});
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +23,14 @@ class CachedImage extends StatelessWidget {
         width: width,
         height: height,
         fit: BoxFit.cover,
-        imageUrl: imagePath,
-        placeholder: (context, url) =>
-            const Center(child: CircularProgressIndicator()),
+        imageUrl: imageUrl,
+        placeholder: (context, url) => BlurHash(
+          hash: blurHash,
+          imageFit: BoxFit.cover,
+          color: Colors.grey[300]!,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        ),
         errorWidget: (context, url, error) => const Icon(Icons.error),
         fadeInDuration: const Duration(milliseconds: 500),
       ),
