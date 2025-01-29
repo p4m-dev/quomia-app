@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/label.dart';
 import 'package:quomia/designSystem/text_form_field.dart';
-import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/theme/palette.dart';
 import 'package:quomia/utils/date_utils.dart';
 
 class DateTimeRow extends StatefulWidget {

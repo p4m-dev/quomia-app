@@ -5,7 +5,7 @@ import 'package:quomia/models/box/box_helper.dart';
 import 'package:quomia/models/box/box_type.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/screens/user_profile_screen.dart';
-import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/theme/palette.dart';
 import 'package:quomia/widgets/box/steps/box_category_step.dart';
 import 'package:quomia/widgets/box/steps/box_type_step.dart';
 import 'package:quomia/widgets/box/steps/future_form_step.dart';
@@ -73,7 +73,7 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.light.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: _appBar(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {},
@@ -88,15 +88,15 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
                 center: const Alignment(0.0, 0.0),
                 radius: 0.5,
                 colors: [
-                  AppColors.light.tertiary,
-                  AppColors.light.primary,
+                  Theme.of(context).colorScheme.tertiary,
+                  Theme.of(context).colorScheme.primary,
                 ],
               ),
             ),
             child: Center(
               child: FaIcon(
                 FontAwesomeIcons.hourglass,
-                color: AppColors.light.primaryText,
+                color: Theme.of(context).colorScheme.primaryText,
                 size: 24,
               ),
             ),

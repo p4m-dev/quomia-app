@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppColors {
+class Palette {
   static _LightModeColors light = _LightModeColors();
   static _DarkModeColors dark = _DarkModeColors();
 }

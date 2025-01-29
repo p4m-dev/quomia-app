@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quomia/screens/home_screen.dart';
-import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/theme/palette.dart';
 import 'package:quomia/widgets/common/custom_loader.dart';
 
 class LoginScreen extends StatefulWidget {

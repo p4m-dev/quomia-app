@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:quomia/screens/home_screen.dart';
-import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/auth/carousel.dart';
 
 class OtpScreen extends StatefulWidget {

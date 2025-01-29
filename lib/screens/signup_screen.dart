@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quomia/screens/login_screen.dart';
 import 'package:quomia/screens/otp_screen.dart';
-import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/theme/palette.dart';
 import 'package:quomia/widgets/auth/carousel.dart';
 import 'package:quomia/widgets/common/custom_loader.dart';
 

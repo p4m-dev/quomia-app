@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/theme/palette.dart';
 
 class ChoiceChips extends StatefulWidget {
   const ChoiceChips({super.key});

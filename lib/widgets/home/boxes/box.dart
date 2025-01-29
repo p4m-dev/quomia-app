@@ -10,7 +10,7 @@ import 'package:quomia/models/box/box.dart';
 import 'package:quomia/models/box/content.dart';
 import 'package:quomia/models/box/file_type.dart';
 import 'package:quomia/models/box/info.dart';
-import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/theme/palette.dart';
 import 'package:video_player/video_player.dart';
 
 class BoxWidget extends StatefulWidget {

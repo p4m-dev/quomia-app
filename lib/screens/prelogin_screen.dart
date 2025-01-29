@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quomia/screens/login_screen.dart';
 import 'package:quomia/screens/signup_screen.dart';
-import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/theme/palette.dart';
 import 'package:quomia/widgets/mobile/prelogin/gradient_button.dart';
 import 'package:quomia/widgets/mobile/prelogin/intro_widget.dart';
 import 'package:video_player/video_player.dart';

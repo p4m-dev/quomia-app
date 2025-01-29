@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quomia/screens/buy_box_screen.dart';
 import 'package:quomia/screens/home_screen.dart';
-import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/theme/palette.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:quomia/widgets/common/custom_bottom_app_bar.dart';
 import 'package:quomia/widgets/user/chips_choice.dart';
