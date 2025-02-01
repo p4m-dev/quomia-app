@@ -3,6 +3,7 @@ import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/label.dart';
 import 'package:quomia/designSystem/text_form_field.dart';
 import 'package:quomia/models/box/category.dart';
+import 'package:quomia/utils/file_utils.dart';
 import 'package:quomia/utils/firebase_utils.dart';
 
 class MediaTextFieldWidget extends StatefulWidget {
@@ -61,7 +62,7 @@ class _MediaTextFieldWidgetState extends State<MediaTextFieldWidget> {
                   readOnly: true,
                   hasOnTap: true,
                   callback: () async {
-                    final selectedFile = await FirebaseUtils.selectFile();
+                    final selectedFile = await FileUtils.selectFile();
 
                     setState(() {
                       _selectedFilePath = selectedFile['fileName'];

@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:quomia/models/box/file_type.dart';
 
 class Content {

@@ -1,7 +1,7 @@
 name: quomia
 description: "The greatest social application ever created"
 publish_to: "none"
-version: 0.0.1
+version: 0.0.2
 
 environment:
   sdk: ^3.5.2
@@ -30,6 +30,9 @@ dependencies:
   video_compress: ^3.1.0
   flutter_blurhash: ^0.8.2
   better_player: ^0.0.84
+  image: ^4.3.0
+  blurhash: ^1.1.1
+  video_thumbnail: ^0.5.3
 
 dev_dependencies:
   flutter_test:

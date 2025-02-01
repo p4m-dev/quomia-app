@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quomia/designSystem/button.dart';
@@ -14,6 +15,7 @@ import 'package:quomia/http/constants.dart';
 import 'package:quomia/models/box/box_helper.dart';
 import 'package:quomia/models/box/box_type.dart';
 import 'package:quomia/models/box/category.dart';
+import 'package:quomia/models/box/file_type.dart';
 import 'package:quomia/models/box/request/box_request.dart';
 import 'package:quomia/models/box/request/dates.dart';
 import 'package:quomia/models/box/request/file.dart';
@@ -23,6 +25,7 @@ import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/utils/date_utils.dart';
 import 'package:quomia/utils/file_utils.dart';
 import 'package:quomia/utils/firebase_utils.dart';
+import 'package:quomia/utils/image_utils.dart';
 import 'package:quomia/widgets/box/steps/date_time_row.dart';
 import 'package:quomia/widgets/box/steps/media_textfield.dart';
 
@@ -128,6 +131,7 @@ class _SocialFormStepState extends State<SocialFormStep> {
                                         fileData['fileExtension'] ?? '';
                                     _fileName = fileData['fileName'] ?? '';
                                     _filePath = fileData['filePath'] ?? '';
+                                    _fileBytes = fileData['fileBytes'] ?? '';
                                   }),
                               const Gap(height: 20.0),
                               const Divider(
@@ -209,6 +213,8 @@ class _SocialFormStepState extends State<SocialFormStep> {
             sender: 'Samuel Maggio');
       }
 
+      FileType fileType = FileUtils.convertExtensionToFileType(_fileExtension);
+
       try {
         BoxRequest boxRequest = BoxRequest(
             sender: 'Samuel Maggio',
@@ -219,7 +225,11 @@ class _SocialFormStepState extends State<SocialFormStep> {
                 ? File(
                     fileType:
                         FileUtils.convertExtensionToFileType(_fileExtension),
-                    downloadUrl: _downloadUrl ?? '')
+                    downloadUrl: _downloadUrl ?? '',
+                    imageBlurhash: fileType.isImage
+                        ? await ImageUtils.generateBlurHash(_fileBytes)
+                        : '',
+                    videoThumbnailUrl: '')
                 : null,
             message: widget.boxHelper.category == Category.text
                 ? _contentController.text

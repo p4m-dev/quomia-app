@@ -1,5 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quomia/designSystem/gap.dart';
@@ -8,7 +8,6 @@ import 'package:quomia/designSystem/label.dart';
 import 'package:quomia/designSystem/text_form_field.dart';
 import 'package:quomia/models/box/box.dart';
 import 'package:quomia/models/box/content.dart';
-import 'package:quomia/models/box/file_type.dart';
 import 'package:quomia/models/box/info.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:video_player/video_player.dart';
@@ -226,7 +225,7 @@ class _BoxWidgetState extends State<BoxWidget> {
         return _buildImageContent(content.filePath!);
       case FileType.video:
         return _buildVideoContent(content.filePath!);
-      case FileType.text:
+      case FileType.any:
         return _buildTextContent(widget.box.info.title, content.message!);
       case FileType.audio:
         return _buildAudioContent(content.filePath!);

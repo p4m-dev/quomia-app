@@ -1,4 +1,4 @@
-enum FileType { image, video, audio, text }
+import 'package:file_picker/file_picker.dart';
 
 extension FileTypeExtension on FileType {
   static FileType? fromString(String type) {
@@ -9,10 +9,10 @@ extension FileTypeExtension on FileType {
         return FileType.video;
       case 'audio':
         return FileType.audio;
-      case 'text':
-        return FileType.text;
       default:
-        return null;
+        return FileType.any;
     }
   }
+
+  bool get isImage => this == FileType.image;
 }
