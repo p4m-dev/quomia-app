@@ -1,7 +1,7 @@
 import 'package:quomia/models/box/box_type.dart';
 import 'package:quomia/models/box/category.dart';
 import 'package:quomia/models/box/request/dates.dart';
-import 'package:quomia/models/box/request/file.dart';
+import 'package:quomia/models/box/request/file_item.dart';
 
 class BoxRequest {
   final String sender;
@@ -9,7 +9,7 @@ class BoxRequest {
   final String title;
   final BoxType type;
   final Category category;
-  final File? file;
+  final FileItem? file;
   final String? message;
   final bool? isAnonymous;
   final Dates dates;

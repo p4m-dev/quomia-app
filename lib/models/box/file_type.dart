@@ -15,4 +15,6 @@ extension FileTypeExtension on FileType {
   }
 
   bool get isImage => this == FileType.image;
+
+  bool get isVideo => this == FileType.video;
 }

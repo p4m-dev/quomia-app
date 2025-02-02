@@ -16,7 +16,7 @@ import 'package:quomia/models/box/box_type.dart';
 import 'package:quomia/models/box/category.dart';
 import 'package:quomia/models/box/request/box_request.dart';
 import 'package:quomia/models/box/request/dates.dart';
-import 'package:quomia/models/box/request/file.dart';
+import 'package:quomia/models/box/request/file_item.dart';
 import 'package:quomia/models/box/request/range.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/utils/app_colors.dart';

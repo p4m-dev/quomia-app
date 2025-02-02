@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
@@ -13,19 +14,14 @@ import 'package:quomia/designSystem/title.dart';
 import 'package:quomia/http/box_http.dart';
 import 'package:quomia/http/constants.dart';
 import 'package:quomia/models/box/box_helper.dart';
-import 'package:quomia/models/box/box_type.dart';
 import 'package:quomia/models/box/category.dart';
 import 'package:quomia/models/box/file_type.dart';
-import 'package:quomia/models/box/request/box_request.dart';
-import 'package:quomia/models/box/request/dates.dart';
-import 'package:quomia/models/box/request/file.dart';
-import 'package:quomia/models/box/request/range.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
-import 'package:quomia/utils/date_utils.dart';
 import 'package:quomia/utils/file_utils.dart';
 import 'package:quomia/utils/firebase_utils.dart';
-import 'package:quomia/utils/image_utils.dart';
+import 'package:quomia/utils/video_utils.dart';
+import 'package:quomia/widgets/box/request/box_request_factory.dart';
 import 'package:quomia/widgets/box/steps/date_time_row.dart';
 import 'package:quomia/widgets/box/steps/media_textfield.dart';
 
@@ -205,41 +201,45 @@ class _SocialFormStepState extends State<SocialFormStep> {
         widget.onLoading(true);
       });
 
-      // Upload file to firebase
-      if (widget.boxHelper.category == Category.interactive) {
-        _downloadUrl = await FirebaseUtils.uploadFileToFirebase(
-            filePath: _filePath,
-            fileExtension: _fileExtension,
-            sender: 'Samuel Maggio');
-      }
-
       FileType fileType = FileUtils.convertExtensionToFileType(_fileExtension);
 
+      late String? videoThumbnailUrl;
+
+      // Upload file to firebase
+      if (widget.boxHelper.category == Category.interactive) {
+        _downloadUrl = await FirebaseUtils.uploadFileToStorage(
+            filePath: _filePath,
+            fileType: fileType,
+            fileExtension: _fileExtension,
+            sender: 'Samuel Maggio');
+
+        if (fileType.isVideo) {
+          File? thumbnailFile = await VideoUtils.generateThumbnail(_filePath);
+
+          videoThumbnailUrl = await FirebaseUtils.uploadThumbnailToStorage(
+              fileType: FileType.image,
+              fileExtension: 'jpg',
+              sender: 'Samuel Maggio',
+              file: thumbnailFile);
+        }
+      }
+
       try {
-        BoxRequest boxRequest = BoxRequest(
-            sender: 'Samuel Maggio',
-            title: _titleController.text,
-            type: BoxType.social,
-            category: widget.boxHelper.category ?? Category.text,
-            file: widget.boxHelper.category == Category.interactive
-                ? File(
-                    fileType:
-                        FileUtils.convertExtensionToFileType(_fileExtension),
-                    downloadUrl: _downloadUrl ?? '',
-                    imageBlurhash: fileType.isImage
-                        ? await ImageUtils.generateBlurHash(_fileBytes)
-                        : '',
-                    videoThumbnailUrl: '')
-                : null,
-            message: widget.boxHelper.category == Category.text
-                ? _contentController.text
-                : null,
-            dates: Dates(
-                range: Range(
-                    start: CustomDateUtils.transformDate(
-                        _dateStartController.text, _timeStartController.text),
-                    end: CustomDateUtils.transformDate(
-                        _dateEndController.text, _timeEndController.text))));
+        final boxRequestFactory = BoxRequestFactory(
+            boxHelper: widget.boxHelper,
+            titleController: _titleController,
+            contentController: _contentController,
+            dateStartController: _dateStartController,
+            timeStartController: _timeStartController,
+            dateEndController: _dateEndController,
+            timeEndController: _timeEndController,
+            downloadUrl: _downloadUrl,
+            fileExtension: _fileExtension,
+            isImage: fileType.isImage,
+            fileBytes: _fileBytes,
+            videoThumbnailUrl: videoThumbnailUrl);
+
+        final boxRequest = await boxRequestFactory.createBoxRequest();
 
         HttpBoxService httpBoxService = HttpBoxService();
         var baseUrl = Constants.baseUrl;

@@ -1,23 +1,23 @@
 import 'package:file_picker/file_picker.dart';
 
-class File {
+class FileItem {
   final FileType fileType;
   final String downloadUrl;
-  final String? imageBlurhash;
   final String? videoThumbnailUrl;
+  final String? imageBlurhash;
 
-  const File(
+  const FileItem(
       {required this.fileType,
       required this.downloadUrl,
-      this.imageBlurhash,
-      this.videoThumbnailUrl});
+      this.videoThumbnailUrl,
+      this.imageBlurhash});
 
   Map<String, dynamic> toJson() {
     return {
       'fileType': fileType.name,
       'downloadUrl': downloadUrl,
-      if (imageBlurhash != null) 'imageBlurhash': imageBlurhash,
-      if (videoThumbnailUrl != null) 'videoThumbnailUrl': videoThumbnailUrl
+      if (videoThumbnailUrl != null) 'videoThumbnailUrl': videoThumbnailUrl,
+      if (imageBlurhash != null) 'imageBlurhash': imageBlurhash
     };
   }
 }

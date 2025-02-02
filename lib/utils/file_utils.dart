@@ -33,10 +33,12 @@ class FileUtils {
       return Map.identity();
     }
 
-    final filePath = result.files.single.path;
-    final fileName = result.files.single.name;
+    final file = result.files.single;
+
+    final filePath = file.path;
+    final fileName = file.name;
     final fileExtension = fileName.split('.').last.toLowerCase();
-    final fileBytes = result.files.first.bytes;
+    final fileBytes = file.bytes;
 
     return {
       'filePath': filePath,
@@ -63,27 +65,23 @@ class FileUtils {
     }
   }
 
-  static String buildFilePath(String fileExtension, String sender) {
+  static String buildFilePath(FileType fileType, String sender) {
     String basePath = "files/$sender";
 
     late String contentPath;
 
-    switch (fileExtension) {
-      case 'png':
+    switch (fileType) {
+      case FileType.image:
         contentPath = "image";
         break;
-      case 'jpg':
-        contentPath = "image";
-        break;
-      case 'wav':
+      case FileType.audio:
         contentPath = "audio";
         break;
-      case 'mp3':
-        contentPath = "audio";
+      case FileType.video:
+        contentPath = 'video';
         break;
-      case 'mp4':
-        contentPath = "video";
-        break;
+      default:
+        contentPath = '';
     }
 
     return "$basePath/$contentPath";

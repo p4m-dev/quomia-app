@@ -4,7 +4,6 @@ import 'package:quomia/designSystem/label.dart';
 import 'package:quomia/designSystem/text_form_field.dart';
 import 'package:quomia/models/box/category.dart';
 import 'package:quomia/utils/file_utils.dart';
-import 'package:quomia/utils/firebase_utils.dart';
 
 class MediaTextFieldWidget extends StatefulWidget {
   final Category? category;
