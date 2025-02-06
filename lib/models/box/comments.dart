@@ -9,7 +9,7 @@ class Comments {
   factory Comments.fromJson(Map<String, dynamic> json) {
     var list = json['timerComments'] as List;
     List<TimerComment> timerComments =
-        list.map((i) => TimerComment.fromJson(i)).toList();
+        list.map((timer) => TimerComment.fromJson(timer)).toList();
 
     return Comments(
         totalOfComments: json['totalOfComments'], timerComments: timerComments);

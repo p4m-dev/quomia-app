@@ -11,7 +11,8 @@ class FirebaseUtils {
       {required String filePath,
       required FileType fileType,
       required String fileExtension,
-      required String sender}) async {
+      required String sender,
+      required String fileName}) async {
     final storageRef = FirebaseStorage.instance.ref();
 
     // Compress file only if isVideo
@@ -20,24 +21,27 @@ class FirebaseUtils {
         : File(filePath);
 
     if (file == null) {
-      print("Errore durante l'ottimizzazione del file");
+      developer.log(
+        'Error during file optimization',
+      );
       return null;
     }
 
     final folderPath = FileUtils.buildFilePath(fileType, sender);
 
-    final folderRef = storageRef.child(folderPath);
+    final fileRef = storageRef.child(folderPath).child(fileName);
 
-    return uploadFile(folderRef, file, fileExtension);
+    return uploadFile(fileRef, file, fileExtension);
   }
 
   static Future<String?> uploadThumbnailToStorage(
       {required FileType fileType,
       required String fileExtension,
       required String sender,
-      required File? file}) async {
+      required File? file,
+      required String fileName}) async {
     if (file == null) {
-      print("Errore durante la generazione del thumbnail!");
+      developer.log("Error during thumbnail generation!");
       return null;
     }
 
@@ -45,9 +49,12 @@ class FirebaseUtils {
 
     final folderPath = FileUtils.buildFilePath(fileType, sender);
 
-    final folderRef = storageRef.child(folderPath);
+    final fileRef = storageRef
+        .child(folderPath)
+        .child('thumbnail')
+        .child("thumbnail_$fileName");
 
-    return uploadFile(folderRef, file, fileExtension);
+    return uploadFile(fileRef, file, fileExtension);
   }
 
   static Future<String> uploadFile(
@@ -61,11 +68,11 @@ class FirebaseUtils {
             contentType: FileUtils.retrieveContentType(fileExtension),
           ));
 
-      developer.log('File caricato con successo: $file');
+      developer.log('File uploaded successfully!: $file');
 
       downloadUrl = await folderRef.getDownloadURL();
     } on FirebaseException catch (e) {
-      developer.log('Errore durante il caricamento: ${e.message}');
+      developer.log('Error during upload to firebase: ${e.message}');
       developer.log(e.stackTrace.toString());
       downloadUrl = '';
     }

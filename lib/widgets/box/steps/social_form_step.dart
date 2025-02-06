@@ -211,7 +211,8 @@ class _SocialFormStepState extends State<SocialFormStep> {
             filePath: _filePath,
             fileType: fileType,
             fileExtension: _fileExtension,
-            sender: 'Samuel Maggio');
+            sender: 'Samuel Maggio',
+            fileName: _fileName);
 
         if (fileType.isVideo) {
           File? thumbnailFile = await VideoUtils.generateThumbnail(_filePath);
@@ -220,7 +221,8 @@ class _SocialFormStepState extends State<SocialFormStep> {
               fileType: FileType.image,
               fileExtension: 'jpg',
               sender: 'Samuel Maggio',
-              file: thumbnailFile);
+              file: thumbnailFile,
+              fileName: _fileName);
         }
       }
 

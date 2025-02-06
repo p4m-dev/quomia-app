@@ -6,14 +6,14 @@ class CustomImage extends StatelessWidget {
   final double width;
   final double height;
   final String imageUrl;
-  final String blurHash;
+  final String? blurHash;
 
   const CustomImage(
       {super.key,
       required this.width,
       required this.height,
       required this.imageUrl,
-      required this.blurHash});
+      this.blurHash});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class CustomImage extends StatelessWidget {
         fit: BoxFit.cover,
         imageUrl: imageUrl,
         placeholder: (context, url) => BlurHash(
-          hash: blurHash,
+          hash: blurHash ?? 'LEHV6nWB2yk8pyo0adR*.7kCMdnj',
           imageFit: BoxFit.cover,
           color: Colors.grey[300]!,
           duration: const Duration(milliseconds: 500),

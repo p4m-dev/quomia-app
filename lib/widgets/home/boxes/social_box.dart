@@ -6,6 +6,7 @@ import 'package:quomia/http/box_http.dart';
 import 'package:quomia/models/box/box.dart';
 import 'package:quomia/widgets/home/boxes/box.dart';
 import 'package:quomia/widgets/home/boxes/box_placeholder.dart';
+import 'dart:developer' as developer;
 
 class SocialBox extends StatefulWidget {
   const SocialBox({super.key});
@@ -24,7 +25,7 @@ class _SocialBoxState extends State<SocialBox> {
       _socialBoxes = httpBoxService.fetchSocialBoxes();
       await _socialBoxes;
     } catch (e) {
-      debugPrint('Errore durante il caricamento dei timers: $e');
+      developer.log('Error while loading timers: $e');
     } finally {
       setState(() {
         _isLoading = false;
