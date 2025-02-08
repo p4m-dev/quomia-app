@@ -1,7 +1,8 @@
+import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quomia/designSystem/button.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/info_message.dart';
@@ -14,6 +15,7 @@ import 'package:quomia/http/constants.dart';
 import 'package:quomia/models/box/box_helper.dart';
 import 'package:quomia/models/box/box_type.dart';
 import 'package:quomia/models/box/category.dart';
+import 'package:quomia/models/box/file_type.dart';
 import 'package:quomia/models/box/request/box_request.dart';
 import 'package:quomia/models/box/request/dates.dart';
 import 'package:quomia/models/box/request/file_item.dart';
@@ -22,6 +24,10 @@ import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/utils/date_utils.dart';
 import 'package:quomia/utils/file_utils.dart';
+import 'package:quomia/utils/firebase_utils.dart';
+import 'package:quomia/utils/message_utils.dart';
+import 'package:quomia/utils/video_utils.dart';
+import 'package:quomia/widgets/box/request/box_request_factory.dart';
 import 'package:quomia/widgets/box/steps/date_time_row.dart';
 import 'package:quomia/widgets/box/steps/media_textfield.dart';
 import 'package:quomia/widgets/box/user_bottomsheet.dart';
@@ -50,11 +56,15 @@ class _RewindFormStepState extends State<RewindFormStep> {
   final TextEditingController _fileController = TextEditingController();
   final TextEditingController _futureDateController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
   late List<MenuEntry> menuEntries;
   late Uint8List _fileBytes;
   late String _fileExtension;
   late List<DateTime> _dates;
   late Map<String, dynamic> selectedFile;
+  late String? _downloadUrl;
+  late String _fileName;
+  late String _filePath;
 
   bool? _isAnonymousEnabled = false;
   List<String> menuList = <String>[
@@ -453,70 +463,77 @@ class _RewindFormStepState extends State<RewindFormStep> {
         widget.onLoading(true);
       });
 
-      // try {
-      //   BoxRequest boxRequest = BoxRequest(
-      //       sender: 'Samuel Maggio',
-      //       receiver: _userController.text,
-      //       title: _titleController.text,
-      //       type: BoxType.rewind,
-      //       category: widget.boxHelper.category ?? Category.text,
-      //       isAnonymous: _isAnonymousEnabled,
-      //       file: widget.boxHelper.category == Category.interactive
-      //           ? File(
-      //               name: _fileController.text,
-      //               fileType:
-      //                   FileUtils.convertExtensionToFileType(_fileExtension),
-      //               content: _fileBytes)
-      //           : null,
-      //       message: widget.boxHelper.category == Category.text
-      //           ? _contentController.text
-      //           : null,
-      //       dates: Dates(
-      //           range: Range(
-      //               start: CustomDateUtils.transformDate(
-      //                   _dateStartController.text, _timeStartController.text),
-      //               end: CustomDateUtils.transformDate(
-      //                   _dateEndController.text, _timeEndController.text)),
-      //           future: _dates));
+      FileType fileType = FileUtils.convertExtensionToFileType(_fileExtension);
 
-      //   HttpBoxService httpBoxService = HttpBoxService();
-      //   var baseUrl = Constants.baseUrl;
-      //   await httpBoxService.createBox(boxRequest, '$baseUrl/box/rewind');
+      String? videoThumbnailUrl = '';
 
-      //   if (mounted) {
-      //     Fluttertoast.showToast(
-      //       msg:
-      //           "Acquisto del box avvenuto correttamente! A breve riceverai una mail di conferma.",
-      //       toastLength: Toast.LENGTH_LONG,
-      //       gravity: ToastGravity.TOP,
-      //       backgroundColor: AppColors.light.tertiary,
-      //       textColor: Colors.white,
-      //       fontSize: 16.0,
-      //     );
+      // Upload file to firebase
+      if (widget.boxHelper.category == Category.interactive) {
+        _downloadUrl = await FirebaseUtils.uploadFileToStorage(
+            filePath: _filePath,
+            fileType: fileType,
+            fileExtension: _fileExtension,
+            sender: 'Samuel Maggio',
+            fileName: _fileName);
 
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(builder: (context) => const HomeScreen()),
-      //     );
-      //   }
-      // } catch (e) {
-      //   if (mounted) {
-      //     Fluttertoast.showToast(
-      //       msg: "Errore durante l'acquisto del box: $e",
-      //       toastLength: Toast.LENGTH_LONG,
-      //       gravity: ToastGravity.TOP,
-      //       backgroundColor: AppColors.light.error,
-      //       textColor: Colors.white,
-      //       fontSize: 16.0,
-      //     );
-      //   }
-      // } finally {
-      //   if (mounted) {
-      //     setState(() {
-      //       widget.onLoading(false);
-      //     });
-      //   }
-      // }
+        if (fileType.isVideo) {
+          File? thumbnailFile = await VideoUtils.generateThumbnail(_filePath);
+
+          videoThumbnailUrl = await FirebaseUtils.uploadThumbnailToStorage(
+              fileType: FileType.image,
+              fileExtension: 'jpg',
+              sender: 'Samuel Maggio',
+              file: thumbnailFile,
+              fileName: _fileName);
+        }
+      }
+
+      try {
+        final boxRequestFactory = BoxRequestFactory(
+            boxHelper: widget.boxHelper,
+            titleController: _titleController,
+            contentController: _contentController,
+            dateStartController: _dateStartController,
+            timeStartController: _timeStartController,
+            dateEndController: _dateEndController,
+            timeEndController: _timeEndController,
+            downloadUrl: _downloadUrl,
+            fileExtension: _fileExtension,
+            isImage: fileType.isImage,
+            fileBytes: _fileBytes,
+            videoThumbnailUrl: videoThumbnailUrl,
+            receiver: null,
+            boxType: BoxType.rewind,
+            futureDates: _dates,
+            isAnonymous: _isAnonymousEnabled);
+
+        final boxRequest = await boxRequestFactory.createBoxRequest();
+
+        HttpBoxService httpBoxService = HttpBoxService();
+        var baseUrl = Constants.baseUrl;
+        await httpBoxService.createBox(boxRequest, '$baseUrl/box/rewind');
+
+        if (mounted) {
+          MessageUtils.showToast("Acquisto del box avvenuto correttamente!",
+              AppColors.light.tertiary, Colors.white);
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          MessageUtils.showToast("Errore durante l'acquisto del box: $e",
+              AppColors.light.error, Colors.white);
+        }
+      } finally {
+        if (mounted) {
+          setState(() {
+            widget.onLoading(false);
+          });
+        }
+      }
     }
   }
 }

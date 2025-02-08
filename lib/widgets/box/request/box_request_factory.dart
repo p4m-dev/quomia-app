@@ -25,32 +25,40 @@ class BoxRequestFactory {
   final bool isImage;
   final Uint8List fileBytes;
   final String? videoThumbnailUrl;
+  final String? receiver;
+  final BoxType boxType;
+  final List<DateTime>? futureDates;
+  final bool? isAnonymous;
 
-  BoxRequestFactory({
-    required this.boxHelper,
-    required this.titleController,
-    required this.contentController,
-    required this.dateStartController,
-    required this.timeStartController,
-    required this.dateEndController,
-    required this.timeEndController,
-    required this.downloadUrl,
-    required this.fileExtension,
-    required this.isImage,
-    required this.fileBytes,
-    required this.videoThumbnailUrl,
-  });
+  BoxRequestFactory(
+      {required this.boxHelper,
+      required this.titleController,
+      required this.contentController,
+      required this.dateStartController,
+      required this.timeStartController,
+      required this.dateEndController,
+      required this.timeEndController,
+      required this.downloadUrl,
+      required this.fileExtension,
+      required this.isImage,
+      required this.fileBytes,
+      required this.videoThumbnailUrl,
+      required this.receiver,
+      required this.boxType,
+      this.futureDates,
+      this.isAnonymous});
 
   Future<BoxRequest> createBoxRequest() async {
     return BoxRequest(
-      sender: 'Samuel Maggio',
-      title: titleController.text,
-      type: BoxType.social,
-      category: _getCategory(),
-      file: await _getFileItem(),
-      message: _getMessage(),
-      dates: _getDates(),
-    );
+        sender: 'Samuel Maggio',
+        receiver: receiver ?? '',
+        title: titleController.text,
+        type: BoxType.social,
+        category: _getCategory(),
+        file: await _getFileItem(),
+        message: _getMessage(),
+        dates: _getDates(),
+        isAnonymous: isAnonymous ?? false);
   }
 
   Category _getCategory() {
@@ -75,12 +83,12 @@ class BoxRequestFactory {
 
   Dates _getDates() {
     return Dates(
-      range: Range(
-        start: CustomDateUtils.transformDate(
-            dateStartController.text, timeStartController.text),
-        end: CustomDateUtils.transformDate(
-            dateEndController.text, timeEndController.text),
-      ),
-    );
+        range: Range(
+          start: CustomDateUtils.transformDate(
+              dateStartController.text, timeStartController.text),
+          end: CustomDateUtils.transformDate(
+              dateEndController.text, timeEndController.text),
+        ),
+        future: futureDates);
   }
 }

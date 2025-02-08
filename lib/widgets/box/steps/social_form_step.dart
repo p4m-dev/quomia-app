@@ -14,12 +14,14 @@ import 'package:quomia/designSystem/title.dart';
 import 'package:quomia/http/box_http.dart';
 import 'package:quomia/http/constants.dart';
 import 'package:quomia/models/box/box_helper.dart';
+import 'package:quomia/models/box/box_type.dart';
 import 'package:quomia/models/box/category.dart';
 import 'package:quomia/models/box/file_type.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/utils/file_utils.dart';
 import 'package:quomia/utils/firebase_utils.dart';
+import 'package:quomia/utils/message_utils.dart';
 import 'package:quomia/utils/video_utils.dart';
 import 'package:quomia/widgets/box/request/box_request_factory.dart';
 import 'package:quomia/widgets/box/steps/date_time_row.dart';
@@ -239,7 +241,9 @@ class _SocialFormStepState extends State<SocialFormStep> {
             fileExtension: _fileExtension,
             isImage: fileType.isImage,
             fileBytes: _fileBytes,
-            videoThumbnailUrl: videoThumbnailUrl);
+            videoThumbnailUrl: videoThumbnailUrl,
+            receiver: null,
+            boxType: BoxType.social);
 
         final boxRequest = await boxRequestFactory.createBoxRequest();
 
@@ -248,14 +252,8 @@ class _SocialFormStepState extends State<SocialFormStep> {
         await httpBoxService.createBox(boxRequest, '$baseUrl/box/social');
 
         if (mounted) {
-          Fluttertoast.showToast(
-            msg: "Acquisto del box avvenuto correttamente!",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            backgroundColor: AppColors.light.tertiary,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+          MessageUtils.showToast("Acquisto del box avvenuto correttamente!",
+              AppColors.light.tertiary, Colors.white);
 
           Navigator.push(
             context,
@@ -264,14 +262,8 @@ class _SocialFormStepState extends State<SocialFormStep> {
         }
       } catch (e) {
         if (mounted) {
-          Fluttertoast.showToast(
-            msg: "Errore durante l'acquisto del box: $e",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
-            backgroundColor: AppColors.light.error,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+          MessageUtils.showToast("Errore durante l'acquisto del box: $e",
+              AppColors.light.error, Colors.white);
         }
       } finally {
         if (mounted) {
