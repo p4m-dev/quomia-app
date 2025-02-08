@@ -203,7 +203,7 @@ class _SocialFormStepState extends State<SocialFormStep> {
 
       FileType fileType = FileUtils.convertExtensionToFileType(_fileExtension);
 
-      late String? videoThumbnailUrl;
+      String? videoThumbnailUrl = '';
 
       // Upload file to firebase
       if (widget.boxHelper.category == Category.interactive) {

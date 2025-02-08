@@ -324,12 +324,12 @@ class _BoxWidgetState extends State<BoxWidget> {
                   ),
                 ),
               ),
-              Align(
+              const Align(
                 alignment: Alignment.center,
                 child: IconButton(
                     icon: Icon(
-                      isPlaying ? Icons.pause : Icons.play_arrow,
-                      color: Colors.white,
+                      Icons.play_arrow,
+                      color: Color.fromARGB(200, 255, 255, 255),
                       size: 64.0,
                     ),
                     onPressed: null),

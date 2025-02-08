@@ -62,7 +62,7 @@ class BoxRequestFactory {
       return FileItem(
           fileType: FileUtils.convertExtensionToFileType(fileExtension),
           downloadUrl: downloadUrl ?? '',
-          videoThumbnailUrl: videoThumbnailUrl ?? '',
+          videoThumbnailUrl: videoThumbnailUrl == '' ? null : videoThumbnailUrl,
           imageBlurhash:
               isImage ? await ImageUtils.generateBlurHash(fileBytes) : '');
     }

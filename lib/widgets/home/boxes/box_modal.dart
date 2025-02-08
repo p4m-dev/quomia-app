@@ -31,24 +31,33 @@ class _BoxModalState extends State<BoxModal> {
   @override
   void initState() {
     super.initState();
-    BetterPlayerDataSource dataSource = BetterPlayerDataSource(
+
+    if (widget.box.content.fileType == FileType.video) {
+      BetterPlayerDataSource dataSource = BetterPlayerDataSource(
         BetterPlayerDataSourceType.network,
         widget.box.content.downloadUrl ?? '',
         cacheConfiguration:
-            const BetterPlayerCacheConfiguration(useCache: true));
+            const BetterPlayerCacheConfiguration(useCache: true),
+      );
 
-    _betterPlayerController = BetterPlayerController(
+      _betterPlayerController = BetterPlayerController(
         const BetterPlayerConfiguration(
-            aspectRatio: 16 / 9,
-            autoPlay: true,
-            looping: false,
-            controlsConfiguration: BetterPlayerControlsConfiguration(
-                enableSkips: true,
-                enablePlaybackSpeed: true,
-                showControls: true,
-                enableFullscreen: true)));
+          fit: BoxFit.fill,
+          aspectRatio: 16 / 9,
+          autoPlay: true,
+          looping: false,
+          controlsConfiguration: BetterPlayerControlsConfiguration(
+            enableSkips: true,
+            enablePlaybackSpeed: true,
+            showControls: true,
+            enableFullscreen: true,
+          ),
+          expandToFill: true,
+        ),
+      );
 
-    _betterPlayerController.setupDataSource(dataSource);
+      _betterPlayerController.setupDataSource(dataSource);
+    }
   }
 
   @override
@@ -63,83 +72,86 @@ class _BoxModalState extends State<BoxModal> {
             color: AppColors.light.primaryBackground,
             borderRadius: BorderRadius.circular(16),
           ),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: AppBar(
-                  backgroundColor: Colors.white,
-                  elevation: 0,
-                  title: Label(
-                    data: widget.box.user.sender,
-                    color: AppColors.light.primary,
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  centerTitle: true,
-                  leading: IconButton(
-                    icon: Icon(Icons.close, color: AppColors.light.primaryText),
-                    onPressed: () => Navigator.of(context).pop(),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: AppBar(
+                    backgroundColor: Colors.white,
+                    elevation: 0,
+                    title: Label(
+                      data: widget.box.user.sender,
+                      color: AppColors.light.primary,
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    centerTitle: true,
+                    leading: IconButton(
+                      icon:
+                          Icon(Icons.close, color: AppColors.light.primaryText),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  children: [
-                    const Gap(
-                      height: 16.0,
-                    ),
-                    _timerRow(),
-                    const Gap(
-                      height: 16.0,
-                    ),
-                    Align(
-                        alignment: Alignment.topLeft,
-                        child: Label(
-                          data: widget.box.info.title,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        )),
-                    const Gap(
-                      height: 10.0,
-                    ),
-                    _boxContent(widget.box.content),
-                    const Gap(
-                      height: 10.0,
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: _quickActionsRow(widget.box.info)),
-                    const Gap(
-                      height: 10.0,
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Expanded(
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: CustomTextFormField(
-                                controller: chatController,
-                                hintText: 'Scrivi un commento...',
-                                textInput: TextInputType.text,
-                                hasSuffixIcon: true,
-                                suffixIcon: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.send,
-                                      color: AppColors.light.primaryText,
-                                      size: 24,
-                                    ))),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    children: [
+                      const Gap(
+                        height: 16.0,
+                      ),
+                      _timerRow(),
+                      const Gap(
+                        height: 16.0,
+                      ),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Label(
+                            data: widget.box.info.title,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          )),
+                      const Gap(
+                        height: 10.0,
+                      ),
+                      _boxContent(widget.box.content),
+                      const Gap(
+                        height: 10.0,
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: _quickActionsRow(widget.box.info)),
+                      const Gap(
+                        height: 10.0,
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: CustomTextFormField(
+                                  controller: chatController,
+                                  hintText: 'Scrivi un commento...',
+                                  textInput: TextInputType.text,
+                                  hasSuffixIcon: true,
+                                  suffixIcon: IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.send,
+                                        color: AppColors.light.primaryText,
+                                        size: 24,
+                                      ))),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -301,10 +313,11 @@ class _BoxModalState extends State<BoxModal> {
 
   Widget _videoContent(String downloadUrl) {
     return ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: SizedBox(
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+            color: Colors.black,
             width: MediaQuery.of(context).size.width,
-            height: 200,
+            height: itemHeight,
             child: BetterPlayer(controller: _betterPlayerController)));
   }
 
@@ -334,7 +347,7 @@ class _BoxModalState extends State<BoxModal> {
                 child: IconButton(
                   icon: Icon(
                     isPlaying ? Icons.pause : Icons.play_arrow,
-                    color: Colors.white,
+                    color: const Color.fromARGB(200, 255, 255, 255),
                     size: 64.0,
                   ),
                   onPressed: () async {
