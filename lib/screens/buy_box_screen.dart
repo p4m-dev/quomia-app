@@ -154,13 +154,12 @@ class _BuyBoxScreenState extends State<BuyBoxScreen> {
                                     foregroundColor: AppColors.light.primary),
                                 child: const Text('Indietro'),
                               ),
-                              if (_currentStep == 1)
-                                TextButton(
-                                    onPressed: _enableNextButton(),
-                                    style: TextButton.styleFrom(
-                                        foregroundColor:
-                                            AppColors.light.primary),
-                                    child: const Text('Avanti')),
+                              TextButton(
+                                onPressed: _enableNextButton(),
+                                style: TextButton.styleFrom(
+                                    foregroundColor: AppColors.light.primary),
+                                child: const Text('Avanti'),
+                              ),
                             ],
                           ),
                         ],

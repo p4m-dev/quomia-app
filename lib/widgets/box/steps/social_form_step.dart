@@ -143,7 +143,7 @@ class _SocialFormStepState extends State<SocialFormStep> {
                               ),
                               const Gap(height: 10.0),
                               const Label(
-                                data: 'Tempo iniziale',
+                                data: 'Data iniziale',
                               ),
                               const Gap(height: 10.0),
                               DateTimeRow(
@@ -153,7 +153,7 @@ class _SocialFormStepState extends State<SocialFormStep> {
                               ),
                               const Gap(height: 20.0),
                               const Label(
-                                data: 'Tempo finale',
+                                data: 'Data finale',
                               ),
                               const Gap(height: 10.0),
                               DateTimeRow(
@@ -168,22 +168,30 @@ class _SocialFormStepState extends State<SocialFormStep> {
                               const Gap(height: 20.0),
                               Row(
                                 mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Button(
-                                      backgroundColor: AppColors.light.tertiary,
-                                      label: 'Annulla',
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const HomeScreen()));
-                                      }),
+                                  Expanded(
+                                    child: Button(
+                                        backgroundColor:
+                                            AppColors.light.tertiary,
+                                        label: 'Annulla',
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const HomeScreen()));
+                                        }),
+                                  ),
                                   const Gap(width: 10.0),
-                                  Button(
-                                      backgroundColor: AppColors.light.primary,
-                                      label: 'Sigilla',
-                                      onPressed: _handleBoxBuy)
+                                  Expanded(
+                                    child: Button(
+                                        backgroundColor:
+                                            AppColors.light.primary,
+                                        label: 'Sigilla',
+                                        onPressed: _handleBoxBuy),
+                                  )
                                 ],
                               ),
                             ]),

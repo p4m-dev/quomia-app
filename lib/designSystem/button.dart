@@ -15,7 +15,7 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            minimumSize: _buttonSize(),
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.4, 48),
             backgroundColor: backgroundColor,
             shadowColor: Colors.transparent,
             shape: RoundedRectangleBorder(
@@ -25,9 +25,5 @@ class Button extends StatelessWidget {
           label,
           style: const TextStyle(color: Colors.white, fontSize: 18),
         ));
-  }
-
-  Size _buttonSize() {
-    return const Size(150, 48);
   }
 }

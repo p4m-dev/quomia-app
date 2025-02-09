@@ -70,7 +70,7 @@ class _SocialBoxState extends State<SocialBox> {
                   }
 
                   if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('No boxes found'));
+                    return const BoxWidgetPlaceholder();
                   }
 
                   final boxes = snapshot.data!;

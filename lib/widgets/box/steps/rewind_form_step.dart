@@ -216,7 +216,7 @@ class _RewindFormStepState extends State<RewindFormStep> {
                               ),
                               const Gap(height: 10.0),
                               const Label(
-                                data: 'Tempo iniziale',
+                                data: 'Data iniziale',
                               ),
                               const Gap(height: 10.0),
                               DateTimeRow(
@@ -224,7 +224,7 @@ class _RewindFormStepState extends State<RewindFormStep> {
                                   timeController: _timeStartController),
                               const Gap(height: 20.0),
                               const Label(
-                                data: 'Tempo finale',
+                                data: 'Data finale',
                               ),
                               const Gap(height: 20.0),
                               DateTimeRow(

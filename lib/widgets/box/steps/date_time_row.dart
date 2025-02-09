@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:quomia/designSystem/gap.dart';
-import 'package:quomia/designSystem/label.dart';
 import 'package:quomia/designSystem/text_form_field.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/utils/date_utils.dart';
@@ -25,64 +24,50 @@ class _DateTimeRowState extends State<DateTimeRow> {
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Label(data: 'Data'),
-            const Gap(height: 10.0),
-            CustomTextFormField(
-              width: 155,
-              controller: widget.dateController,
-              hintText: 'Data',
-              hasPrefixIcon: true,
-              prefixIcon: Icons.date_range,
-              hasOnTap: true,
-              textInput: TextInputType.datetime,
-              callback: () {
-                if (widget.isFutureDate == true) {
-                  _selectFutureDate(context);
-                } else {
-                  _selectPastDate(context);
-                }
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'La data deve essere presente!';
-                }
-                return null;
-              },
-            ),
-          ],
+        Expanded(
+          child: CustomTextFormField(
+            controller: widget.dateController,
+            hintText: 'Data',
+            hasPrefixIcon: true,
+            prefixIcon: Icons.date_range,
+            hasOnTap: true,
+            textInput: TextInputType.datetime,
+            callback: () {
+              if (widget.isFutureDate == true) {
+                _selectFutureDate(context);
+              } else {
+                _selectPastDate(context);
+              }
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'La data deve essere presente!';
+              }
+              return null;
+            },
+          ),
         ),
-        const Gap(width: 10.0),
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Label(data: 'Tempo'),
-            const Gap(height: 10.0),
-            CustomTextFormField(
-              width: 155,
-              controller: widget.timeController,
-              hintText: 'Tempo',
-              hasPrefixIcon: true,
-              prefixIcon: Icons.timelapse,
-              hasOnTap: true,
-              textInput: TextInputType.datetime,
-              callback: () {
-                _selectTime(context);
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Il tempo deve essere presente!';
-                }
-                return null;
-              },
-            ),
-          ],
+        const Gap(width: 16.0),
+        Expanded(
+          child: CustomTextFormField(
+            controller: widget.timeController,
+            hintText: 'Tempo',
+            hasPrefixIcon: true,
+            prefixIcon: Icons.timelapse,
+            hasOnTap: true,
+            textInput: TextInputType.datetime,
+            callback: () {
+              _selectTime(context);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Il tempo deve essere presente!';
+              }
+              return null;
+            },
+          ),
         ),
       ],
     );

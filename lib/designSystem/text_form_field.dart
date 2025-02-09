@@ -14,6 +14,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType textInput;
   final VoidCallback? callback;
   final FormFieldValidator<String>? validator;
+  final ValueChanged<String>? onChanged;
 
   const CustomTextFormField(
       {super.key,
@@ -28,55 +29,58 @@ class CustomTextFormField extends StatelessWidget {
       this.hasOnTap,
       required this.textInput,
       this.callback,
-      this.validator});
+      this.validator,
+      this.onChanged});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
       child: TextFormField(
-          controller: controller,
-          autofocus: false,
-          obscureText: false,
-          decoration: InputDecoration(
-            isDense: true,
-            hintText: hintText,
-            hintStyle: const TextStyle(fontFamily: 'DM Sans'),
-            enabledBorder: _outlineInputBorder(),
-            focusedBorder: _outlineInputBorder(),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.light.error,
-                width: 1,
-              ),
-              borderRadius: BorderRadius.circular(24),
+        controller: controller,
+        autofocus: false,
+        obscureText: false,
+        decoration: InputDecoration(
+          isDense: true,
+          hintText: hintText,
+          hintStyle: const TextStyle(fontFamily: 'DM Sans'),
+          enabledBorder: _outlineInputBorder(),
+          focusedBorder: _outlineInputBorder(),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: AppColors.light.error,
+              width: 1,
             ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.light.error,
-                width: 1,
-              ),
-              borderRadius: BorderRadius.circular(24),
-            ),
-            filled: true,
-            fillColor: AppColors.light.background,
-            prefixIcon: hasPrefixIcon != null
-                ? Icon(
-                    prefixIcon,
-                  )
-                : null,
-            suffixIcon: hasSuffixIcon != null && hasSuffixIcon == true
-                ? suffixIcon
-                : null,
+            borderRadius: BorderRadius.circular(24),
           ),
-          readOnly: readOnly != null ? true : false,
-          style: const TextStyle(fontFamily: 'DM Sans', fontSize: 14),
-          cursorColor: AppColors.light.primaryText,
-          onTap: hasOnTap != null && hasOnTap == true ? callback : null,
-          keyboardType: textInput,
-          maxLines: textInput == TextInputType.multiline ? 8 : null,
-          maxLength: textInput == TextInputType.multiline ? 1000 : null,
-          validator: validator),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: AppColors.light.error,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(24),
+          ),
+          filled: true,
+          fillColor: AppColors.light.background,
+          prefixIcon: hasPrefixIcon != null
+              ? Icon(
+                  prefixIcon,
+                )
+              : null,
+          suffixIcon: hasSuffixIcon != null && hasSuffixIcon == true
+              ? suffixIcon
+              : null,
+        ),
+        readOnly: readOnly != null ? true : false,
+        style: const TextStyle(fontFamily: 'DM Sans', fontSize: 14),
+        cursorColor: AppColors.light.primaryText,
+        onTap: hasOnTap != null && hasOnTap == true ? callback : null,
+        keyboardType: textInput,
+        maxLines: textInput == TextInputType.multiline ? 8 : null,
+        maxLength: textInput == TextInputType.multiline ? 1000 : null,
+        validator: validator,
+        onChanged: onChanged,
+      ),
     );
   }
 

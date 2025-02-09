@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quomia/designSystem/gap.dart';
+import 'package:quomia/designSystem/text_form_field.dart';
+import 'package:quomia/utils/app_colors.dart';
 
 class UserBottomSheetUtils {
   static final List<Map<String, String>> _users = [
@@ -29,47 +31,50 @@ class UserBottomSheetUtils {
           return DraggableScrollableSheet(
             expand: false,
             maxChildSize: 0.9,
-            builder: (_, controller) => Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: searchController,
-                    decoration: InputDecoration(
+            builder: (_, controller) => Container(
+              decoration: BoxDecoration(
+                color: AppColors.light.primaryBackground,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    CustomTextFormField(
+                      controller: searchController,
                       hintText: "Cerca timers",
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        filterUsers(value);
-                      });
-                    },
-                  ),
-                  const Gap(
-                    height: 10,
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      controller: controller,
-                      itemCount: filteredUsers.length,
-                      itemBuilder: (context, index) {
-                        final user = filteredUsers[index];
-                        return ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage(user["avatar"]!),
-                          ),
-                          title: Text(user["username"]!),
-                          onTap: () {
-                            Navigator.pop(context, user["username"]);
-                          },
-                        );
+                      textInput: TextInputType.text,
+                      hasPrefixIcon: true,
+                      prefixIcon: Icons.search,
+                      onChanged: (value) {
+                        setState(() {
+                          filterUsers(value);
+                        });
                       },
                     ),
-                  ),
-                ],
+                    const Gap(
+                      height: 10,
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        controller: controller,
+                        itemCount: filteredUsers.length,
+                        itemBuilder: (context, index) {
+                          final user = filteredUsers[index];
+                          return ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage: NetworkImage(user["avatar"]!),
+                            ),
+                            title: Text(user["username"]!),
+                            onTap: () {
+                              Navigator.pop(context, user["username"]);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );

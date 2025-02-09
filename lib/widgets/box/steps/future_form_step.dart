@@ -185,7 +185,7 @@ class _FutureFormStepState extends State<FutureFormStep> {
                                 ),
                                 const Gap(height: 10.0),
                                 const Label(
-                                  data: 'Tempo iniziale',
+                                  data: 'Data iniziale',
                                 ),
                                 const Gap(height: 10.0),
                                 DateTimeRow(
@@ -195,7 +195,7 @@ class _FutureFormStepState extends State<FutureFormStep> {
                                 ),
                                 const Gap(height: 20.0),
                                 const Label(
-                                  data: 'Tempo finale',
+                                  data: 'Data finale',
                                 ),
                                 const Gap(height: 20.0),
                                 DateTimeRow(
@@ -338,13 +338,15 @@ class _FutureFormStepState extends State<FutureFormStep> {
             receiver: null,
             boxType: BoxType.rewind,
             futureDates: _dates,
-            isAnonymous: _isAnonymousEnabled);
+            isAnonymous: _isAnonymousEnabled,
+            deliveryDateController: _deliveryDateController,
+            deliveryTimeController: _deliveryTimeController);
 
         final boxRequest = await boxRequestFactory.createBoxRequest();
 
         HttpBoxService httpBoxService = HttpBoxService();
         var baseUrl = Constants.baseUrl;
-        await httpBoxService.createBox(boxRequest, '$baseUrl/box/rewind');
+        await httpBoxService.createBox(boxRequest, '$baseUrl/box/future');
 
         if (mounted) {
           MessageUtils.showToast("Acquisto del box avvenuto correttamente!",
