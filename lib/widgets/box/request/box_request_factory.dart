@@ -29,6 +29,8 @@ class BoxRequestFactory {
   final BoxType boxType;
   final List<DateTime>? futureDates;
   final bool? isAnonymous;
+  final TextEditingController? deliveryDateController;
+  final TextEditingController? deliveryTimeController;
 
   BoxRequestFactory(
       {required this.boxHelper,
@@ -46,7 +48,9 @@ class BoxRequestFactory {
       required this.receiver,
       required this.boxType,
       this.futureDates,
-      this.isAnonymous});
+      this.isAnonymous,
+      this.deliveryDateController,
+      this.deliveryTimeController});
 
   Future<BoxRequest> createBoxRequest() async {
     return BoxRequest(
@@ -83,12 +87,22 @@ class BoxRequestFactory {
 
   Dates _getDates() {
     return Dates(
-        range: Range(
-          start: CustomDateUtils.transformDate(
-              dateStartController.text, timeStartController.text),
-          end: CustomDateUtils.transformDate(
-              dateEndController.text, timeEndController.text),
-        ),
-        future: futureDates);
+      range: Range(
+        start: CustomDateUtils.transformDate(
+            dateStartController.text, timeStartController.text),
+        end: CustomDateUtils.transformDate(
+            dateEndController.text, timeEndController.text),
+      ),
+      future: futureDates,
+      deliveryDate: _getDeliveryDate(),
+    );
+  }
+
+  DateTime? _getDeliveryDate() {
+    return (deliveryDateController?.text.isNotEmpty ?? false) &&
+            (deliveryTimeController?.text.isNotEmpty ?? false)
+        ? CustomDateUtils.transformDate(
+            deliveryDateController!.text, deliveryTimeController!.text)
+        : null;
   }
 }

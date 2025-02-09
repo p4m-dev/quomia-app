@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quomia/designSystem/button.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/info_message.dart';
@@ -77,7 +76,8 @@ class _SocialFormStepState extends State<SocialFormStep> {
           children: [
             const CustomTitle(data: 'Creazione Box'),
             const Gap(height: 10.0),
-            const Subtitle(data: 'Inserisci i dati necessari'),
+            const Subtitle(
+                data: "Inserisci i dati necessari per completare l'acquisto"),
             const Gap(height: 10.0),
             Form(
               key: _formKey,

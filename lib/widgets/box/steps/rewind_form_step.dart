@@ -16,10 +16,6 @@ import 'package:quomia/models/box/box_helper.dart';
 import 'package:quomia/models/box/box_type.dart';
 import 'package:quomia/models/box/category.dart';
 import 'package:quomia/models/box/file_type.dart';
-import 'package:quomia/models/box/request/box_request.dart';
-import 'package:quomia/models/box/request/dates.dart';
-import 'package:quomia/models/box/request/file_item.dart';
-import 'package:quomia/models/box/request/range.dart';
 import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/utils/date_utils.dart';
@@ -115,7 +111,8 @@ class _RewindFormStepState extends State<RewindFormStep> {
           children: [
             const CustomTitle(data: 'Creazione Box'),
             const Gap(height: 10.0),
-            const Subtitle(data: 'Inserisci i dati necessari'),
+            const Subtitle(
+                data: "Inserisci i dati necessari per completare l'acquisto"),
             const Gap(height: 10.0),
             Form(
               key: _formKey,
@@ -201,9 +198,11 @@ class _RewindFormStepState extends State<RewindFormStep> {
                                   contentController: _contentController,
                                   fileController: _fileController,
                                   onFileSelected: (fileData) {
-                                    _fileBytes = fileData['fileBytes'] ?? '';
                                     _fileExtension =
                                         fileData['fileExtension'] ?? '';
+                                    _fileName = fileData['fileName'] ?? '';
+                                    _filePath = fileData['filePath'] ?? '';
+                                    _fileBytes = fileData['fileBytes'] ?? '';
                                   }),
                               const Gap(height: 20.0),
                               const Divider(
