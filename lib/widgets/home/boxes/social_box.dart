@@ -41,55 +41,57 @@ class _SocialBoxState extends State<SocialBox> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        _isLoading
-            ? const LabelPlaceholder()
-            : const Label(
-                data: 'Per te',
-                fontSize: 24,
-              ),
-        const Gap(
-          height: 10.0,
-        ),
-        SizedBox(
-            height: 600,
-            child: FutureBuilder<List<Box>>(
-                future: _socialBoxes,
-                builder: (context, snapshot) {
-                  // Loading state
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const BoxWidgetPlaceholder();
-                  }
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          _isLoading
+              ? const LabelPlaceholder()
+              : const Label(
+                  data: 'Per te',
+                  fontSize: 24,
+                ),
+          const Gap(
+            height: 10.0,
+          ),
+          FutureBuilder<List<Box>>(
+              future: _socialBoxes,
+              builder: (context, snapshot) {
+                // Loading state
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const BoxWidgetPlaceholder();
+                }
 
-                  // Error state
-                  if (snapshot.hasError) {
-                    return const BoxWidgetPlaceholder();
-                  }
+                // Error state
+                if (snapshot.hasError) {
+                  return const BoxWidgetPlaceholder();
+                }
 
-                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const BoxWidgetPlaceholder();
-                  }
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const BoxWidgetPlaceholder();
+                }
 
-                  final boxes = snapshot.data!;
+                final boxes = snapshot.data!;
 
-                  return ListView.builder(
-                      itemCount: boxes.length,
-                      itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            BoxWidget(box: boxes[index]),
-                            if (index < boxes.length - 1)
-                              const Gap(
-                                height: 16,
-                              )
-                          ],
-                        );
-                      });
-                })),
-      ],
+                return ListView.builder(
+                    itemCount: boxes.length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          BoxWidget(box: boxes[index]),
+                          if (index < boxes.length - 1)
+                            const Gap(
+                              height: 16,
+                            )
+                        ],
+                      );
+                    });
+              }),
+        ],
+      ),
     );
   }
 }

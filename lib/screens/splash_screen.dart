@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/screens/main_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
@@ -41,39 +40,58 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.light.background,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Shimmer.fromColors(
-                baseColor: AppColors.light.primary,
-                highlightColor: AppColors.light.secondary,
-                child: GradientText(
-                  'Quomia',
+      backgroundColor: AppColors.light.background,
+      body: Stack(
+        children: [
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Shimmer.fromColors(
+                  baseColor: AppColors.light.primary,
+                  highlightColor: AppColors.light.secondary,
+                  child: GradientText(
+                    'Quomia',
+                    style: const TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 40,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    colors: [
+                      AppColors.light.primary,
+                      AppColors.light.secondary,
+                      AppColors.light.tertiary
+                    ],
+                    gradientDirection: GradientDirection.ltr,
+                    gradientType: GradientType.linear,
+                  ),
+                ),
+                Text(
+                  'WHERE TIME MATTERS',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
-                    color: AppColors.light.primary,
-                    fontSize: 40,
-                    letterSpacing: 0.0,
-                    fontWeight: FontWeight.w500,
+                    color: AppColors.light.primaryText,
                   ),
-                  colors: [
-                    AppColors.light.primary,
-                    AppColors.light.secondary,
-                    AppColors.light.tertiary
-                  ],
-                  gradientDirection: GradientDirection.ltr,
-                  gradientType: GradientType.linear,
                 ),
-              ),
-              Text('WHERE TIME MATTERS',
-                  style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      color: AppColors.light.primaryText,
-                      letterSpacing: 0.0)),
-            ],
+              ],
+            ),
           ),
-        ));
+          Positioned(
+            bottom: 20,
+            left: 0,
+            right: 0,
+            child: Text(
+              'v0.0.2',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 12,
+                color: AppColors.light.primaryText.withOpacity(0.6),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:video_compress/video_compress.dart';
 
 class FileUtils {
   static FileType convertExtensionToFileType(String fileExtension) {
@@ -85,15 +84,5 @@ class FileUtils {
     }
 
     return "$basePath/$contentPath";
-  }
-
-  static Future<File?> optimizeFile(String filePath) async {
-    final info = await VideoCompress.compressVideo(
-      filePath,
-      quality: VideoQuality.DefaultQuality,
-      deleteOrigin: false,
-    );
-
-    return info?.file;
   }
 }
