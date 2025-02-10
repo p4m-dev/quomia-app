@@ -15,17 +15,7 @@ class FirebaseUtils {
       required String fileName}) async {
     final storageRef = FirebaseStorage.instance.ref();
 
-    // Compress file only if isVideo
-    File? file = fileType.isVideo
-        ? await FileUtils.optimizeFile(filePath)
-        : File(filePath);
-
-    if (file == null) {
-      developer.log(
-        'Error during file optimization',
-      );
-      return null;
-    }
+    File file = File(filePath);
 
     final folderPath = FileUtils.buildFilePath(fileType, sender);
 

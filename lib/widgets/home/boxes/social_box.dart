@@ -55,7 +55,7 @@ class _SocialBoxState extends State<SocialBox> {
           height: 10.0,
         ),
         SizedBox(
-            height: 500,
+            height: 600,
             child: FutureBuilder<List<Box>>(
                 future: _socialBoxes,
                 builder: (context, snapshot) {

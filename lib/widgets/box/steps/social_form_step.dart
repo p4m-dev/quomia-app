@@ -16,7 +16,7 @@ import 'package:quomia/models/box/box_helper.dart';
 import 'package:quomia/models/box/box_type.dart';
 import 'package:quomia/models/box/category.dart';
 import 'package:quomia/models/box/file_type.dart';
-import 'package:quomia/screens/home_screen.dart';
+import 'package:quomia/screens/main_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/utils/file_utils.dart';
 import 'package:quomia/utils/firebase_utils.dart';
@@ -48,10 +48,9 @@ class _SocialFormStepState extends State<SocialFormStep> {
   final _formKey = GlobalKey<FormState>();
 
   late Map<String, dynamic> selectedFile;
-  late Uint8List _fileBytes;
-  late String _fileExtension;
+  Uint8List _fileBytes = Uint8List(0);
+  String _fileExtension = '';
   late String _fileName;
-  late String? _downloadUrl;
   late String _filePath;
 
   @override
@@ -181,7 +180,7 @@ class _SocialFormStepState extends State<SocialFormStep> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const HomeScreen()));
+                                                      const MainScreen()));
                                         }),
                                   ),
                                   const Gap(width: 10.0),
@@ -211,13 +210,18 @@ class _SocialFormStepState extends State<SocialFormStep> {
         widget.onLoading(true);
       });
 
-      FileType fileType = FileUtils.convertExtensionToFileType(_fileExtension);
-
       String? videoThumbnailUrl = '';
+      bool isImage = false;
+      String? downloadUrl = '';
 
       // Upload file to firebase
       if (widget.boxHelper.category == Category.interactive) {
-        _downloadUrl = await FirebaseUtils.uploadFileToStorage(
+        FileType fileType =
+            FileUtils.convertExtensionToFileType(_fileExtension);
+
+        isImage = fileType.isImage;
+
+        downloadUrl = await FirebaseUtils.uploadFileToStorage(
             filePath: _filePath,
             fileType: fileType,
             fileExtension: _fileExtension,
@@ -245,9 +249,9 @@ class _SocialFormStepState extends State<SocialFormStep> {
             timeStartController: _timeStartController,
             dateEndController: _dateEndController,
             timeEndController: _timeEndController,
-            downloadUrl: _downloadUrl,
+            downloadUrl: downloadUrl,
             fileExtension: _fileExtension,
-            isImage: fileType.isImage,
+            isImage: isImage,
             fileBytes: _fileBytes,
             videoThumbnailUrl: videoThumbnailUrl,
             receiver: null,
@@ -265,7 +269,7 @@ class _SocialFormStepState extends State<SocialFormStep> {
 
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
+            MaterialPageRoute(builder: (context) => const MainScreen()),
           );
         }
       } catch (e) {

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quomia/screens/home_screen.dart';
+import 'package:quomia/screens/main_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -34,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // }
 
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+        context, MaterialPageRoute(builder: (context) => const MainScreen()));
   }
 
   @override

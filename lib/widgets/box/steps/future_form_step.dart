@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quomia/designSystem/button.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/info_message.dart';
@@ -17,13 +16,8 @@ import 'package:quomia/models/box/box_helper.dart';
 import 'package:quomia/models/box/box_type.dart';
 import 'package:quomia/models/box/category.dart';
 import 'package:quomia/models/box/file_type.dart';
-import 'package:quomia/models/box/request/box_request.dart';
-import 'package:quomia/models/box/request/dates.dart';
-import 'package:quomia/models/box/request/file_item.dart';
-import 'package:quomia/models/box/request/range.dart';
-import 'package:quomia/screens/home_screen.dart';
+import 'package:quomia/screens/main_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
-import 'package:quomia/utils/date_utils.dart';
 import 'package:quomia/utils/file_utils.dart';
 import 'package:quomia/utils/firebase_utils.dart';
 import 'package:quomia/utils/message_utils.dart';
@@ -58,10 +52,8 @@ class _FutureFormStepState extends State<FutureFormStep> {
   final _formKey = GlobalKey<FormState>();
 
   late Map<String, dynamic> selectedFile;
-  late Uint8List _fileBytes;
-  late String _fileExtension;
-  late List<DateTime> _dates;
-  late String? _downloadUrl;
+  Uint8List _fileBytes = Uint8List(0);
+  String _fileExtension = '';
   late String _fileName;
   late String _filePath;
 
@@ -254,7 +246,7 @@ class _FutureFormStepState extends State<FutureFormStep> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const HomeScreen()));
+                                                      const MainScreen()));
                                         }),
                                     const Gap(width: 10.0),
                                     Button(
@@ -297,12 +289,17 @@ class _FutureFormStepState extends State<FutureFormStep> {
         widget.onLoading(true);
       });
 
-      FileType fileType = FileUtils.convertExtensionToFileType(_fileExtension);
-
       String? videoThumbnailUrl = '';
+      bool isImage = false;
+      String? downloadUrl = '';
 
       if (widget.boxHelper.category == Category.interactive) {
-        _downloadUrl = await FirebaseUtils.uploadFileToStorage(
+        FileType fileType =
+            FileUtils.convertExtensionToFileType(_fileExtension);
+
+        isImage = fileType.isImage;
+
+        downloadUrl = await FirebaseUtils.uploadFileToStorage(
             filePath: _filePath,
             fileType: fileType,
             fileExtension: _fileExtension,
@@ -330,14 +327,13 @@ class _FutureFormStepState extends State<FutureFormStep> {
             timeStartController: _timeStartController,
             dateEndController: _dateEndController,
             timeEndController: _timeEndController,
-            downloadUrl: _downloadUrl,
+            downloadUrl: downloadUrl,
             fileExtension: _fileExtension,
-            isImage: fileType.isImage,
+            isImage: isImage,
             fileBytes: _fileBytes,
             videoThumbnailUrl: videoThumbnailUrl,
-            receiver: null,
-            boxType: BoxType.rewind,
-            futureDates: _dates,
+            receiver: _userController.text,
+            boxType: BoxType.future,
             isAnonymous: _isAnonymousEnabled,
             deliveryDateController: _deliveryDateController,
             deliveryTimeController: _deliveryTimeController);
@@ -354,7 +350,7 @@ class _FutureFormStepState extends State<FutureFormStep> {
 
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
+            MaterialPageRoute(builder: (context) => const MainScreen()),
           );
         }
       } catch (e) {

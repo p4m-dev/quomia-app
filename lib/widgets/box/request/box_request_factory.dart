@@ -57,7 +57,7 @@ class BoxRequestFactory {
         sender: 'Samuel Maggio',
         receiver: receiver ?? '',
         title: titleController.text,
-        type: BoxType.social,
+        type: boxType,
         category: _getCategory(),
         file: await _getFileItem(),
         message: _getMessage(),
