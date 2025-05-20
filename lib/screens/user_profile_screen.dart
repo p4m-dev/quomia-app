@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quomia/http/box_http.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:quomia/widgets/user/chips_choice.dart';
@@ -12,6 +13,7 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   final ScrollController _scrollController = ScrollController();
+  final HttpBoxService httpBoxService = HttpBoxService();
 
   @override
   void dispose() {
@@ -111,6 +113,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ],
         ));
   }
+
+  // Future<void> _fetchBoxesByType() async {
+  //   try {
+  //     _socialBoxes = httpBoxService.fetchSocialBoxes();
+  //     await _socialBoxes;
+  //   } catch (e) {
+  //     developer.log('Error while loading timers: $e');
+  //   } finally {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   }
+  // }
 
   Material buildTopProfile() {
     return Material(
