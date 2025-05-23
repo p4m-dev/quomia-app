@@ -57,4 +57,20 @@ class CustomDateUtils {
   static String parseDate(DateTime dateTime) {
     return fullFormat.format(dateTime);
   }
+
+  static String formatDuration(DateTime startDate, DateTime endDate) {
+    final duration = endDate.difference(startDate);
+
+    if (duration.inMinutes < 60) {
+      return '${duration.inMinutes} minuti';
+    } else {
+      final hours = duration.inHours;
+      final minutes = duration.inMinutes.remainder(60);
+      if (minutes == 0) {
+        return '$hours ore';
+      } else {
+        return '$hours ore e $minutes minuti';
+      }
+    }
+  }
 }

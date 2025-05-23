@@ -6,11 +6,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/image.dart';
 import 'package:quomia/designSystem/label.dart';
-import 'package:quomia/designSystem/text_form_field.dart';
 import 'package:quomia/models/box/box.dart';
 import 'package:quomia/models/box/content.dart';
+import 'package:quomia/models/box/dates.dart';
 import 'package:quomia/models/box/info.dart';
+import 'package:quomia/models/box/nft.dart';
 import 'package:quomia/utils/app_colors.dart';
+import 'package:quomia/utils/date_utils.dart';
 
 class BoxModal extends StatefulWidget {
   final Box box;
@@ -69,7 +71,7 @@ class _BoxModalState extends State<BoxModal> {
       builder: (context, scrollController) {
         return Container(
           decoration: BoxDecoration(
-            color: AppColors.light.primaryBackground,
+            color: AppColors.light.background,
             borderRadius: BorderRadius.circular(16),
           ),
           child: SingleChildScrollView(
@@ -78,7 +80,7 @@ class _BoxModalState extends State<BoxModal> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: AppBar(
-                    backgroundColor: Colors.white,
+                    backgroundColor: AppColors.light.background,
                     elevation: 0,
                     title: Label(
                       data: widget.box.user.sender,
@@ -119,33 +121,13 @@ class _BoxModalState extends State<BoxModal> {
                       const Gap(
                         height: 10.0,
                       ),
-                      Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: _quickActionsRow(widget.box.info)),
+                      _cryptoContent(widget.box.dates, widget.box.nft),
                       const Gap(
                         height: 10.0,
                       ),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: CustomTextFormField(
-                                  controller: chatController,
-                                  hintText: 'Scrivi un commento...',
-                                  textInput: TextInputType.text,
-                                  hasSuffixIcon: true,
-                                  suffixIcon: IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(
-                                        Icons.send,
-                                        color: AppColors.light.primaryText,
-                                        size: 24,
-                                      ))),
-                            ),
-                          ),
-                        ],
+                      _quickActionsRow(widget.box.info),
+                      const Gap(
+                        height: 10.0,
                       ),
                     ],
                   ),
@@ -158,56 +140,150 @@ class _BoxModalState extends State<BoxModal> {
     );
   }
 
-  Widget _quickActionsRow(Info info) {
+  Widget _cryptoContent(Dates dates, NFT nft) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            IconButton(
-                onPressed: () {},
-                icon: FaIcon(
-                  FontAwesomeIcons.heart,
-                  color: AppColors.light.primaryText,
-                  size: 24,
-                )),
-            Label(data: info.likes.toString())
-          ],
-        ),
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            IconButton(
-                onPressed: () {},
-                icon: FaIcon(
-                  FontAwesomeIcons.comment,
-                  color: AppColors.light.primaryText,
-                  size: 24,
-                )),
-            Label(data: info.comments.totalOfComments.toString()),
-          ],
-        ),
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            IconButton(
-                onPressed: () {},
-                icon: FaIcon(
-                  FontAwesomeIcons.clock,
-                  color: AppColors.light.primaryText,
-                  size: 24,
-                )),
-            const Label(
-              data: 'Tempo',
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Expanded(
+            child: Container(
+              height: 160,
+              decoration: BoxDecoration(
+                color: AppColors.light.primaryBackground,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(mainAxisSize: MainAxisSize.max, children: [
+                const Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                    child: Label(
+                        data: 'Valore Temporale', fontWeight: FontWeight.w600)),
+                const Gap(
+                  height: 8.0,
+                ),
+                Label(
+                    data: CustomDateUtils.parseDate(dates.startDate),
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                    fontStyle: FontStyle.italic),
+                const Gap(
+                  height: 8.0,
+                ),
+                Label(
+                    data: CustomDateUtils.parseDate(dates.endDate),
+                    fontStyle: FontStyle.italic,
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal),
+                const Gap(
+                  height: 8.0,
+                ),
+                Label(
+                  data: CustomDateUtils.formatDuration(
+                      dates.startDate, dates.endDate),
+                  fontWeight: FontWeight.bold,
+                )
+              ]),
             ),
-          ],
-        ),
-      ],
+          ),
+          const Gap(
+            width: 10.0,
+          ),
+          Expanded(
+            child: Container(
+              height: 160,
+              decoration: BoxDecoration(
+                color: AppColors.light.primaryBackground,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(mainAxisSize: MainAxisSize.max, children: [
+                  const Label(
+                      data: 'Valore Economico', fontWeight: FontWeight.w600),
+                  const Gap(
+                    height: 8.0,
+                  ),
+                  Label(
+                    data: '1 NFT',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: AppColors.light.primary,
+                  ),
+                  const Gap(
+                    height: 8.0,
+                  ),
+                  Label(
+                    data:
+                        "Prezzo iniziale (${nft.initialPrice.toStringAsFixed(4)} SOL)",
+                    fontWeight: FontWeight.normal,
+                    fontStyle: FontStyle.italic,
+                  ),
+                  const Gap(
+                    height: 8.0,
+                  ),
+                ]),
+              ),
+            ),
+          ),
+        ]);
+  }
+
+  Widget _quickActionsRow(Info info) {
+    return Container(
+      height: 80,
+      decoration: BoxDecoration(
+        color: AppColors.light.primaryBackground,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              IconButton(
+                  onPressed: () {},
+                  icon: FaIcon(
+                    FontAwesomeIcons.heart,
+                    color: AppColors.light.primaryText,
+                    size: 24,
+                  )),
+              Label(data: info.likes.toString())
+            ],
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              IconButton(
+                  onPressed: () {},
+                  icon: FaIcon(
+                    FontAwesomeIcons.comment,
+                    color: AppColors.light.primaryText,
+                    size: 24,
+                  )),
+              Label(data: info.comments.totalOfComments.toString()),
+            ],
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IconButton(
+                  onPressed: () {},
+                  icon: FaIcon(
+                    FontAwesomeIcons.clock,
+                    color: AppColors.light.primaryText,
+                    size: 24,
+                  )),
+              const Label(
+                data: 'Tempo',
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -278,7 +354,7 @@ class _BoxModalState extends State<BoxModal> {
       width: MediaQuery.of(context).size.width,
       height: itemHeight,
       decoration: BoxDecoration(
-        color: AppColors.light.background,
+        color: AppColors.light.primaryBackground,
         borderRadius: BorderRadius.circular(16),
       ),
       child: SingleChildScrollView(

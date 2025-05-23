@@ -5,13 +5,15 @@ class Label extends StatelessWidget {
   final double? fontSize;
   final FontWeight? fontWeight;
   final Color? color;
+  final FontStyle? fontStyle;
 
   const Label(
       {super.key,
       required this.data,
       this.fontSize,
       this.fontWeight,
-      this.color});
+      this.color,
+      this.fontStyle});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,7 @@ class Label extends StatelessWidget {
             fontFamily: 'DM Sans',
             fontSize: fontSize ?? 16,
             fontWeight: fontWeight ?? FontWeight.w600,
+            fontStyle: fontStyle ?? FontStyle.normal,
             color: color));
   }
 }
