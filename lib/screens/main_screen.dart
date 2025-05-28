@@ -17,9 +17,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _pages = [
     const HomeScreen(),
-    const HomeScreen(),
     const BuyBoxScreen(),
-    const UserProfileScreen(),
     const UserProfileScreen(),
   ];
 
@@ -47,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
             showUnselectedLabels: true,
             type: BottomNavigationBarType.fixed,
             selectedItemColor: AppColors.light.tertiary,
-            unselectedItemColor: Colors.blueGrey,
+            unselectedItemColor: AppColors.light.primaryText,
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 activeIcon: Icon(Icons.home),
@@ -55,19 +53,11 @@ class _MainScreenState extends State<MainScreen> {
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Cerca',
-              ),
-              BottomNavigationBarItem(
                 icon: FaIcon(
                   FontAwesomeIcons.hourglass,
                   size: 18.0,
                 ),
                 label: 'Box',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.message),
-                label: 'Chat',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),

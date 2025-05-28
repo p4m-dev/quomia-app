@@ -57,7 +57,6 @@ class _BoxModalState extends State<BoxModal> {
           expandToFill: true,
         ),
       );
-
       _betterPlayerController.setupDataSource(dataSource);
     }
   }
@@ -177,8 +176,8 @@ class _BoxModalState extends State<BoxModal> {
                   height: 8.0,
                 ),
                 Label(
-                  data: CustomDateUtils.formatDuration(
-                      dates.startDate, dates.endDate),
+                  data:
+                      "Circa ${CustomDateUtils.formatDuration(dates.startDate, dates.endDate)}",
                   fontWeight: FontWeight.bold,
                 )
               ]),

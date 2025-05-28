@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:quomia/http/box_http.dart';
+import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/utils/app_colors.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:quomia/widgets/user/chips_choice.dart';
+import 'package:quomia/widgets/user/crypto_stats.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -13,7 +13,6 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   final ScrollController _scrollController = ScrollController();
-  final HttpBoxService httpBoxService = HttpBoxService();
 
   @override
   void dispose() {
@@ -39,9 +38,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       padding: const EdgeInsets.all(16.0),
                       child: Column(mainAxisSize: MainAxisSize.max, children: [
                         buildTopProfile(),
-                        const SizedBox(height: 10.0),
-                        buildStatsRow(),
-                        const SizedBox(height: 10.0),
+                        const Gap(height: 10.0),
+                        const Gap(height: 10.0),
+                        const Align(
+                          alignment: AlignmentDirectional(-1, 0),
+                          child: Text('Statistiche',
+                              style: TextStyle(
+                                fontFamily: 'DM Sans',
+                                fontSize: 20,
+                              )),
+                        ),
+                        const Gap(height: 10.0),
+                        const CryptoStats(),
+                        const Gap(height: 10.0),
                         const Align(
                           alignment: AlignmentDirectional(-1, 0),
                           child: Text('I tuoi Box',
@@ -114,19 +123,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         ));
   }
 
-  // Future<void> _fetchBoxesByType() async {
-  //   try {
-  //     _socialBoxes = httpBoxService.fetchSocialBoxes();
-  //     await _socialBoxes;
-  //   } catch (e) {
-  //     developer.log('Error while loading timers: $e');
-  //   } finally {
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   }
-  // }
-
   Material buildTopProfile() {
     return Material(
       color: Colors.transparent,
@@ -136,7 +132,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       ),
       child: Container(
           width: double.infinity,
-          height: 320,
+          height: 270,
           decoration: BoxDecoration(
             color: AppColors.light.primaryBackground,
             borderRadius: BorderRadius.circular(16),
@@ -165,7 +161,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         buildItems('Chi segui', '20', () {}),
                       ],
                     ),
-                    const SizedBox(height: 10.0),
+                    const Gap(height: 10.0),
                     const Text(
                       'Samuel Maggio',
                       style: TextStyle(
@@ -174,7 +170,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(
+                    const Gap(
                       height: 10.0,
                     ),
                     const Text(
@@ -286,89 +282,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           )),
       actions: [],
       centerTitle: false,
-    );
-  }
-
-  Widget buildStatsRow() {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Material(
-          color: Colors.transparent,
-          elevation: 5,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Container(
-            width: 175,
-            height: 175,
-            decoration: BoxDecoration(
-              color: AppColors.light.primaryBackground,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                const Text(
-                  'Spazio Utilizzato',
-                  style: TextStyle(
-                    fontFamily: 'DM Sans',
-                    fontSize: 16,
-                    letterSpacing: 0.0,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                CircularPercentIndicator(
-                  percent: 0.5,
-                  radius: 34.5,
-                  lineWidth: 12,
-                  animation: true,
-                  animateFromLastPercent: true,
-                  progressColor: AppColors.light.tertiary,
-                  backgroundColor: AppColors.light.background,
-                  center: const Text(
-                    '50%',
-                    style: TextStyle(
-                      fontFamily: 'DM Sans',
-                      fontSize: 16,
-                      letterSpacing: 0.0,
-                    ),
-                  ),
-                ),
-                RichText(
-                  textScaler: MediaQuery.of(context).textScaler,
-                  text: const TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '2 / ',
-                          style: TextStyle(
-                              fontFamily: 'DM Sans',
-                              fontSize: 18,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        TextSpan(
-                          text: '4 GB',
-                          style: TextStyle(
-                            fontFamily: 'DM Sans',
-                            letterSpacing: 0.0,
-                            fontWeight: FontWeight.normal,
-                            fontStyle: FontStyle.italic,
-                          ),
-                        )
-                      ],
-                      style: TextStyle(
-                        fontFamily: 'DM Sans',
-                        letterSpacing: 0.0,
-                      )),
-                ),
-              ],
-            ),
-          ),
-        )
-      ],
     );
   }
 }

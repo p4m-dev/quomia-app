@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:quomia/http/constants.dart';
 import 'package:quomia/models/box/box.dart';
-import 'package:quomia/models/box/timer.dart';
+import 'package:quomia/models/crypto/balance.dart';
+import 'package:quomia/models/timers/timer.dart';
 
 class HttpTimerService {
   Future<List<Timer>> fetchTimers() async {
@@ -41,6 +42,29 @@ class HttpTimerService {
     } catch (e) {
       print(e);
       return List.empty();
+    } finally {
+      client.close();
+    }
+  }
+
+  Future<Balance?> fetchCryptoBalance() async {
+    var client = http.Client();
+    var baseUrl = Constants.baseUrl;
+    var url = Uri.parse("$baseUrl/user/balance");
+
+    try {
+      final response = await client.get(url);
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to load boxes');
+      }
+
+      final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+
+      return Balance.fromJson(jsonResponse['balance']);
+    } catch (e) {
+      print(e);
+      return null;
     } finally {
       client.close();
     }

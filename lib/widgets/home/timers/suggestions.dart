@@ -3,7 +3,7 @@ import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/label.dart';
 import 'package:quomia/designSystem/label_placeholder.dart';
 import 'package:quomia/http/timer_http.dart';
-import 'package:quomia/models/box/timer.dart';
+import 'package:quomia/models/timers/timer.dart';
 import 'package:quomia/widgets/home/timers/timer_suggestions_widget.dart';
 import 'package:quomia/widgets/home/timers/timer_suggestions_placeholder.dart';
 

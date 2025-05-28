@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quomia/designSystem/label.dart';
-import 'package:quomia/models/box/timer.dart';
+import 'package:quomia/models/timers/timer.dart';
 import 'package:quomia/utils/app_colors.dart';
 
 class TimerSuggestionsWidget extends StatelessWidget {
