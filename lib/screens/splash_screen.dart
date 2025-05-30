@@ -81,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen> {
             left: 0,
             right: 0,
             child: Text(
-              'v0.0.2',
+              'v0.1.0',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Montserrat',

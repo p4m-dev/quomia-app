@@ -5,7 +5,7 @@ class NFT {
   String mintAddress;
   DateTime startDate;
   DateTime endDate;
-  double quantity;
+  String quantity;
 
   NFT(
       {required this.boxId,
@@ -24,6 +24,6 @@ class NFT {
         mintAddress: json['mintAddress'],
         startDate: DateTime.parse(json['startDate']),
         endDate: DateTime.parse(json['endDate']),
-        quantity: (json['quantity'] as num).toDouble());
+        quantity: json['quantity']);
   }
 }
