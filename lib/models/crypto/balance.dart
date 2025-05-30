@@ -1,10 +1,12 @@
+import 'package:quomia/models/crypto/item.dart';
+
 class Balance {
   String walletBalance;
   String priceBalance;
   String nftsAmount;
   String estimatedValue;
-  String percentage;
-  String lossProfit;
+  Item percentage;
+  Item lossProfit;
 
   Balance(
       {required this.walletBalance,
@@ -20,7 +22,7 @@ class Balance {
         priceBalance: json['priceBalance'],
         nftsAmount: json['nftsAmount'],
         estimatedValue: json['estimatedValue'],
-        percentage: json['percentage'],
-        lossProfit: json['lossProfit']);
+        percentage: Item.fromJson(json['percentage']),
+        lossProfit: Item.fromJson(json['lossProfit']));
   }
 }

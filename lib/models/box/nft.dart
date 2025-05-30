@@ -5,7 +5,7 @@ class NFT {
   String mintAddress;
   DateTime startDate;
   DateTime endDate;
-  double initialPrice;
+  double quantity;
 
   NFT(
       {required this.boxId,
@@ -14,7 +14,7 @@ class NFT {
       required this.mintAddress,
       required this.startDate,
       required this.endDate,
-      required this.initialPrice});
+      required this.quantity});
 
   factory NFT.fromJson(Map<String, dynamic> json) {
     return NFT(
@@ -24,6 +24,6 @@ class NFT {
         mintAddress: json['mintAddress'],
         startDate: DateTime.parse(json['startDate']),
         endDate: DateTime.parse(json['endDate']),
-        initialPrice: (json['initialPrice'] as num).toDouble());
+        quantity: (json['quantity'] as num).toDouble());
   }
 }

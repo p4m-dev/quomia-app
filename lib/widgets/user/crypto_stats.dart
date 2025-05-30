@@ -78,11 +78,11 @@ class _CryptoStatsState extends State<CryptoStats> with RouteAware {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       mainAxisSize: MainAxisSize.max,
       children: [
-        _walletWidgetPlaceholder(),
+        _placeholder(),
         const Gap(
           width: 10.0,
         ),
-        _nftWidgetPlaceholder()
+        _placeholder()
       ],
     );
   }
@@ -101,7 +101,7 @@ class _CryptoStatsState extends State<CryptoStats> with RouteAware {
     );
   }
 
-  Widget _walletWidgetPlaceholder() {
+  Widget _placeholder() {
     return Expanded(
       child: Material(
         color: Colors.transparent,
@@ -123,8 +123,15 @@ class _CryptoStatsState extends State<CryptoStats> with RouteAware {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ShimmerPlaceholder(
-                  width: 60,
+                  width: 140,
                   height: 18,
+                ),
+                Gap(
+                  height: 10.0,
+                ),
+                ShimmerPlaceholder(
+                  width: 60,
+                  height: 14,
                 ),
                 Gap(
                   height: 10.0,
@@ -137,22 +144,15 @@ class _CryptoStatsState extends State<CryptoStats> with RouteAware {
                   height: 10.0,
                 ),
                 ShimmerPlaceholder(
-                  width: 60,
-                  height: 18,
+                  width: 100,
+                  height: 14,
                 ),
                 Gap(
                   height: 10.0,
                 ),
                 ShimmerPlaceholder(
-                  width: 60,
-                  height: 18,
-                ),
-                Gap(
-                  height: 10.0,
-                ),
-                ShimmerPlaceholder(
-                  width: 60,
-                  height: 18,
+                  width: 120,
+                  height: 14,
                 ),
               ],
             ),
@@ -209,7 +209,7 @@ class _CryptoStatsState extends State<CryptoStats> with RouteAware {
                 ),
                 Label(
                   data: balance.priceBalance,
-                  fontSize: 14,
+                  fontSize: 18,
                   fontWeight: FontWeight.w500,
                   fontStyle: FontStyle.normal,
                 ),
@@ -218,19 +218,41 @@ class _CryptoStatsState extends State<CryptoStats> with RouteAware {
                 ),
                 RichText(
                   text: TextSpan(
-                    text: balance.lossProfit,
+                    text: balance.lossProfit.symbol,
                     style: TextStyle(
+                      fontSize: 18,
                       fontWeight: FontWeight.w300,
                       color: AppColors.light.primaryText,
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: ' ${balance.percentage}',
+                        text: ' ${balance.lossProfit.value}',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.light.tertiary,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.light.primaryText,
                         ),
                       ),
+                      TextSpan(
+                        text: ' ${balance.percentage.symbol}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                          color: balance.percentage.symbol == '▼'
+                              ? AppColors.light.error
+                              : AppColors.light.tertiary,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' ${balance.percentage.value}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: balance.percentage.symbol == '▼'
+                              ? AppColors.light.error
+                              : AppColors.light.tertiary,
+                        ),
+                      )
                     ],
                   ),
                 )
@@ -292,61 +314,21 @@ class _CryptoStatsState extends State<CryptoStats> with RouteAware {
                     text: 'Valore stimato: ',
                     style: TextStyle(
                       fontWeight: FontWeight.w300,
+                      fontSize: 16,
                       color: AppColors.light.primaryText,
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: ' ${balance.estimatedValue}',
+                        text: ' (${balance.estimatedValue})',
                         style: TextStyle(
                           fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
                           color: AppColors.light.primaryText,
                         ),
                       ),
                     ],
                   ),
                 )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _nftWidgetPlaceholder() {
-    return Expanded(
-      child: Material(
-        color: Colors.transparent,
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Container(
-          height: 180,
-          decoration: BoxDecoration(
-            color: AppColors.light.primaryBackground,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 10.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const ShimmerPlaceholder(width: 60, height: 18),
-                const Gap(
-                  height: 10.0,
-                ),
-                const ShimmerPlaceholder(width: 60, height: 14),
-                const Gap(
-                  height: 10.0,
-                ),
-                const ShimmerPlaceholder(width: 60, height: 18),
-                const Gap(
-                  height: 10.0,
-                ),
-                const ShimmerPlaceholder(width: 60, height: 18),
               ],
             ),
           ),

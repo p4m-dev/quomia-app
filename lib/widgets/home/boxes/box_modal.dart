@@ -212,7 +212,7 @@ class _BoxModalState extends State<BoxModal> {
                   ),
                   Label(
                     data:
-                        "Prezzo iniziale (${nft.initialPrice.toStringAsFixed(4)} SOL)",
+                        "Prezzo iniziale (${nft.quantity.toStringAsFixed(4)} SOL)",
                     fontWeight: FontWeight.normal,
                     fontStyle: FontStyle.italic,
                   ),

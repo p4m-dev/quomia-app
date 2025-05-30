@@ -56,7 +56,7 @@ class HttpTimerService {
       final response = await client.get(url);
 
       if (response.statusCode != 200) {
-        throw Exception('Failed to load boxes');
+        throw Exception('Failed to User Balance!');
       }
 
       final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
