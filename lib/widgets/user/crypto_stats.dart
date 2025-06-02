@@ -1,68 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/label.dart';
-import 'package:quomia/http/timer_http.dart';
 import 'package:quomia/models/crypto/balance.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/common/placeholder.dart';
-import 'package:quomia/utils/route_observer.dart';
 
 class CryptoStats extends StatefulWidget {
-  const CryptoStats({super.key});
+  final bool isLoading;
+  final Balance? cryptoBalance;
+
+  const CryptoStats(
+      {super.key, required this.isLoading, required this.cryptoBalance});
 
   @override
   State<CryptoStats> createState() => _CryptoStatsState();
 }
 
-class _CryptoStatsState extends State<CryptoStats> with RouteAware {
-  bool _isLoading = true;
-  Balance? _cryptoBalance;
-
-  final HttpTimerService httpTimerService = HttpTimerService();
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    routeObserver.subscribe(this, ModalRoute.of(context)!);
-  }
-
-  @override
-  void dispose() {
-    routeObserver.unsubscribe(this);
-    super.dispose();
-  }
-
-  @override
-  void didPush() {
-    _fetchCryptoBalance();
-  }
-
-  @override
-  void didPopNext() {
-    _fetchCryptoBalance();
-  }
-
+class _CryptoStatsState extends State<CryptoStats> {
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
+    if (widget.isLoading) {
       return _statsPlaceholder();
     }
-    return _stats(_cryptoBalance);
-  }
-
-  Future<void> _fetchCryptoBalance() async {
-    try {
-      final response = await httpTimerService.fetchCryptoBalance();
-      setState(() {
-        _cryptoBalance = response;
-      });
-    } catch (e) {
-      print(e);
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    return _stats(widget.cryptoBalance);
   }
 
   Widget _stats(Balance? cryptoBalance) {

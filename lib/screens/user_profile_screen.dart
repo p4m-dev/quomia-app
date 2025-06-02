@@ -1,23 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:quomia/designSystem/gap.dart';
+import 'package:quomia/http/timer_http.dart';
+import 'package:quomia/models/crypto/balance.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/user/chips_choice.dart';
 import 'package:quomia/widgets/user/crypto_stats.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({super.key});
+  const UserProfileScreen({Key? key}) : super(key: key);
 
   @override
-  State<UserProfileScreen> createState() => _UserProfileScreenState();
+  State<UserProfileScreen> createState() => UserProfileScreenState();
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen> {
+class UserProfileScreenState extends State<UserProfileScreen> {
   final ScrollController _scrollController = ScrollController();
+  bool _isLoading = true;
+  Balance? _cryptoBalance;
+
+  final HttpTimerService httpTimerService = HttpTimerService();
 
   @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void onTabSelected() {
+    _fetchCryptoBalance();
+  }
+
+  void onTabReselected() {
+    print('Test');
+  }
+
+  Future<void> _fetchCryptoBalance() async {
+    try {
+      final response = await httpTimerService.fetchCryptoBalance();
+      setState(() {
+        _cryptoBalance = response;
+      });
+    } catch (e) {
+      print(e);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -49,7 +78,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               )),
                         ),
                         const Gap(height: 10.0),
-                        const CryptoStats(),
+                        CryptoStats(
+                          isLoading: _isLoading,
+                          cryptoBalance: _cryptoBalance,
+                        ),
                         const Gap(height: 10.0),
                         const Align(
                           alignment: AlignmentDirectional(-1, 0),

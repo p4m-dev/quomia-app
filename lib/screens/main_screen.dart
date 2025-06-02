@@ -14,17 +14,31 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
-
-  final List<Widget> _pages = [
-    const HomeScreen(),
-    const BuyBoxScreen(),
-    const UserProfileScreen(),
-  ];
+  late List<Widget> _pages;
+  final GlobalKey<UserProfileScreenState> _profileKey = GlobalKey();
 
   void _onItemTapped(int index) {
+    if (_selectedIndex == index && index == 2) {
+      final profileKey = _profileKey.currentState;
+      profileKey?.onTabReselected();
+    } else if (index == 2) {
+      final profileKey = _profileKey.currentState;
+      profileKey?.onTabSelected();
+    }
+
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      const HomeScreen(),
+      const BuyBoxScreen(),
+      UserProfileScreen(key: _profileKey),
+    ];
   }
 
   @override
