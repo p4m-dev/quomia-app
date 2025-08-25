@@ -58,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
             showSelectedLabels: true,
             showUnselectedLabels: true,
             type: BottomNavigationBarType.fixed,
-            selectedItemColor: AppColors.light.tertiary,
+            selectedItemColor: AppColors.light.primary,
             unselectedItemColor: AppColors.light.primaryText,
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
