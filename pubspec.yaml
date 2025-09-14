@@ -33,6 +33,7 @@ dependencies:
   blurhash: ^1.2.0
   video_thumbnail: ^0.5.3
   mapbox_maps_flutter: ^2.10.0
+  geocoding: ^4.0.0
 
 dev_dependencies:
   flutter_test:

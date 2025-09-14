@@ -50,13 +50,13 @@ class _BoxCategoryStepState extends State<BoxCategoryStep> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CustomTitle(data: 'Categoria Box'),
+              const CustomTitle(data: 'Box Temporale'),
               const Gap(
                 height: 10.0,
               ),
-              const Subtitle(data: 'Che categoria di Box desideri acquistare?'),
+              const Subtitle(data: 'Che tipo di box desideri acquistare?'),
               const Gap(
-                height: 10.0,
+                height: 20.0,
               ),
               BoxCard(
                 title: widget.interactive,
@@ -72,7 +72,7 @@ class _BoxCategoryStepState extends State<BoxCategoryStep> {
                 },
               ),
               const Gap(
-                height: 10.0,
+                height: 20.0,
               ),
               BoxCard(
                 title: widget.text,
