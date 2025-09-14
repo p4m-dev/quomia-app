@@ -34,6 +34,7 @@ dependencies:
   video_thumbnail: ^0.5.3
   mapbox_maps_flutter: ^2.10.0
   geocoding: ^4.0.0
+  flutter_svg: ^2.2.1
 
 dev_dependencies:
   flutter_test:
@@ -52,3 +53,4 @@ flutter:
     - assets/images/img_2.jpeg
     - assets/images/img_3.jpeg
     - assets/images/audio-record-image-placeholder.png
+    - assets/icons/nft.svg

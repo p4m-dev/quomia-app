@@ -6,6 +6,8 @@ import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/box/steps/box_category_step.dart';
 import 'package:quomia/widgets/box/steps/box_form_step.dart';
 import 'package:quomia/widgets/box/steps/box_form_time_step.dart';
+import 'package:quomia/widgets/box/steps/detail_form_step.dart';
+import 'package:quomia/widgets/box/steps/security_form_step.dart';
 import 'package:quomia/widgets/common/custom_loader.dart';
 
 class BuyBoxModal extends StatefulWidget {
@@ -24,7 +26,7 @@ class _BuyBoxModalState extends State<BuyBoxModal> {
     'Luogo',
     'Tempo',
     'Sicurezza',
-    'Pagamento'
+    'Riepilogo'
   ];
   final BoxHelper boxHelper = BoxHelper();
 
@@ -128,8 +130,17 @@ class _BuyBoxModalState extends State<BuyBoxModal> {
                             ),
                           if (_currentStep == 3)
                             BoxFormTimeStep(
-                              boxHelper: boxHelper,
-                              onLoading: _toggleLoading,
+                                boxHelper: boxHelper,
+                                onLoading: _toggleLoading,
+                                onStepCompleted: _goToNextStep,
+                                onGoBack: _goBack),
+                          if (_currentStep == 4)
+                            SecurityFormStep(
+                              onStepCompleted: _goToNextStep,
+                              onGoBack: _goBack,
+                            ),
+                          if (_currentStep == 5)
+                            DetailFormStep(
                               onStepCompleted: _goToNextStep,
                               onGoBack: _goBack,
                             )
