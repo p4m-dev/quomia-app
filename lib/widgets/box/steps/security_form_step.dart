@@ -1,11 +1,8 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:quomia/designSystem/button.dart';
 import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/designSystem/label.dart';
-import 'package:quomia/designSystem/subtitle.dart';
 import 'package:quomia/designSystem/title.dart';
 import 'package:quomia/utils/app_colors.dart';
 

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:quomia/screens/buy_box_screen.dart';
-import 'package:quomia/screens/home_screen.dart';
 import 'package:quomia/screens/map_screen.dart';
 import 'package:quomia/screens/user_profile_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
@@ -18,8 +15,6 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _pages = [
     const MapScreen(),
-    const HomeScreen(),
-    const BuyBoxScreen(),
     const UserProfileScreen(),
   ];
 
@@ -50,21 +45,9 @@ class _MainScreenState extends State<MainScreen> {
             unselectedItemColor: AppColors.light.primaryText,
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                activeIcon: Icon(Icons.map),
-                icon: Icon(Icons.map_outlined),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
                 activeIcon: Icon(Icons.home),
                 icon: Icon(Icons.home_outlined),
                 label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: FaIcon(
-                  FontAwesomeIcons.hourglass,
-                  size: 18.0,
-                ),
-                label: 'Box',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),

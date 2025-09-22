@@ -19,9 +19,36 @@ allprojects {
 }
 
 rootProject.buildDir = "../build"
+
+subprojects {
+    afterEvaluate { project ->
+        if (project.name == "ar_flutter_plugin") {
+            if (project.hasProperty("android")) {
+                project.android {
+                    compileOptions {
+                        sourceCompatibility JavaVersion.VERSION_17
+                        targetCompatibility JavaVersion.VERSION_17
+                    }
+                }
+            }
+            if (project.plugins.hasPlugin("org.jetbrains.kotlin.android") ||
+                    project.plugins.hasPlugin("kotlin-android")) {
+                project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+                    kotlinOptions {
+                        jvmTarget = "17"
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
 subprojects {
     project.evaluationDependsOn(":app")
 }

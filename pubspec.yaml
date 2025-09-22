@@ -35,6 +35,9 @@ dependencies:
   mapbox_maps_flutter: ^2.10.0
   geocoding: ^4.0.0
   flutter_svg: ^2.2.1
+  ar_flutter_plugin_updated: ^0.0.1
+  vector_math: ^2.1.4
+  geolocator: ^13.0.1
 
 dev_dependencies:
   flutter_test:
@@ -45,12 +48,9 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/videos/sample_video.mp4
-    - assets/animations/intro.json
     - assets/animations/hourglass.json
     - assets/images/quomia_logo.png
-    - assets/images/img_1.jpeg
-    - assets/images/img_2.jpeg
-    - assets/images/img_3.jpeg
     - assets/images/audio-record-image-placeholder.png
+    - assets/images/marker.png
     - assets/icons/nft.svg
+    - assets/models/box.glb
