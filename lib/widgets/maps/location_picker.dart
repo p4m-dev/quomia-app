@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:quomia/utils/app_colors.dart';
 
 class LocationPicker extends StatefulWidget {
   final TextEditingController controller;
@@ -60,6 +61,16 @@ class _LocationPickerState extends State<LocationPicker> {
     }
   }
 
+  OutlineInputBorder _outlineInputBorder() {
+    return OutlineInputBorder(
+      borderSide: const BorderSide(
+        color: Color(0x00000000),
+        width: 1,
+      ),
+      borderRadius: BorderRadius.circular(24),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -70,9 +81,28 @@ class _LocationPickerState extends State<LocationPicker> {
             Expanded(
               child: TextFormField(
                 controller: widget.controller,
-                decoration: const InputDecoration(
-                  hintText: "Es. Colosseo Roma",
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  isDense: true,
+                  hintText: 'Es. Colosseo Roma',
+                  hintStyle: const TextStyle(fontFamily: 'DM Sans'),
+                  enabledBorder: _outlineInputBorder(),
+                  focusedBorder: _outlineInputBorder(),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppColors.light.error,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppColors.light.error,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  filled: true,
+                  fillColor: AppColors.light.background,
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {

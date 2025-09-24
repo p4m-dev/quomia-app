@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart' as geo; // alias geolocator
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mapbox; // alias mapbox
+import 'package:quomia/screens/ar_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/maps/buy_box_modal.dart';
 import 'dart:typed_data';
@@ -61,13 +62,7 @@ class _MapScreenState extends State<MapScreen> {
       body: mapbox.MapWidget(
         cameraOptions: _camera,
         styleUri: mapbox.MapboxStyles.MAPBOX_STREETS,
-        onMapCreated: (mapbox.MapboxMap controller) {
-          mapboxMap = controller;
-
-          controller.annotations.createPointAnnotationManager().then((value) {
-            pointAnnotationManager = value;
-          });
-        },
+        onMapCreated: _onMapCreated,
         onTapListener: (mapbox.MapContentGestureContext context) {
           // Place only if is active
           if (!_addMarkerMode) {
@@ -85,6 +80,7 @@ class _MapScreenState extends State<MapScreen> {
             _addMarkerMode = false;
           });
         },
+
       ),
       floatingActionButton: Align(
         alignment: Alignment.centerRight,
@@ -106,15 +102,6 @@ class _MapScreenState extends State<MapScreen> {
                 backgroundColor: AppColors.light.secondary,
                 child: const Icon(Icons.shopping_bag),
               ),
-              const SizedBox(height: 12),
-              FloatingActionButton(
-                heroTag: "btn3",
-                onPressed: () => setState(() {
-                  _addMarkerMode = !_addMarkerMode;
-                }),
-                backgroundColor: AppColors.light.secondary,
-                child: const Icon(Icons.add_location_alt),
-              ),
             ],
           ),
         ),
@@ -123,21 +110,57 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
+  void _onMapCreated(mapbox.MapboxMap map) async {
+    mapboxMap = map;
+
+    pointAnnotationManager = await mapboxMap?.annotations.createPointAnnotationManager();
+
+    pointAnnotationManager?.tapEvents(onTap: (annotation) {
+      debugPrint("Marker tappato: ${annotation.id}");
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ARViewScreen(
+          ),
+        ),
+      );
+
+      return true;
+    });
+
+    // // Add Marker on Map
+    // map.addInteraction(
+    //   mapbox.TapInteraction.onMap((mapbox.MapContentGestureContext context) async {
+    //     final point = context.point;
+    //     await _addMarker(point);
+    //   })
+    // );
+  }
+
   Future<void> _goToMyLocation() async {
     final serviceEnabled = await geo.Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) return;
 
-    // Controllo permessi
+    if (!serviceEnabled) {
+      return;
+    }
+
+    // Check for permission
     var permission = await geo.Geolocator.checkPermission();
+
     if (permission == geo.LocationPermission.denied) {
       permission = await geo.Geolocator.requestPermission();
+
       if (permission == geo.LocationPermission.denied) {
         return;
       }
     }
-    if (permission == geo.LocationPermission.deniedForever) return;
 
-    // Ottengo la posizione corrente
+    if (permission == geo.LocationPermission.deniedForever) {
+      return;
+    }
+
+    // Get current position
     final geo.Position pos = await geo.Geolocator.getCurrentPosition(
       desiredAccuracy: geo.LocationAccuracy.high,
     );
@@ -178,7 +201,7 @@ class _MapScreenState extends State<MapScreen> {
     pointAnnotationManager!.create(
       mapbox.PointAnnotationOptions(
         geometry: point,
-        iconSize: 1.5,
+        iconSize: 2.0,
         image: imageBytes,
       ),
     );

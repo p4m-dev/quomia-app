@@ -6,7 +6,7 @@ import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/box/steps/box_category_step.dart';
 import 'package:quomia/widgets/box/steps/box_form_step.dart';
 import 'package:quomia/widgets/box/steps/box_form_time_step.dart';
-import 'package:quomia/widgets/box/steps/detail_form_step.dart';
+import 'package:quomia/widgets/box/steps/recap_step.dart';
 import 'package:quomia/widgets/box/steps/security_form_step.dart';
 import 'package:quomia/widgets/common/custom_loader.dart';
 
@@ -51,6 +51,12 @@ class _BuyBoxModalState extends State<BuyBoxModal> {
   void _goBack() {
     setState(() {
       _currentStep--;
+    });
+  }
+
+  void _goToStep(int step) {
+    setState(() {
+      _currentStep = step;
     });
   }
 
@@ -140,9 +146,11 @@ class _BuyBoxModalState extends State<BuyBoxModal> {
                               onGoBack: _goBack,
                             ),
                           if (_currentStep == 5)
-                            DetailFormStep(
+                            RecapStep(
+                              boxHelper: boxHelper,
                               onStepCompleted: _goToNextStep,
                               onGoBack: _goBack,
+                              onStepClicked: _goToStep,
                             )
                         ],
                       ),

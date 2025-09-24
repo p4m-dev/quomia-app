@@ -43,7 +43,7 @@ class _DateTimeRowState extends State<DateTimeRow> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'La data deve essere presente!';
+                return 'La data deve essere valorizzata!';
               }
               return null;
             },
@@ -63,7 +63,7 @@ class _DateTimeRowState extends State<DateTimeRow> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Il tempo deve essere presente!';
+                return 'Il tempo deve essere valorizzato!';
               }
               return null;
             },

@@ -8,6 +8,13 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+// dependencies {
+//     implementation('com.gorisse.thomas.sceneform:sceneform:1.21.0') {
+//         exclude group: 'com.google.android.filament', module: 'filament-android'
+//     }
+//     implementation 'com.google.android.filament:filament-android:1.21.1'
+// }
+
 android {
     namespace = "com.quomia.app"
     compileSdk = flutter.compileSdkVersion
@@ -33,6 +40,8 @@ android {
     buildTypes {
         release {
             signingConfig = signingConfigs.debug
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }

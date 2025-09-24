@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:quomia/designSystem/button.dart';
 import 'package:quomia/designSystem/gap.dart';
+import 'package:quomia/designSystem/info_message.dart';
 import 'package:quomia/designSystem/label.dart';
 import 'package:quomia/designSystem/subtitle.dart';
 import 'package:quomia/designSystem/text_form_field.dart';
@@ -70,16 +71,14 @@ class _BoxFormStepState extends State<BoxFormStep> {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CustomTitle(data: 'Creazione Box'),
+            const CustomTitle(data: 'Crea il tuo Ricordo'),
             const Gap(height: 10.0),
-            const Subtitle(
-                data: "Inserisci i dati necessari per completare l'acquisto"),
+            const Subtitle(data: "Inserisci i dati e dai vita al tuo Ricordo"),
             const Gap(height: 10.0),
             Form(
               key: _formKey,
               child: Container(
                 width: double.infinity,
-                height: 480,
                 decoration: BoxDecoration(
                   color: AppColors.light.primaryBackground,
                   borderRadius: BorderRadius.circular(16),
@@ -94,6 +93,12 @@ class _BoxFormStepState extends State<BoxFormStep> {
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              InfoMessage(
+                                  title: 'Info',
+                                  content:
+                                      'Dai un nome al tuo Ricordo e fissa un punto sulla mappa per non dimenticarlo mai.',
+                                  color: AppColors.light.tertiary),
+                              const Gap(height: 10.0),
                               const Label(data: 'Inserisci un titolo'),
                               const Gap(height: 10.0),
                               CustomTextFormField(
@@ -176,6 +181,7 @@ class _BoxFormStepState extends State<BoxFormStep> {
       widget.boxHelper.content = _contentController.text;
       widget.boxHelper.latitude = _latitude;
       widget.boxHelper.longitude = _longitude;
+      widget.boxHelper.location = _locationController.text;
 
       if (widget.boxHelper.category == Category.interactive) {
         widget.boxHelper.fileName = _fileName;
@@ -183,9 +189,9 @@ class _BoxFormStepState extends State<BoxFormStep> {
         widget.boxHelper.fileBytes = _fileBytes;
 
         debugPrint("BoxHelper aggiornato: ${widget.boxHelper}");
-
-        widget.onStepCompleted();
       }
+
+      widget.onStepCompleted();
     }
   }
 }

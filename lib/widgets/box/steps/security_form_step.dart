@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:quomia/designSystem/button.dart';
 import 'package:quomia/designSystem/gap.dart';
-import 'package:quomia/designSystem/label.dart';
+import 'package:quomia/designSystem/info_message.dart';
 import 'package:quomia/designSystem/title.dart';
 import 'package:quomia/utils/app_colors.dart';
 
@@ -34,7 +34,6 @@ class _BoxFormStepState extends State<SecurityFormStep> {
               key: _formKey,
               child: Container(
                 width: double.infinity,
-                height: 500,
                 decoration: BoxDecoration(
                   color: AppColors.light.primaryBackground,
                   borderRadius: BorderRadius.circular(16),
@@ -49,12 +48,11 @@ class _BoxFormStepState extends State<SecurityFormStep> {
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Label(
-                                data:
-                                    'Ogni ricordo è unico e protetto, trasformato in un sigillo che ne garantisce l\'autenticità e la durata eterna.',
-                                fontWeight: FontWeight.w300,
-                              ),
-                              const Gap(height: 10.0),
+                              InfoMessage(
+                                  title: 'Info',
+                                  content:
+                                      "Ogni ricordo è unico e protetto, trasformato in un sigillo che ne garantisce l'autenticità e la durata eterna.",
+                                  color: AppColors.light.tertiary),
                               Center(
                                 child: SvgPicture.asset(
                                   'assets/icons/nft.svg',

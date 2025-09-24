@@ -30,6 +30,7 @@ class BoxHelper {
 
   double? latitude;
   double? longitude;
+  String? location;
 
   String? fileName;
   String? fileExtension;
@@ -40,8 +41,6 @@ class BoxHelper {
   String? startTime;
   String? endDate;
   String? endTime;
-  String? openingDate;
-  String? openingTime;
 
   void reset() {
     _boxType.value = null;
@@ -51,6 +50,7 @@ class BoxHelper {
     content = null;
     latitude = null;
     longitude = null;
+    location = null;
     fileName = null;
     fileExtension = null;
     fileBytes = null;
@@ -59,8 +59,6 @@ class BoxHelper {
     startTime = null;
     endDate = null;
     endTime = null;
-    openingDate = null;
-    openingTime = null;
   }
 
   @override
