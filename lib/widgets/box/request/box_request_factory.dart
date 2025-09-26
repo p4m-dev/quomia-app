@@ -2,8 +2,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:quomia/models/box/box_helper.dart';
-import 'package:quomia/models/box/box_type.dart';
 import 'package:quomia/models/box/category.dart';
+import 'package:quomia/models/box/location.dart';
 import 'package:quomia/models/box/request/box_request.dart';
 import 'package:quomia/models/box/request/dates.dart';
 import 'package:quomia/models/box/request/file_item.dart';
@@ -26,43 +26,51 @@ class BoxRequestFactory {
   final Uint8List fileBytes;
   final String? videoThumbnailUrl;
   final String? receiver;
-  final BoxType boxType;
   final List<DateTime>? futureDates;
   final bool? isAnonymous;
   final TextEditingController? deliveryDateController;
   final TextEditingController? deliveryTimeController;
 
-  BoxRequestFactory(
-      {required this.boxHelper,
-      required this.titleController,
-      required this.contentController,
-      required this.dateStartController,
-      required this.timeStartController,
-      required this.dateEndController,
-      required this.timeEndController,
-      required this.downloadUrl,
-      required this.fileExtension,
-      required this.isImage,
-      required this.fileBytes,
-      required this.videoThumbnailUrl,
-      required this.receiver,
-      required this.boxType,
-      this.futureDates,
-      this.isAnonymous,
-      this.deliveryDateController,
-      this.deliveryTimeController});
+  // aggiunto per gestire location
+  final double? longitude;
+  final double? latitude;
+  final String? street;
+
+  BoxRequestFactory({
+    required this.boxHelper,
+    required this.titleController,
+    required this.contentController,
+    required this.dateStartController,
+    required this.timeStartController,
+    required this.dateEndController,
+    required this.timeEndController,
+    required this.downloadUrl,
+    required this.fileExtension,
+    required this.isImage,
+    required this.fileBytes,
+    required this.videoThumbnailUrl,
+    required this.receiver,
+    this.futureDates,
+    this.isAnonymous,
+    this.deliveryDateController,
+    this.deliveryTimeController,
+    this.longitude,
+    this.latitude,
+    this.street,
+  });
 
   Future<BoxRequest> createBoxRequest() async {
     return BoxRequest(
-        sender: 'Samuel Maggio',
-        receiver: receiver ?? '',
-        title: titleController.text,
-        type: boxType,
-        category: _getCategory(),
-        file: await _getFileItem(),
-        message: _getMessage(),
-        dates: _getDates(),
-        isAnonymous: isAnonymous ?? false);
+      sender: 'Samuel Maggio',
+      receiver: receiver ?? '',
+      title: titleController.text,
+      category: _getCategory(),
+      file: await _getFileItem(),
+      message: _getMessage(),
+      dates: _getDates(),
+      location: _getLocation(),
+      isAnonymous: isAnonymous ?? false,
+    );
   }
 
   Category _getCategory() {
@@ -72,11 +80,12 @@ class BoxRequestFactory {
   Future<FileItem?> _getFileItem() async {
     if (boxHelper.category == Category.interactive) {
       return FileItem(
-          fileType: FileUtils.convertExtensionToFileType(fileExtension),
-          downloadUrl: downloadUrl ?? '',
-          videoThumbnailUrl: videoThumbnailUrl == '' ? null : videoThumbnailUrl,
-          imageBlurhash:
-              isImage ? await ImageUtils.generateBlurHash(fileBytes) : '');
+        fileType: FileUtils.convertExtensionToFileType(fileExtension),
+        downloadUrl: downloadUrl ?? '',
+        videoThumbnailUrl: videoThumbnailUrl == '' ? null : videoThumbnailUrl,
+        imageBlurhash:
+            isImage ? await ImageUtils.generateBlurHash(fileBytes) : '',
+      );
     }
     return null;
   }
@@ -89,9 +98,13 @@ class BoxRequestFactory {
     return Dates(
       range: Range(
         start: CustomDateUtils.transformDate(
-            dateStartController.text, timeStartController.text),
+          dateStartController.text,
+          timeStartController.text,
+        ),
         end: CustomDateUtils.transformDate(
-            dateEndController.text, timeEndController.text),
+          dateEndController.text,
+          timeEndController.text,
+        ),
       ),
       future: futureDates,
       deliveryDate: _getDeliveryDate(),
@@ -102,7 +115,20 @@ class BoxRequestFactory {
     return (deliveryDateController?.text.isNotEmpty ?? false) &&
             (deliveryTimeController?.text.isNotEmpty ?? false)
         ? CustomDateUtils.transformDate(
-            deliveryDateController!.text, deliveryTimeController!.text)
+            deliveryDateController!.text,
+            deliveryTimeController!.text,
+          )
         : null;
+  }
+
+  Location? _getLocation() {
+    if (longitude != null && latitude != null && street != null) {
+      return Location(
+        longitude: longitude!,
+        latitude: latitude!,
+        street: street!,
+      );
+    }
+    return null;
   }
 }

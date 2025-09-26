@@ -148,6 +148,7 @@ class _BuyBoxModalState extends State<BuyBoxModal> {
                           if (_currentStep == 5)
                             RecapStep(
                               boxHelper: boxHelper,
+                              onLoading: _toggleLoading,
                               onStepCompleted: _goToNextStep,
                               onGoBack: _goBack,
                               onStepClicked: _goToStep,

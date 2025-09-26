@@ -1,22 +1,30 @@
+import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:quomia/designSystem/button.dart';
 import 'package:quomia/designSystem/gap.dart';
-import 'package:quomia/designSystem/label.dart';
 import 'package:quomia/designSystem/subtitle.dart';
-import 'package:quomia/designSystem/text_form_field.dart';
 import 'package:quomia/designSystem/title.dart';
+import 'package:quomia/http/box_http.dart';
+import 'package:quomia/http/constants.dart';
 import 'package:quomia/models/box/box_helper.dart';
 import 'package:quomia/models/box/category.dart';
+import 'package:quomia/screens/main_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
-import 'package:quomia/widgets/box/steps/media_textfield.dart';
-import 'package:quomia/widgets/maps/location_picker.dart';
+import 'package:quomia/utils/file_utils.dart';
+import 'package:quomia/utils/firebase_utils.dart';
+import 'package:quomia/utils/message_utils.dart';
+import 'package:quomia/utils/video_utils.dart';
+import 'package:quomia/widgets/box/request/box_request_factory.dart';
+import 'package:quomia/models/box/file_type.dart';
 
 class RecapStep extends StatefulWidget {
   final BoxHelper boxHelper;
   final VoidCallback onStepCompleted;
   final VoidCallback onGoBack;
+  final Function(bool) onLoading;
   final void Function(int) onStepClicked;
 
   const RecapStep(
@@ -24,6 +32,7 @@ class RecapStep extends StatefulWidget {
       required this.boxHelper,
       required this.onStepCompleted,
       required this.onGoBack,
+      required this.onLoading,
       required this.onStepClicked});
 
   @override
@@ -129,7 +138,7 @@ class _RecapStepState extends State<RecapStep> {
                   child: Button(
                     backgroundColor: AppColors.light.primary,
                     label: 'Conferma',
-                    onPressed: _goNext,
+                    onPressed: _confirmBoxCreation,
                   ),
                 ),
               ],
@@ -225,7 +234,88 @@ class _RecapStepState extends State<RecapStep> {
     widget.onGoBack();
   }
 
-  void _goNext() {
-    widget.onStepCompleted();
+  Future<void> _confirmBoxCreation() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      setState(() {
+        widget.onLoading(true);
+      });
+
+      String? videoThumbnailUrl = '';
+      bool isImage = false;
+      String? downloadUrl = '';
+
+      // Upload file to firebase
+      if (widget.boxHelper.category == Category.interactive) {
+        FileType fileType =
+            FileUtils.convertExtensionToFileType(_fileExtension);
+
+        isImage = fileType.isImage;
+
+        downloadUrl = await FirebaseUtils.uploadFileToStorage(
+            filePath: _filePath,
+            fileType: fileType,
+            fileExtension: _fileExtension,
+            sender: 'Samuel Maggio',
+            fileName: _fileName);
+
+        if (fileType.isVideo) {
+          File? thumbnailFile = await VideoUtils.generateThumbnail(_filePath);
+
+          videoThumbnailUrl = await FirebaseUtils.uploadThumbnailToStorage(
+              fileType: FileType.image,
+              fileExtension: 'jpg',
+              sender: 'Samuel Maggio',
+              file: thumbnailFile,
+              fileName: _fileName);
+        }
+      }
+
+      try {
+        final boxRequestFactory = BoxRequestFactory(
+            boxHelper: widget.boxHelper,
+            titleController: _titleController,
+            contentController: _contentController,
+            dateStartController: _dateStartController,
+            timeStartController: _timeStartController,
+            dateEndController: _dateEndController,
+            timeEndController: _timeEndController,
+            downloadUrl: downloadUrl,
+            fileExtension: _fileExtension,
+            isImage: isImage,
+            fileBytes: _fileBytes,
+            videoThumbnailUrl: videoThumbnailUrl,
+            receiver: null,
+            latitude: widget.boxHelper.latitude,
+            longitude: widget.boxHelper.longitude,
+            street: widget.boxHelper.location);
+
+        final boxRequest = await boxRequestFactory.createBoxRequest();
+
+        HttpBoxService httpBoxService = HttpBoxService();
+        var baseUrl = Constants.baseUrl;
+        await httpBoxService.createBox(boxRequest, '$baseUrl/box/social');
+
+        if (mounted) {
+          MessageUtils.showToast("Acquisto del box avvenuto correttamente!",
+              AppColors.light.tertiary, Colors.white);
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const MainScreen()),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          MessageUtils.showToast("Errore durante l'acquisto del box: $e",
+              AppColors.light.error, Colors.white);
+        }
+      } finally {
+        if (mounted) {
+          setState(() {
+            widget.onLoading(false);
+          });
+        }
+      }
+    }
   }
 }

@@ -35,7 +35,7 @@ class HttpBoxService {
   Future<List<Box>> fetchSocialBoxes() async {
     var client = http.Client();
     var baseUrl = Constants.baseUrl;
-    var url = Uri.parse("$baseUrl/box/social");
+    var url = Uri.parse("$baseUrl/box");
 
     try {
       final response = await client.get(url);
@@ -46,9 +46,9 @@ class HttpBoxService {
 
       final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
 
-      final List<dynamic> socialBoxes = jsonResponse['boxes'];
+      final List<dynamic> boxes = jsonResponse['boxes'];
 
-      return socialBoxes.map((json) => Box.fromJson(json)).toList();
+      return boxes.map((json) => Box.fromJson(json)).toList();
     } catch (e) {
       print(e);
       return List.empty();
