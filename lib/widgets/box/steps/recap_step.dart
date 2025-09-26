@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -40,31 +39,11 @@ class RecapStep extends StatefulWidget {
 }
 
 class _RecapStepState extends State<RecapStep> {
-  final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
-  final TextEditingController _dateStartController = TextEditingController();
-  final TextEditingController _timeStartController = TextEditingController();
-  final TextEditingController _dateEndController = TextEditingController();
-  final TextEditingController _timeEndController = TextEditingController();
-  final TextEditingController _fileController = TextEditingController();
-
-  final _formKey = GlobalKey<FormState>();
-
-  late Map<String, dynamic> selectedFile;
-  Uint8List _fileBytes = Uint8List(0);
-  String _fileExtension = '';
-  late String _fileName;
-  late String _filePath;
 
   @override
   void dispose() {
-    _titleController.dispose();
     _contentController.dispose();
-    _dateStartController.dispose();
-    _timeStartController.dispose();
-    _dateEndController.dispose();
-    _timeEndController.dispose();
-    _fileController.dispose();
     super.dispose();
   }
 
@@ -91,6 +70,14 @@ class _RecapStepState extends State<RecapStep> {
             _buildSection(
               label: 'Titolo',
               value: boxHelper.title!,
+              stepIndex: 1,
+              icon: Icons.edit,
+            ),
+
+            // Title
+            _buildSection(
+              label: 'Destinatario',
+              value: boxHelper.receiver!,
               stepIndex: 1,
               icon: Icons.edit,
             ),
@@ -235,86 +222,87 @@ class _RecapStepState extends State<RecapStep> {
   }
 
   Future<void> _confirmBoxCreation() async {
-    if (_formKey.currentState?.validate() ?? false) {
-      setState(() {
-        widget.onLoading(true);
-      });
+    setState(() {
+      widget.onLoading(true);
+    });
 
-      String? videoThumbnailUrl = '';
-      bool isImage = false;
-      String? downloadUrl = '';
+    var boxHelper = widget.boxHelper;
 
-      // Upload file to firebase
-      if (widget.boxHelper.category == Category.interactive) {
-        FileType fileType =
-            FileUtils.convertExtensionToFileType(_fileExtension);
+    String? videoThumbnailUrl = '';
+    bool isImage = false;
+    String? downloadUrl = '';
 
-        isImage = fileType.isImage;
+    // Upload file to firebase
+    if (widget.boxHelper.category == Category.interactive) {
+      FileType fileType =
+          FileUtils.convertExtensionToFileType(boxHelper.fileExtension!);
 
-        downloadUrl = await FirebaseUtils.uploadFileToStorage(
-            filePath: _filePath,
-            fileType: fileType,
-            fileExtension: _fileExtension,
+      isImage = fileType.isImage;
+
+      downloadUrl = await FirebaseUtils.uploadFileToStorage(
+          filePath: boxHelper.filePath!,
+          fileType: fileType,
+          fileExtension: boxHelper.fileExtension!,
+          sender: 'Samuel Maggio',
+          fileName: boxHelper.fileName!);
+
+      if (fileType.isVideo) {
+        File? thumbnailFile =
+            await VideoUtils.generateThumbnail(boxHelper.filePath!);
+
+        videoThumbnailUrl = await FirebaseUtils.uploadThumbnailToStorage(
+            fileType: FileType.image,
+            fileExtension: 'jpg',
             sender: 'Samuel Maggio',
-            fileName: _fileName);
-
-        if (fileType.isVideo) {
-          File? thumbnailFile = await VideoUtils.generateThumbnail(_filePath);
-
-          videoThumbnailUrl = await FirebaseUtils.uploadThumbnailToStorage(
-              fileType: FileType.image,
-              fileExtension: 'jpg',
-              sender: 'Samuel Maggio',
-              file: thumbnailFile,
-              fileName: _fileName);
-        }
+            file: thumbnailFile,
+            fileName: boxHelper.fileName!);
       }
+    }
 
-      try {
-        final boxRequestFactory = BoxRequestFactory(
-            boxHelper: widget.boxHelper,
-            titleController: _titleController,
-            contentController: _contentController,
-            dateStartController: _dateStartController,
-            timeStartController: _timeStartController,
-            dateEndController: _dateEndController,
-            timeEndController: _timeEndController,
-            downloadUrl: downloadUrl,
-            fileExtension: _fileExtension,
-            isImage: isImage,
-            fileBytes: _fileBytes,
-            videoThumbnailUrl: videoThumbnailUrl,
-            receiver: null,
-            latitude: widget.boxHelper.latitude,
-            longitude: widget.boxHelper.longitude,
-            street: widget.boxHelper.location);
+    try {
+      final boxRequestFactory = BoxRequestFactory(
+          boxHelper: boxHelper,
+          content: boxHelper.content!,
+          dateStart: boxHelper.startDate!,
+          timeStart: boxHelper.startTime!,
+          dateEnd: boxHelper.endDate!,
+          timeEnd: boxHelper.endTime!,
+          title: boxHelper.title!,
+          downloadUrl: downloadUrl,
+          fileExtension: boxHelper.fileExtension ?? '',
+          isImage: isImage,
+          fileBytes: boxHelper.fileBytes,
+          videoThumbnailUrl: videoThumbnailUrl,
+          receiver: boxHelper.receiver,
+          latitude: boxHelper.latitude,
+          longitude: boxHelper.longitude,
+          street: boxHelper.location);
 
-        final boxRequest = await boxRequestFactory.createBoxRequest();
+      final boxRequest = await boxRequestFactory.createBoxRequest();
 
-        HttpBoxService httpBoxService = HttpBoxService();
-        var baseUrl = Constants.baseUrl;
-        await httpBoxService.createBox(boxRequest, '$baseUrl/box/social');
+      HttpBoxService httpBoxService = HttpBoxService();
+      var baseUrl = Constants.baseUrl;
+      await httpBoxService.createBox(boxRequest, '$baseUrl/box');
 
-        if (mounted) {
-          MessageUtils.showToast("Acquisto del box avvenuto correttamente!",
-              AppColors.light.tertiary, Colors.white);
+      if (mounted) {
+        MessageUtils.showToast("Acquisto del box avvenuto correttamente!",
+            AppColors.light.tertiary, Colors.white);
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const MainScreen()),
-          );
-        }
-      } catch (e) {
-        if (mounted) {
-          MessageUtils.showToast("Errore durante l'acquisto del box: $e",
-              AppColors.light.error, Colors.white);
-        }
-      } finally {
-        if (mounted) {
-          setState(() {
-            widget.onLoading(false);
-          });
-        }
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MainScreen()),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        MessageUtils.showToast("Errore durante l'acquisto del box: $e",
+            AppColors.light.error, Colors.white);
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          widget.onLoading(false);
+        });
       }
     }
   }

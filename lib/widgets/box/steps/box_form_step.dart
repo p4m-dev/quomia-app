@@ -12,18 +12,17 @@ import 'package:quomia/models/box/box_helper.dart';
 import 'package:quomia/models/box/category.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/box/steps/media_textfield.dart';
+import 'package:quomia/widgets/box/user_bottomsheet.dart';
 import 'package:quomia/widgets/maps/location_picker.dart';
 
 class BoxFormStep extends StatefulWidget {
   final BoxHelper boxHelper;
-  final Function(bool) onLoading;
   final VoidCallback onStepCompleted;
   final VoidCallback onGoBack;
 
   const BoxFormStep(
       {super.key,
       required this.boxHelper,
-      required this.onLoading,
       required this.onStepCompleted,
       required this.onGoBack});
 
@@ -32,6 +31,7 @@ class BoxFormStep extends StatefulWidget {
 }
 
 class _BoxFormStepState extends State<BoxFormStep> {
+  final TextEditingController _userController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
   final TextEditingController _dateStartController = TextEditingController();
@@ -53,6 +53,7 @@ class _BoxFormStepState extends State<BoxFormStep> {
 
   @override
   void dispose() {
+    _userController.dispose();
     _titleController.dispose();
     _contentController.dispose();
     _dateStartController.dispose();
@@ -99,6 +100,36 @@ class _BoxFormStepState extends State<BoxFormStep> {
                                       'Dai un nome al tuo Ricordo e fissa un punto sulla mappa per non dimenticarlo mai.',
                                   color: AppColors.light.tertiary),
                               const Gap(height: 10.0),
+                              const Gap(height: 10.0),
+                              const Label(data: 'A chi desideri inviarlo?'),
+                              const Gap(height: 10.0),
+                              CustomTextFormField(
+                                width: double.infinity,
+                                controller: _userController,
+                                hintText: 'Destinatario',
+                                textInput: TextInputType.text,
+                                hasOnTap: true,
+                                hasSuffixIcon: true,
+                                readOnly: true,
+                                suffixIcon: IconButton(
+                                    onPressed: () async {
+                                      final selectedUser =
+                                          await UserBottomSheetUtils
+                                              .showUserBottomSheet(context);
+                                      if (selectedUser != null) {
+                                        setState(() {
+                                          _userController.text = selectedUser;
+                                        });
+                                      }
+                                    },
+                                    icon: const Icon(Icons.search)),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Il Destinatario deve essere presente!';
+                                  }
+                                  return null;
+                                },
+                              ),
                               const Label(data: 'Inserisci un titolo'),
                               const Gap(height: 10.0),
                               CustomTextFormField(
@@ -177,6 +208,7 @@ class _BoxFormStepState extends State<BoxFormStep> {
 
   void _handleBoxLocationCreation() {
     if (_formKey.currentState?.validate() ?? false) {
+      widget.boxHelper.receiver = _userController.text;
       widget.boxHelper.title = _titleController.text;
       widget.boxHelper.content = _contentController.text;
       widget.boxHelper.latitude = _latitude;
@@ -187,6 +219,7 @@ class _BoxFormStepState extends State<BoxFormStep> {
         widget.boxHelper.fileName = _fileName;
         widget.boxHelper.fileExtension = _fileExtension;
         widget.boxHelper.fileBytes = _fileBytes;
+        widget.boxHelper.filePath = _filePath;
 
         debugPrint("BoxHelper aggiornato: ${widget.boxHelper}");
       }

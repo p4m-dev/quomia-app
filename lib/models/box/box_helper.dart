@@ -26,6 +26,7 @@ class BoxHelper {
   Category? get category => _category.value;
 
   String? title;
+  String? receiver;
   String? content;
 
   double? latitude;
@@ -34,6 +35,7 @@ class BoxHelper {
 
   String? fileName;
   String? fileExtension;
+  String? filePath;
   Uint8List? fileBytes;
   File? file;
 
@@ -47,12 +49,14 @@ class BoxHelper {
     _category.value = null;
 
     title = null;
+    receiver = null;
     content = null;
     latitude = null;
     longitude = null;
     location = null;
     fileName = null;
     fileExtension = null;
+    filePath = null;
     fileBytes = null;
     file = null;
     startDate = null;

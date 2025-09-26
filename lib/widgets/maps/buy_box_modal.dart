@@ -130,14 +130,12 @@ class _BuyBoxModalState extends State<BuyBoxModal> {
                           if (_currentStep == 2)
                             BoxFormStep(
                               boxHelper: boxHelper,
-                              onLoading: _toggleLoading,
                               onStepCompleted: _goToNextStep,
                               onGoBack: _goBack,
                             ),
                           if (_currentStep == 3)
                             BoxFormTimeStep(
                                 boxHelper: boxHelper,
-                                onLoading: _toggleLoading,
                                 onStepCompleted: _goToNextStep,
                                 onGoBack: _goBack),
                           if (_currentStep == 4)

@@ -12,14 +12,12 @@ import 'package:quomia/widgets/box/steps/date_time_row.dart';
 
 class BoxFormTimeStep extends StatefulWidget {
   final BoxHelper boxHelper;
-  final Function(bool) onLoading;
   final VoidCallback onStepCompleted;
   final VoidCallback onGoBack;
 
   const BoxFormTimeStep(
       {super.key,
       required this.boxHelper,
-      required this.onLoading,
       required this.onStepCompleted,
       required this.onGoBack});
 
@@ -147,7 +145,7 @@ class _BoxFormStepState extends State<BoxFormTimeStep> {
   void _handleBoxTimeCreation() {
     if (_formKey.currentState?.validate() ?? false) {
       widget.boxHelper.startDate = _dateStartController.text;
-      widget.boxHelper.startTime = _dateStartController.text;
+      widget.boxHelper.startTime = _timeStartController.text;
       widget.boxHelper.endDate = _dateEndController.text;
       widget.boxHelper.endTime = _timeEndController.text;
 
@@ -156,87 +154,4 @@ class _BoxFormStepState extends State<BoxFormTimeStep> {
       widget.onStepCompleted();
     }
   }
-
-  // Future<void> _handleBoxBuy() async {
-  //   if (_formKey.currentState?.validate() ?? false) {
-  //     setState(() {
-  //       widget.onLoading(true);
-  //     });
-
-  //     String? videoThumbnailUrl = '';
-  //     bool isImage = false;
-  //     String? downloadUrl = '';
-
-  //     // Upload file to firebase
-  //     if (widget.boxHelper.category == Category.interactive) {
-  //       FileType fileType =
-  //           FileUtils.convertExtensionToFileType(_fileExtension);
-
-  //       isImage = fileType.isImage;
-
-  //       downloadUrl = await FirebaseUtils.uploadFileToStorage(
-  //           filePath: _filePath,
-  //           fileType: fileType,
-  //           fileExtension: _fileExtension,
-  //           sender: 'Samuel Maggio',
-  //           fileName: _fileName);
-
-  //       if (fileType.isVideo) {
-  //         File? thumbnailFile = await VideoUtils.generateThumbnail(_filePath);
-
-  //         videoThumbnailUrl = await FirebaseUtils.uploadThumbnailToStorage(
-  //             fileType: FileType.image,
-  //             fileExtension: 'jpg',
-  //             sender: 'Samuel Maggio',
-  //             file: thumbnailFile,
-  //             fileName: _fileName);
-  //       }
-  //     }
-
-  //     try {
-  //       final boxRequestFactory = BoxRequestFactory(
-  //           boxHelper: widget.boxHelper,
-  //           titleController: _titleController,
-  //           contentController: _contentController,
-  //           dateStartController: _dateStartController,
-  //           timeStartController: _timeStartController,
-  //           dateEndController: _dateEndController,
-  //           timeEndController: _timeEndController,
-  //           downloadUrl: downloadUrl,
-  //           fileExtension: _fileExtension,
-  //           isImage: isImage,
-  //           fileBytes: _fileBytes,
-  //           videoThumbnailUrl: videoThumbnailUrl,
-  //           receiver: null,
-  //           boxType: BoxType.social);
-
-  //       final boxRequest = await boxRequestFactory.createBoxRequest();
-
-  //       HttpBoxService httpBoxService = HttpBoxService();
-  //       var baseUrl = Constants.baseUrl;
-  //       await httpBoxService.createBox(boxRequest, '$baseUrl/box/social');
-
-  //       if (mounted) {
-  //         MessageUtils.showToast("Acquisto del box avvenuto correttamente!",
-  //             AppColors.light.tertiary, Colors.white);
-
-  //         Navigator.push(
-  //           context,
-  //           MaterialPageRoute(builder: (context) => const MainScreen()),
-  //         );
-  //       }
-  //     } catch (e) {
-  //       if (mounted) {
-  //         MessageUtils.showToast("Errore durante l'acquisto del box: $e",
-  //             AppColors.light.error, Colors.white);
-  //       }
-  //     } finally {
-  //       if (mounted) {
-  //         setState(() {
-  //           widget.onLoading(false);
-  //         });
-  //       }
-  //     }
-  //   }
-  // }
 }
