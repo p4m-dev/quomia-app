@@ -52,5 +52,6 @@ flutter:
     - assets/images/quomia_logo.png
     - assets/images/audio-record-image-placeholder.png
     - assets/images/marker.png
+    - assets/images/location_pin.png
     - assets/icons/nft.svg
     - assets/models/box.glb

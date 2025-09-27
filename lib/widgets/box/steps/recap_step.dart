@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quomia/designSystem/button.dart';
 import 'package:quomia/designSystem/gap.dart';
+import 'package:quomia/designSystem/label.dart';
 import 'package:quomia/designSystem/subtitle.dart';
 import 'package:quomia/designSystem/title.dart';
 import 'package:quomia/http/box_http.dart';
@@ -50,7 +52,7 @@ class _RecapStepState extends State<RecapStep> {
   @override
   Widget build(BuildContext context) {
     var boxHelper = widget.boxHelper;
-    var startDate = "${boxHelper.startDate!} - ${boxHelper.startDate!}";
+    var startDate = "${boxHelper.startDate!} - ${boxHelper.startTime!}";
     var endDate = "${boxHelper.endDate!} - ${boxHelper.endTime!}";
 
     return Padding(
@@ -79,7 +81,7 @@ class _RecapStepState extends State<RecapStep> {
               label: 'Destinatario',
               value: boxHelper.receiver!,
               stepIndex: 1,
-              icon: Icons.edit,
+              icon: FontAwesomeIcons.user,
             ),
 
             // Location
@@ -207,11 +209,18 @@ class _RecapStepState extends State<RecapStep> {
               ),
             ],
           ),
-          const SizedBox(height: 6),
-          Text(
-            "Dal $startDate al $endDate",
-            style: const TextStyle(fontSize: 16),
+          const Gap(height: 10),
+          Label(
+            data: "Tempo iniziale: $startDate",
+            fontSize: 16,
+            fontWeight: FontWeight.normal,
           ),
+          const Gap(height: 10),
+          Label(
+            data: "Tempo finale: $endDate",
+            fontSize: 16,
+            fontWeight: FontWeight.normal,
+          )
         ],
       ),
     );

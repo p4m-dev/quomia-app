@@ -32,7 +32,7 @@ class HttpBoxService {
     }
   }
 
-  Future<List<Box>> fetchSocialBoxes() async {
+  Future<List<Box>> fetchBoxes() async {
     var client = http.Client();
     var baseUrl = Constants.baseUrl;
     var url = Uri.parse("$baseUrl/box");
