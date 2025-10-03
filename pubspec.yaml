@@ -38,6 +38,7 @@ dependencies:
   ar_flutter_plugin_updated: ^0.0.1
   vector_math: ^2.1.4
   geolocator: ^13.0.1
+  flutter_custom_tabs: ^2.4.0
 
 dev_dependencies:
   flutter_test:

@@ -7,6 +7,7 @@ import 'package:quomia/designSystem/gap.dart';
 import 'package:quomia/http/box_http.dart';
 import 'package:quomia/http/mapbox_http.dart';
 import 'package:quomia/screens/ar_screen.dart';
+import 'package:quomia/screens/web_view_screen.dart';
 import 'package:quomia/utils/app_colors.dart';
 import 'package:quomia/widgets/common/custom_loader.dart';
 import 'package:quomia/widgets/maps/buy_box_modal.dart';
@@ -229,7 +230,7 @@ class _MapScreenState extends State<MapScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ARViewScreen(),
+          builder: (context) => WebViewScreen(),
         ),
       );
 

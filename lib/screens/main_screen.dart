@@ -13,10 +13,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [
-    const MapScreen(),
-    const UserProfileScreen(),
-  ];
+  final List<Widget> _pages = [const MapScreen(), const UserProfileScreen()];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -52,7 +49,7 @@ class _MainScreenState extends State<MainScreen> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
                 label: 'Profilo',
-              ),
+              )
             ],
             currentIndex: _selectedIndex,
             onTap: _onItemTapped,

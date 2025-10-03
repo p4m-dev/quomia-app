@@ -15,6 +15,7 @@ class _LightModeColors {
   final Color primaryText = const Color(0xFF141414);
   final Color secondaryText = const Color(0xFF141414);
   final Color error = const Color(0xFF683BBF);
+  final Color transparentWithOpacity = const Color.fromARGB(103, 2, 0, 5);
 }
 
 class _DarkModeColors {

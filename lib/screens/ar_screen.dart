@@ -36,26 +36,26 @@ class _ARViewScreenState extends State<ARViewScreen> {
     );
   }
 
-  void _onARViewCreated(ARSessionManager arSessionManager,
+  void _onARViewCreated(
+      ARSessionManager arSessionManager,
       ARObjectManager arObjectManager,
       ARAnchorManager arAnchorManager,
       ARLocationManager arLocationManager) {
-
     _arSessionManager = arSessionManager;
     _arObjectManager = arObjectManager;
 
     _arSessionManager.onInitialize(
-      showFeaturePoints: false,
-      showPlanes: false,
-      handleTaps: false,
-      showAnimatedGuide: false
-    );
+        showFeaturePoints: false,
+        showPlanes: false,
+        handleTaps: false,
+        showAnimatedGuide: false);
 
     arObjectManager.onInitialize();
 
     final node = ARNode(
       type: NodeType.webGLB,
-      uri: "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Box/glTF-Binary/Box.glb",
+      uri:
+          "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Box/glTF-Binary/Box.glb",
       scale: Vector3(0.2, 0.2, 0.2),
       position: Vector3(0.0, 0.0, -1.0),
     );
